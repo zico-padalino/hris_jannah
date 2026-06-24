@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Web\AppBrandingController;
+use App\Http\Controllers\Web\ActivityLogController;
 use App\Http\Controllers\Web\AnnouncementController;
 use App\Http\Controllers\Web\AttendanceController;
 use App\Http\Controllers\Web\AttendanceManageController;
@@ -170,6 +171,10 @@ Route::middleware('guest')->group(function () {
 
     Route::middleware('permission:reports.view')->group(function () {
         Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    });
+
+    Route::middleware('permission:activity_log.view')->group(function () {
+        Route::get('/log-aktivitas', [ActivityLogController::class, 'index'])->name('activity-logs.index');
     });
 
     Route::middleware('permission:announcements.manage')->group(function () {

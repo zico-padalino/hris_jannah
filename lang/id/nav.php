@@ -27,4 +27,5 @@ return [
     'users' => 'Pengguna',
     'roles' => 'Hak Akses Role',
     'settings' => 'Pengaturan',
+    'activity_logs' => 'Log Aktivitas',
 ];

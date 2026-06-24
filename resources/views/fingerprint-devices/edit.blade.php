@@ -104,7 +104,7 @@
         </div>
     </div>
 
-    <div class="mt-6 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div class="panel-table table-mobile-scroll mt-6">
         <div class="border-b border-slate-100 px-6 py-4">
             <h2 class="text-lg font-semibold">Log Fingerprint Terakhir</h2>
         </div>

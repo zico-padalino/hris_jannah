@@ -78,7 +78,7 @@
     <button type="submit" class="rounded-md bg-teal-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-teal-800">Terapkan ke Terpilih</button>
 </form>
 
-<div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+<div class="panel-table table-mobile-scroll">
     <table class="table-readable min-w-full">
         <thead class="bg-slate-50 text-left text-xs text-slate-500">
             <tr>

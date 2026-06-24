@@ -71,6 +71,15 @@ return [
         'roles_view' => 'Lihat Hak Akses Role',
         'fingerprint_manage' => 'Kelola Mesin Fingerprint',
         'announcements_manage' => 'Kelola Pengumuman',
+        'activity_log_view' => 'Lihat Log Aktivitas',
+    ],
+    'activity_log_action' => [
+        'login' => 'Login',
+        'logout' => 'Logout',
+        'login_failed' => 'Login Gagal',
+        'create' => 'Tambah',
+        'update' => 'Ubah',
+        'delete' => 'Hapus',
     ],
     'permission_group' => [
         'general' => 'Umum',

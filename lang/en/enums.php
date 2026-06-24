@@ -71,6 +71,15 @@ return [
         'roles_view' => 'View Role Permissions',
         'fingerprint_manage' => 'Manage Fingerprint Devices',
         'announcements_manage' => 'Manage Announcements',
+        'activity_log_view' => 'View Activity Log',
+    ],
+    'activity_log_action' => [
+        'login' => 'Login',
+        'logout' => 'Logout',
+        'login_failed' => 'Login Failed',
+        'create' => 'Create',
+        'update' => 'Update',
+        'delete' => 'Delete',
     ],
     'permission_group' => [
         'general' => 'General',

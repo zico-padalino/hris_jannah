@@ -8,6 +8,7 @@
     <script>
         (function () {
             try {
+                var stored = localStorage.getItem('theme');
                 if (stored === 'dark') {
                     document.documentElement.classList.add('dark');
                 }
@@ -91,7 +92,7 @@
                 </div>
             @endauth
 
-            <main class="flex-1 overflow-y-auto overflow-x-hidden px-3 py-4 sm:px-4 sm:py-6 lg:px-8">
+            <main class="flex-1 min-h-0 min-w-0 overflow-y-auto px-3 py-4 sm:px-4 sm:py-6 lg:px-8">
                 @include('partials.alerts')
                 @yield('content')
             </main>

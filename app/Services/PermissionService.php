@@ -201,7 +201,7 @@ class PermissionService
             UserRole::SuperAdmin->value => Permission::cases(),
             UserRole::Hr->value => array_values(array_filter(
                 Permission::cases(),
-                fn (Permission $p) => $p !== Permission::SettingsManage
+                fn (Permission $p) => ! in_array($p, [Permission::SettingsManage], true)
             )),
             UserRole::BranchAdmin->value => [
                 Permission::DashboardView,

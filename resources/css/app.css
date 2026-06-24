@@ -814,7 +814,35 @@ html.dark .theme-toggle__moon {
     background-color: var(--app-surface);
     border: 2px solid var(--app-border-strong);
     border-radius: 0.75rem;
-    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    overscroll-behavior-x: contain;
+}
+
+.easy-read main div:has(> table.table-readable) {
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    overscroll-behavior-x: contain;
+}
+
+.easy-read .panel-table::-webkit-scrollbar,
+.easy-read main div:has(> table.table-readable)::-webkit-scrollbar {
+    height: 0.5rem;
+}
+
+.easy-read .panel-table::-webkit-scrollbar-thumb,
+.easy-read main div:has(> table.table-readable)::-webkit-scrollbar-thumb {
+    background-color: var(--app-border-strong);
+    border-radius: 9999px;
+}
+
+.easy-read .panel-table::-webkit-scrollbar-track,
+.easy-read main div:has(> table.table-readable)::-webkit-scrollbar-track {
+    background-color: var(--app-surface-muted);
 }
 
 .easy-read .filter-bar {
@@ -825,6 +853,38 @@ html.dark .theme-toggle__moon {
     min-width: 0;
     overflow: hidden;
     padding: 1rem 1.25rem;
+}
+
+.easy-read .filter-bar__actions {
+    align-items: center;
+    border-top: 2px solid var(--app-border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+}
+
+.easy-read .filter-bar__actions .btn-primary,
+.easy-read .filter-bar__actions .btn-secondary {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    min-width: 9rem;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+@media (max-width: 639px) {
+    .easy-read .filter-bar__actions {
+        flex-direction: column;
+    }
+
+    .easy-read .filter-bar__actions .btn-primary,
+    .easy-read .filter-bar__actions .btn-secondary {
+        min-width: 0;
+        width: 100%;
+    }
 }
 
 /* Alert */
@@ -1030,7 +1090,8 @@ html.dark .table-actions {
 
 .table-readable {
     border-collapse: collapse;
-    width: 100%;
+    min-width: 100%;
+    width: max-content;
     font-size: 1rem;
     line-height: 1.45;
 }
@@ -1402,7 +1463,7 @@ html {
 }
 
 body {
-    overflow-x: clip;
+    overflow-x: auto;
 }
 
 .easy-read .nav-section-mobile {
@@ -1537,6 +1598,7 @@ body {
 
     .panel-table.table-mobile-scroll {
         border-radius: 0.75rem;
+        overflow-x: auto;
     }
 
     /* Pagination mudah disentuh */

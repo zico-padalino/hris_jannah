@@ -5,7 +5,7 @@
     <a href="{{ route('attendances.create') }}" class="rounded-lg bg-teal-700 px-4 py-2 text-sm text-white">+ Input Manual</a>
 </div>
 
-<div class="overflow-hidden rounded-xl border bg-white shadow-sm">
+<div class="panel-table table-mobile-scroll">
     <table class="table-readable min-w-full">
         <thead class="bg-slate-50">
             <tr>

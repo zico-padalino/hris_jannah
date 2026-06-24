@@ -27,6 +27,7 @@ enum Permission: string
     case RolesView = 'roles.view';
     case FingerprintManage = 'fingerprint.manage';
     case AnnouncementsManage = 'announcements.manage';
+    case ActivityLogView = 'activity_log.view';
 
     public function label(): string
     {
@@ -44,7 +45,7 @@ enum Permission: string
             self::LeaveRequest, self::LeaveViewOwn, self::LeaveApprove => __('enums.permission_group.leave'),
             self::PayrollManage, self::PayrollViewOwn => __('enums.permission_group.payroll'),
             self::ReportsView => __('enums.permission_group.reports'),
-            self::SettingsManage, self::AnnouncementsManage => __('enums.permission_group.system'),
+            self::SettingsManage, self::AnnouncementsManage, self::ActivityLogView => __('enums.permission_group.system'),
         };
     }
 

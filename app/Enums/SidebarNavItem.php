@@ -30,6 +30,7 @@ enum SidebarNavItem: string
     case Roles = 'roles';
     case Announcements = 'announcements';
     case Settings = 'settings';
+    case ActivityLogs = 'activity_logs';
 
     public function isSection(): bool
     {
@@ -73,6 +74,7 @@ enum SidebarNavItem: string
             self::Roles => [Permission::RolesView],
             self::Announcements => [Permission::AnnouncementsManage],
             self::Settings => [Permission::SettingsManage],
+            self::ActivityLogs => [Permission::ActivityLogView],
         };
     }
 
@@ -103,6 +105,7 @@ enum SidebarNavItem: string
             ],
             self::SectionSystem => [
                 self::Reports,
+                self::ActivityLogs,
                 self::Announcements,
                 self::Users,
                 self::Roles,
@@ -138,7 +141,7 @@ enum SidebarNavItem: string
             self::LeaveHistory, self::LeaveCreate, self::LeaveApproval => self::SectionLeave,
             self::Payroll => self::SectionPayroll,
             self::Branches, self::Departments, self::Positions, self::Employees, self::ShiftTemplates, self::EmployeeShifts, self::Holidays => self::SectionMaster,
-            self::Reports, self::Users, self::Roles, self::Announcements, self::Settings => self::SectionSystem,
+            self::Reports, self::Users, self::Roles, self::Announcements, self::Settings, self::ActivityLogs => self::SectionSystem,
             default => null,
         };
     }
@@ -190,6 +193,7 @@ enum SidebarNavItem: string
             str_starts_with($routeName, 'announcements.') => self::Announcements,
             str_starts_with($routeName, 'users.') => self::Users,
             str_starts_with($routeName, 'roles.') => self::Roles,
+            str_starts_with($routeName, 'activity-logs.') => self::ActivityLogs,
             str_starts_with($routeName, 'settings.') => self::Settings,
             default => null,
         };
@@ -222,6 +226,7 @@ enum SidebarNavItem: string
             self::Announcements => route('announcements.index', [], false),
             self::Users => route('users.index', [], false),
             self::Roles => route('roles.index', [], false),
+            self::ActivityLogs => route('activity-logs.index', [], false),
             self::Settings => route('settings.index', [], false),
             default => null,
         };

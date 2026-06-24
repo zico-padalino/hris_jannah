@@ -100,6 +100,10 @@
             <a href="{{ route('reports.index') }}" class="{{ $linkClass }}{{ $nestedClass }} {{ request()->routeIs('reports.*') ? $activeClass : $inactiveClass }}">{{ __($item->navLabelKey()) }}</a>
             @break
 
+        @case(SidebarNavItem::ActivityLogs)
+            <a href="{{ route('activity-logs.index') }}" class="{{ $linkClass }}{{ $nestedClass }} {{ request()->routeIs('activity-logs.*') ? $activeClass : $inactiveClass }}">{{ __($item->navLabelKey()) }}</a>
+            @break
+
         @case(SidebarNavItem::Announcements)
             <a href="{{ route('announcements.index') }}" class="{{ $linkClass }}{{ $nestedClass }} {{ request()->routeIs('announcements.*') ? $activeClass : $inactiveClass }}">{{ __($item->navLabelKey()) }}</a>
             @break
