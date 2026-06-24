@@ -6,6 +6,7 @@ use App\Enums\Permission;
 use App\Enums\UserRole;
 use App\Services\ModuleActionVisibilityService;
 use App\Services\PermissionService;
+use App\Services\SidebarService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -65,6 +66,7 @@ class RoleController extends WebController
         UserRole $role,
         PermissionService $permissionService,
         ModuleActionVisibilityService $moduleActionService,
+        SidebarService $sidebarService,
     ): View {
         $this->authorizePermission($request, Permission::RolesView);
 
@@ -72,22 +74,43 @@ class RoleController extends WebController
         $assigned = $role->isProtected()
             ? $permissions
             : $permissionService->forRole($role);
+        $customModulesByGroup = $sidebarService->customModulesByPermissionGroup();
         $groupedPermissions = [];
-        $actionModules = $moduleActionService->modulesWithActions();
-        $visibleActionIds = $moduleActionService->visibleActionIdsForRole($role);
+        $permissionSections = [];
 
         foreach ($permissions as $permission) {
             $groupedPermissions[$permission->group()][] = $permission;
+        }
+
+        foreach ($groupedPermissions as $groupLabel => $items) {
+            $permissionSections[$groupLabel] = [
+                'permissions' => $items,
+                'custom_modules' => $customModulesByGroup[$groupLabel] ?? [],
+            ];
+            unset($customModulesByGroup[$groupLabel]);
+        }
+
+        foreach ($customModulesByGroup as $groupLabel => $modules) {
+            if ($modules === []) {
+                continue;
+            }
+
+            $permissionSections[$groupLabel] = [
+                'permissions' => [],
+                'custom_modules' => $modules,
+            ];
         }
 
         return view('roles.permissions', [
             'role' => $role,
             'permissions' => $permissions,
             'groupedPermissions' => $groupedPermissions,
+            'permissionSections' => $permissionSections,
             'assigned' => $assigned,
-            'actionModules' => $actionModules,
-            'visibleActionIds' => $visibleActionIds,
+            'actionModules' => $moduleActionService->modulesWithActions(),
+            'visibleActionIds' => $moduleActionService->visibleActionIdsForRole($role),
             'matrix' => $permissionService->matrix(),
+            'sidebarService' => $sidebarService,
         ]);
     }
 
@@ -96,6 +119,7 @@ class RoleController extends WebController
         UserRole $role,
         PermissionService $permissionService,
         ModuleActionVisibilityService $moduleActionService,
+        SidebarService $sidebarService,
     ): RedirectResponse {
         $this->authorizePermission($request, Permission::RolesView);
 
@@ -117,11 +141,14 @@ class RoleController extends WebController
         $data = $request->validate([
             'permissions' => ['nullable', 'array'],
             'permissions.*' => ['string', Rule::in($validPermissions)],
+            'custom_modules' => ['nullable', 'array'],
+            'custom_modules.*' => ['string', Rule::in($sidebarService->customModuleKeys())],
             'module_action_ids' => ['nullable', 'array'],
             'module_action_ids.*' => ['integer', Rule::in($validActionIds)],
         ]);
 
         $permissionService->saveRolePermissions($role, $data['permissions'] ?? []);
+        $sidebarService->saveCustomModuleVisibilityForRole($role, $data['custom_modules'] ?? []);
         $moduleActionService->saveForRole($role, $data['module_action_ids'] ?? []);
 
         return redirect()

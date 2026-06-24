@@ -7,7 +7,17 @@
                 @endif
                 <div class="min-w-0">
                     <p class="truncate text-base font-bold sm:text-lg">{{ $appBranding->name() }}</p>
-                    <p class="truncate text-xs font-semibold app-muted-text sm:text-sm">{{ auth()->user()->name }}</p>
+                    <a href="{{ route('profile.edit') }}" class="mobile-profile-link group min-w-0">
+                        @if(auth()->user()->hasProfilePhoto())
+                            <img src="{{ auth()->user()->profilePhotoUrl() }}" alt="" class="mobile-profile-link__avatar">
+                        @else
+                            <span class="mobile-profile-link__avatar mobile-profile-link__avatar--placeholder" aria-hidden="true">
+                                {{ auth()->user()->profileInitials() }}
+                            </span>
+                        @endif
+                        <span class="mobile-profile-link__name truncate">{{ auth()->user()->name }}</span>
+                        <span class="user-profile-chip__badge">{{ __('pages.profile.open_label') }}</span>
+                    </a>
                 </div>
             </div>
             <div class="mobile-toolbar flex shrink-0 items-center gap-1.5 sm:gap-2">

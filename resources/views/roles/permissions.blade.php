@@ -5,8 +5,16 @@
 
 @section('content')
     @php
-        $totalPermissions = count($permissions);
-        $assignedCount = count($assigned);
+        $totalCustomModules = collect($permissionSections)->sum(fn ($section) => count($section['custom_modules']));
+        $totalPermissions = count($permissions) + $totalCustomModules;
+        $assignedCustomModules = $role->isProtected()
+            ? collect($permissionSections)->flatMap(fn ($section) => $section['custom_modules'])->pluck('key')->all()
+            : collect($permissionSections)
+                ->flatMap(fn ($section) => $section['custom_modules'])
+                ->filter(fn (array $module) => $sidebarService->isModuleVisibleForRole($module['key'], $role))
+                ->pluck('key')
+                ->all();
+        $assignedCount = count($assigned) + count($assignedCustomModules);
         $totalModuleActions = $actionModules->sum(fn ($module) => $module->actions->count());
         $assignedModuleActionCount = count($visibleActionIds);
         $isProtected = $role->isProtected();
@@ -50,14 +58,21 @@
         </div>
 
         <div class="permission-panel divide-y overflow-hidden rounded-xl border">
-            @foreach($groupedPermissions as $group => $items)
+            @foreach($permissionSections as $group => $section)
                 @php
+                    $items = $section['permissions'];
+                    $customModules = $section['custom_modules'];
                     $groupSlug = \Illuminate\Support\Str::slug($group);
-                    $groupCheckedCount = collect($items)->filter(fn ($permission) => in_array($permission, $displayAssigned, true))->count();
-                    $groupTotal = count($items);
-                    $groupAllChecked = $groupCheckedCount === $groupTotal;
+                    $groupCheckedCount = collect($items)->filter(fn ($permission) => in_array($permission, $displayAssigned, true))->count()
+                        + collect($customModules)->filter(fn (array $module) => in_array($module['key'], $assignedCustomModules, true))->count();
+                    $groupTotal = count($items) + count($customModules);
+                    $groupAllChecked = $groupTotal > 0 && $groupCheckedCount === $groupTotal;
                     $groupIndeterminate = $groupCheckedCount > 0 && $groupCheckedCount < $groupTotal;
                 @endphp
+
+                @if($groupTotal === 0)
+                    @continue
+                @endif
 
                 <section class="permission-section px-4 py-4 sm:px-5" data-group="{{ $groupSlug }}">
                     <label class="permission-section__head {{ $isProtected ? 'cursor-default' : 'cursor-pointer' }}">
@@ -90,6 +105,22 @@
                                     @disabled($isProtected)
                                 >
                                 <span class="permission-chip__label">{{ $permission->label() }}</span>
+                            </label>
+                        @endforeach
+
+                        @foreach($customModules as $module)
+                            @php $moduleChecked = in_array($module['key'], $assignedCustomModules, true); @endphp
+                            <label class="permission-chip {{ $isProtected ? 'permission-chip--disabled' : '' }}">
+                                <input
+                                    type="checkbox"
+                                    name="custom_modules[]"
+                                    value="{{ $module['key'] }}"
+                                    class="permission-item-checkbox custom-module-checkbox h-4 w-4 shrink-0 rounded border-slate-300 text-teal-700 focus:ring-teal-600 disabled:opacity-60"
+                                    data-group="{{ $groupSlug }}"
+                                    @checked($moduleChecked)
+                                    @disabled($isProtected)
+                                >
+                                <span class="permission-chip__label">{{ $module['label'] }}</span>
                             </label>
                         @endforeach
                     </div>

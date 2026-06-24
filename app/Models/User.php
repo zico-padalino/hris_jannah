@@ -22,6 +22,7 @@ class User extends Authenticatable
         'role',
         'branch_id',
         'is_active',
+        'profile_photo_path',
     ];
 
     protected $hidden = [
@@ -82,5 +83,38 @@ class User extends Authenticatable
     {
         return app(\App\Services\ModuleActionVisibilityService::class)
             ->userCanSee($this, $moduleKey, $actionKey);
+    }
+
+    public function hasProfilePhoto(): bool
+    {
+        $path = $this->profile_photo_path;
+
+        return is_string($path) && $path !== '' && \Illuminate\Support\Facades\Storage::disk('public')->exists($path);
+    }
+
+    public function profilePhotoUrl(): ?string
+    {
+        if (! $this->hasProfilePhoto()) {
+            return null;
+        }
+
+        return route('profile.photo', [
+            'v' => $this->updated_at?->getTimestamp() ?? 0,
+        ], false);
+    }
+
+    public function profileInitials(): string
+    {
+        $parts = preg_split('/\s+/', trim($this->name)) ?: [];
+
+        if ($parts === []) {
+            return '?';
+        }
+
+        if (count($parts) === 1) {
+            return mb_strtoupper(mb_substr($parts[0], 0, 2));
+        }
+
+        return mb_strtoupper(mb_substr($parts[0], 0, 1).mb_substr($parts[1], 0, 1));
     }
 }

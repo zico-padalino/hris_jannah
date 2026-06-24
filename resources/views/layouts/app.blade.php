@@ -63,7 +63,7 @@
                                 <p class="page-subtitle">@yield('subtitle')</p>
                             @endif
                         </div>
-                        <div class="flex flex-wrap items-center gap-3">
+                        <div class="flex flex-wrap items-center justify-end gap-3">
                             @include('partials.theme-toggle')
                             @include('partials.language-switcher')
                             @if($sidebar->visible(auth()->user(), SidebarNavItem::LeaveApproval) && $pendingLeaveApprovalCount > 0)
@@ -74,14 +74,13 @@
                                     {{ __('app.new_requests', ['count' => $pendingLeaveApprovalCount]) }}
                                 </a>
                             @endif
-                            <div class="text-right">
-                                <p class="text-base font-bold">{{ auth()->user()->name }}</p>
-                                <p class="text-sm font-semibold app-muted-text">{{ auth()->user()->role->label() }}</p>
+                            <div class="app-header__user-cluster flex shrink-0 items-center gap-3">
+                                @include('partials.user-profile-chip')
+                                <form method="POST" action="{{ route('logout') }}" class="shrink-0">
+                                    @csrf
+                                    <button type="submit" class="btn-secondary whitespace-nowrap">{{ __('app.logout') }}</button>
+                                </form>
                             </div>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="btn-secondary">{{ __('app.logout') }}</button>
-                            </form>
                         </div>
                     </div>
                 </header>

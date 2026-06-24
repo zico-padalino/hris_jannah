@@ -185,7 +185,7 @@ class SidebarService
             return true;
         }
 
-        return $this->visibility[$moduleKey][$user->role->value] ?? true;
+        return $this->visibility[$moduleKey][$user->role->value] ?? false;
     }
 
     /**
@@ -390,6 +390,148 @@ class SidebarService
 
         Cache::forget(self::CACHE_KEY_MODULES);
         $this->customModules = $modules;
+
+        $this->ensureCustomModuleVisibilityRows(array_keys($modules));
+    }
+
+    /** @return list<string> */
+    public function customModuleKeys(): array
+    {
+        return array_keys($this->customModules);
+    }
+
+    public function isModuleVisibleForRole(string $moduleKey, UserRole $role): bool
+    {
+        if (! self::isCustomModuleKey($moduleKey) || ! isset($this->customModules[$moduleKey])) {
+            return false;
+        }
+
+        if ($role === UserRole::SuperAdmin) {
+            return true;
+        }
+
+        return $this->visibility[$moduleKey][$role->value] ?? false;
+    }
+
+    /**
+     * @return array<string, list<array{key: string, label: string, url: string}>>
+     */
+    public function customModulesByPermissionGroup(): array
+    {
+        $grouped = [];
+
+        foreach ($this->groups as $group) {
+            $permissionGroup = $this->permissionGroupLabelForSidebarGroup($group);
+
+            if ($permissionGroup === null) {
+                continue;
+            }
+
+            foreach ($group['items'] as $key) {
+                if (! self::isCustomModuleKey($key) || ! isset($this->customModules[$key])) {
+                    continue;
+                }
+
+                $grouped[$permissionGroup][] = [
+                    'key' => $key,
+                    'label' => $this->customModules[$key]['label'],
+                    'url' => $this->customModules[$key]['url'],
+                ];
+            }
+        }
+
+        return $grouped;
+    }
+
+    /** @param list<string> $visibleModuleKeys */
+    public function saveCustomModuleVisibilityForRole(UserRole $role, array $visibleModuleKeys): void
+    {
+        if ($role === UserRole::SuperAdmin) {
+            return;
+        }
+
+        $matrix = $this->visibility;
+
+        foreach (array_keys($this->customModules) as $moduleKey) {
+            if (! isset($matrix[$moduleKey])) {
+                $matrix[$moduleKey] = $this->defaultVisibilityForModule();
+            }
+
+            $matrix[$moduleKey][$role->value] = in_array($moduleKey, $visibleModuleKeys, true);
+        }
+
+        $this->menuRepository->saveVisibility($matrix);
+
+        Cache::forget(self::CACHE_KEY_VISIBILITY);
+        $this->visibility = $matrix;
+    }
+
+    /** @param list<string> $moduleKeys */
+    private function ensureCustomModuleVisibilityRows(array $moduleKeys): void
+    {
+        $matrix = $this->visibility;
+        $changed = false;
+
+        foreach ($moduleKeys as $key) {
+            if (isset($matrix[$key])) {
+                continue;
+            }
+
+            $matrix[$key] = $this->defaultVisibilityForModule();
+            $changed = true;
+        }
+
+        if (! $changed) {
+            return;
+        }
+
+        $this->menuRepository->saveVisibility($matrix);
+
+        Cache::forget(self::CACHE_KEY_VISIBILITY);
+        $this->visibility = $matrix;
+    }
+
+    /** @return array<string, bool> */
+    private function defaultVisibilityForModule(): array
+    {
+        $row = [];
+
+        foreach (UserRole::cases() as $role) {
+            $row[$role->value] = match ($role) {
+                UserRole::SuperAdmin, UserRole::Hr => true,
+                UserRole::BranchAdmin, UserRole::Employee => false,
+            };
+        }
+
+        return $row;
+    }
+
+    private function permissionGroupLabelForSidebarGroup(array $group): ?string
+    {
+        $builtin = $group['builtin'] ?? null;
+
+        if ($builtin === null || $builtin === 'dashboard') {
+            return $group['label'] !== null && trim((string) $group['label']) !== ''
+                ? trim((string) $group['label'])
+                : null;
+        }
+
+        $section = SidebarNavItem::tryFrom($builtin);
+
+        if ($section === null) {
+            $label = $this->groupLabel($group);
+
+            return $label !== '' ? $label : null;
+        }
+
+        return match ($section) {
+            SidebarNavItem::SectionAttendance => __('enums.permission_group.attendance'),
+            SidebarNavItem::SectionLeave => __('enums.permission_group.leave'),
+            SidebarNavItem::SectionPayroll => __('enums.permission_group.payroll'),
+            SidebarNavItem::SectionMaster => __('enums.permission_group.master_data'),
+            SidebarNavItem::SectionSystem => __('enums.permission_group.system'),
+            default => $this->groupLabel($group) ?: null,
+        };
     }
 
     /**

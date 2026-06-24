@@ -25,6 +25,12 @@ class PotonganController extends WebController
     {
         $this->authorizePermission($request, Permission::PayrollManage);
 
+        $request->merge([
+            'attendance_amount' => $this->normalizeRupiah($request->input('attendance_amount')),
+            'bpjs_kes_salary_cap' => $this->normalizeRupiah($request->input('bpjs_kes_salary_cap')),
+            'bpjs_tk_jp_salary_cap' => $this->normalizeRupiah($request->input('bpjs_tk_jp_salary_cap')),
+        ]);
+
         $data = $request->validate([
             'attendance_amount' => ['required', 'numeric', 'min:0'],
             'pph21_enabled' => ['nullable', 'boolean'],
@@ -51,5 +57,10 @@ class PotonganController extends WebController
         ]);
 
         return redirect()->route('potongan.index')->with('success', __('pages.potongan.saved'));
+    }
+
+    private function normalizeRupiah(mixed $value): string
+    {
+        return preg_replace('/\D/', '', (string) $value) ?: '0';
     }
 }

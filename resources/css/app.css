@@ -114,6 +114,180 @@ html.dark {
     border-color: var(--app-header-border);
 }
 
+.app-header__user-cluster {
+    flex-wrap: nowrap;
+}
+
+.user-profile-chip {
+    align-items: center;
+    border-radius: 0.75rem;
+    color: inherit;
+    display: inline-flex;
+    gap: 0.625rem;
+    max-width: 13.5rem;
+    min-width: 0;
+    padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+
+.user-profile-chip:hover {
+    background-color: var(--app-surface-muted);
+}
+
+.user-profile-chip__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+}
+
+.user-profile-chip__name {
+    color: var(--app-text);
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.user-profile-chip:hover .user-profile-chip__name {
+    color: var(--app-primary);
+}
+
+.user-profile-chip__sub {
+    align-items: center;
+    display: flex;
+    gap: 0.375rem;
+    min-width: 0;
+}
+
+.user-profile-chip__role {
+    color: var(--app-text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.user-profile-chip__badge {
+    background-color: var(--app-primary-soft);
+    border-radius: 9999px;
+    color: var(--app-primary-soft-text);
+    flex-shrink: 0;
+    font-size: 0.625rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    padding: 0.2rem 0.45rem;
+    text-transform: uppercase;
+}
+
+.user-profile-chip:hover .user-profile-chip__badge {
+    background-color: var(--app-primary);
+    color: var(--app-primary-text);
+}
+
+.user-profile-chip__avatar {
+    border: 2px solid var(--app-border-strong);
+    border-radius: 9999px;
+    flex-shrink: 0;
+    height: 2.375rem;
+    object-fit: cover;
+    width: 2.375rem;
+}
+
+.user-profile-chip__avatar--placeholder {
+    align-items: center;
+    background: linear-gradient(135deg, var(--app-primary), #0d9488);
+    color: var(--app-primary-text);
+    display: inline-flex;
+    font-size: 0.8125rem;
+    font-weight: 800;
+    justify-content: center;
+    line-height: 1;
+}
+
+.mobile-profile-link {
+    align-items: center;
+    border-radius: 0.5rem;
+    display: inline-flex;
+    gap: 0.5rem;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0.125rem 0.25rem 0.125rem 0;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+
+.mobile-profile-link:hover {
+    background-color: var(--app-surface-muted);
+}
+
+.mobile-profile-link__avatar {
+    border: 2px solid var(--app-border-strong);
+    border-radius: 9999px;
+    flex-shrink: 0;
+    height: 1.75rem;
+    object-fit: cover;
+    width: 1.75rem;
+}
+
+.mobile-profile-link__avatar--placeholder {
+    align-items: center;
+    background: linear-gradient(135deg, var(--app-primary), #0d9488);
+    color: var(--app-primary-text);
+    display: inline-flex;
+    font-size: 0.625rem;
+    font-weight: 800;
+    justify-content: center;
+}
+
+.mobile-profile-link__name {
+    color: var(--app-text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.mobile-profile-link:hover .mobile-profile-link__name {
+    color: var(--app-primary);
+}
+
+.profile-photo-panel {
+    align-items: center;
+    background-color: var(--app-surface-muted);
+    border: 2px dashed var(--app-border-strong);
+    border-radius: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem;
+}
+
+.profile-photo-panel__avatar {
+    border: 3px solid var(--app-surface);
+    border-radius: 9999px;
+    box-shadow: 0 4px 12px var(--app-shadow);
+    height: 6rem;
+    object-fit: cover;
+    width: 6rem;
+}
+
+.profile-photo-panel__avatar--placeholder {
+    align-items: center;
+    background: linear-gradient(135deg, var(--app-primary), #0d9488);
+    color: var(--app-primary-text);
+    display: inline-flex;
+    font-size: 1.5rem;
+    font-weight: 800;
+    justify-content: center;
+}
+
+.profile-photo-panel__actions {
+    max-width: 20rem;
+    width: 100%;
+}
+
 .app-sidebar {
     background-color: var(--app-sidebar-bg);
     border-color: var(--app-sidebar-border);
@@ -368,6 +542,52 @@ html.dark .theme-toggle__moon {
     min-width: 0;
     overflow: hidden;
     width: 100%;
+}
+
+.rupiah-field {
+    align-items: stretch;
+    display: flex;
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+}
+
+.rupiah-field__prefix {
+    align-items: center;
+    background-color: var(--app-surface-muted);
+    border: 2px solid var(--app-border-strong);
+    border-radius: 0.5rem 0 0 0.5rem;
+    border-right: none;
+    color: var(--app-text-muted);
+    display: inline-flex;
+    flex-shrink: 0;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    padding: 0 0.75rem;
+}
+
+.rupiah-field__input {
+    background-color: var(--app-input-bg);
+    border: 2px solid var(--app-border-strong);
+    border-radius: 0 0.5rem 0.5rem 0;
+    color: var(--app-input-text);
+    flex: 1;
+    font-size: 1rem;
+    font-weight: 600;
+    min-height: 2.75rem;
+    min-width: 0;
+    padding: 0.625rem 0.75rem;
+    width: 100%;
+}
+
+.rupiah-field__input:focus {
+    border-color: var(--app-primary);
+    box-shadow: 0 0 0 3px var(--app-focus-ring);
+    outline: none;
+}
+
+.rupiah-field:focus-within .rupiah-field__prefix {
+    border-color: var(--app-primary);
 }
 
 .easy-read main label,

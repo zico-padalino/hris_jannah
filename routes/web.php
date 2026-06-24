@@ -21,6 +21,7 @@ use App\Http\Controllers\Web\LoginController;
 use App\Http\Controllers\Web\PayrollController;
 use App\Http\Controllers\Web\PotonganController;
 use App\Http\Controllers\Web\PositionController;
+use App\Http\Controllers\Web\ProfileController;
 use App\Http\Controllers\Web\ReportController;
 use App\Http\Controllers\Web\RoleController;
 use App\Http\Controllers\Web\SettingsController;
@@ -41,6 +42,10 @@ Route::middleware('guest')->group(function () {
 
     Route::middleware('auth')->group(function () {
         Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::get('/profile/photo', [ProfileController::class, 'photo'])->name('profile.photo');
 
     Route::middleware('permission:dashboard.view')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

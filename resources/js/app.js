@@ -79,6 +79,50 @@ function initSidebarGroups() {
     });
 }
 
+function formatRupiahDigits(digits) {
+    if (digits === '') {
+        return '';
+    }
+
+    return Number(digits).toLocaleString('id-ID');
+}
+
+function parseRupiahDigits(value) {
+    return String(value ?? '').replace(/\D/g, '');
+}
+
+function initRupiahInputs() {
+    document.querySelectorAll('[data-rupiah-input]').forEach((input) => {
+        input.value = formatRupiahDigits(parseRupiahDigits(input.value));
+
+        input.addEventListener('input', () => {
+            const digits = parseRupiahDigits(input.value);
+
+            if (digits.length > 15) {
+                input.value = formatRupiahDigits(digits.slice(0, 15));
+
+                return;
+            }
+
+            input.value = formatRupiahDigits(digits);
+        });
+    });
+
+    document.querySelectorAll('form').forEach((form) => {
+        if (form.dataset.rupiahNormalize === '1') {
+            return;
+        }
+
+        form.dataset.rupiahNormalize = '1';
+
+        form.addEventListener('submit', () => {
+            form.querySelectorAll('[data-rupiah-input]').forEach((input) => {
+                input.value = parseRupiahDigits(input.value);
+            });
+        });
+    });
+}
+
 function initLiveClock() {
     const clocks = document.querySelectorAll('[data-live-clock]');
 
@@ -124,5 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
     initReadableTables();
     initSidebarGroups();
+    initRupiahInputs();
     initLiveClock();
 });

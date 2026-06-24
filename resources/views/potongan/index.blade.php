@@ -12,18 +12,13 @@
             <h2 class="text-lg font-bold text-slate-900">{{ __('pages.potongan.attendance_title') }}</h2>
             <p class="mt-1 text-sm app-muted-text">{{ __('pages.potongan.attendance_hint') }}</p>
 
-            <label class="mt-4 block max-w-md">
-                <span class="form-label">{{ __('pages.potongan.attendance_amount') }}</span>
-                <input
-                    type="number"
-                    name="attendance_amount"
-                    value="{{ old('attendance_amount', $settings['attendance_amount']) }}"
-                    min="0"
-                    step="1000"
-                    required
-                    class="w-full"
-                >
-            </label>
+            @include('partials.rupiah-input', [
+                'name' => 'attendance_amount',
+                'label' => __('pages.potongan.attendance_amount'),
+                'value' => old('attendance_amount', $settings['attendance_amount']),
+                'required' => true,
+                'wrapperClass' => 'mt-4 max-w-md',
+            ])
         </section>
 
         <section class="app-card p-5 sm:p-6">
@@ -77,10 +72,13 @@
                     <span class="form-label">{{ __('pages.potongan.employer_rate') }}</span>
                     <input type="number" name="bpjs_kes_employer_rate" value="{{ old('bpjs_kes_employer_rate', $settings['bpjs_kes_employer_rate']) }}" min="0" max="100" step="0.01" required class="w-full">
                 </label>
-                <label class="block min-w-0 sm:col-span-2">
-                    <span class="form-label">{{ __('pages.potongan.salary_cap') }}</span>
-                    <input type="number" name="bpjs_kes_salary_cap" value="{{ old('bpjs_kes_salary_cap', $settings['bpjs_kes_salary_cap']) }}" min="0" step="1000" required class="w-full">
-                </label>
+                @include('partials.rupiah-input', [
+                    'name' => 'bpjs_kes_salary_cap',
+                    'label' => __('pages.potongan.salary_cap'),
+                    'value' => old('bpjs_kes_salary_cap', $settings['bpjs_kes_salary_cap']),
+                    'required' => true,
+                    'wrapperClass' => 'min-w-0 sm:col-span-2',
+                ])
             </div>
         </section>
 
@@ -121,10 +119,13 @@
                     <span class="form-label">JKK {{ __('pages.potongan.employer_rate') }}</span>
                     <input type="number" name="bpjs_tk_jkk_employer_rate" value="{{ old('bpjs_tk_jkk_employer_rate', $settings['bpjs_tk_jkk_employer_rate']) }}" min="0" max="100" step="0.01" required class="w-full">
                 </label>
-                <label class="block min-w-0 sm:col-span-2">
-                    <span class="form-label">{{ __('pages.potongan.jp_salary_cap') }}</span>
-                    <input type="number" name="bpjs_tk_jp_salary_cap" value="{{ old('bpjs_tk_jp_salary_cap', $settings['bpjs_tk_jp_salary_cap']) }}" min="0" step="1000" required class="w-full">
-                </label>
+                @include('partials.rupiah-input', [
+                    'name' => 'bpjs_tk_jp_salary_cap',
+                    'label' => __('pages.potongan.jp_salary_cap'),
+                    'value' => old('bpjs_tk_jp_salary_cap', $settings['bpjs_tk_jp_salary_cap']),
+                    'required' => true,
+                    'wrapperClass' => 'min-w-0 sm:col-span-2',
+                ])
             </div>
             <p class="mt-3 text-xs app-muted-text">{{ __('pages.potongan.bpjs_tk_employer_note') }}</p>
         </section>
