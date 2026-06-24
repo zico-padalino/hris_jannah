@@ -80,34 +80,40 @@ function initSidebarGroups() {
 }
 
 function initLiveClock() {
-    const clock = document.getElementById('header-live-clock');
+    const clocks = document.querySelectorAll('[data-live-clock]');
 
-    if (!clock) {
+    if (!clocks.length) {
         return;
     }
-
-    const timeEl = clock.querySelector('[data-clock-time]');
-    const timezone = clock.dataset.timezone || 'Asia/Jakarta';
-
-    if (!timeEl) {
-        return;
-    }
-
-    const formatter = new Intl.DateTimeFormat('en-GB', {
-        timeZone: timezone,
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-    });
 
     function partValue(parts, type) {
         return parts.find((part) => part.type === type)?.value ?? '00';
     }
 
-    function tick() {
+    function formatTime(timezone) {
+        const formatter = new Intl.DateTimeFormat('en-GB', {
+            timeZone: timezone,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false,
+        });
         const parts = formatter.formatToParts(new Date());
-        timeEl.textContent = `${partValue(parts, 'hour')}:${partValue(parts, 'minute')}:${partValue(parts, 'second')}`;
+
+        return `${partValue(parts, 'hour')}:${partValue(parts, 'minute')}:${partValue(parts, 'second')}`;
+    }
+
+    function tick() {
+        clocks.forEach((clock) => {
+            const timeEl = clock.querySelector('[data-clock-time]');
+
+            if (!timeEl) {
+                return;
+            }
+
+            const timezone = clock.dataset.timezone || 'Asia/Jakarta';
+            timeEl.textContent = formatTime(timezone);
+        });
     }
 
     tick();

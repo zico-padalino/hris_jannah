@@ -8,13 +8,13 @@
         $hasFilters = request()->filled('branch_id') || request()->filled('date') || request()->filled('status');
     @endphp
 
-    <div class="filter-bar">
-        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <form method="GET" class="grid flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="filter-bar min-w-0">
+        <div class="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <form method="GET" class="grid min-w-0 flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 @if(auth()->user()->role->value !== 'employee')
-                    <label class="block">
+                    <label class="block min-w-0">
                         <span class="form-label">Cabang</span>
-                        <select name="branch_id" class="w-full">
+                        <select name="branch_id" class="w-full min-w-0 max-w-full">
                             <option value="">Semua cabang</option>
                             @foreach($branches as $branch)
                                 <option value="{{ $branch->id }}" @selected(request('branch_id') == $branch->id)>{{ $branch->name }}</option>
@@ -23,14 +23,16 @@
                     </label>
                 @endif
 
-                <label class="block">
+                <label class="block min-w-0">
                     <span class="form-label">Tanggal</span>
-                    <input type="date" name="date" value="{{ request('date') }}" lang="id" class="w-full">
+                    <div class="form-date-wrap">
+                        <input type="date" name="date" value="{{ request('date') }}" lang="id" class="form-date-input w-full min-w-0 max-w-full">
+                    </div>
                 </label>
 
-                <label class="block">
+                <label class="block min-w-0">
                     <span class="form-label">Status</span>
-                    <select name="status" class="w-full">
+                    <select name="status" class="w-full min-w-0 max-w-full">
                         <option value="">Semua status</option>
                         @foreach(['valid', 'late', 'invalid_face', 'invalid_location', 'invalid_both'] as $status)
                             <option value="{{ $status }}" @selected(request('status') === $status)>{{ \App\Enums\AttendanceStatus::from($status)->label() }}</option>
@@ -38,10 +40,10 @@
                     </select>
                 </label>
 
-                <div class="flex items-end gap-2 sm:col-span-2 lg:col-span-1">
-                    <button type="submit" class="btn-primary flex-1">Terapkan Filter</button>
+                <div class="flex min-w-0 flex-col gap-2 sm:col-span-2 sm:flex-row sm:items-end lg:col-span-1">
+                    <button type="submit" class="btn-primary w-full flex-1 sm:w-auto">Terapkan Filter</button>
                     @if($hasFilters)
-                        <a href="{{ route('attendances.index') }}" class="btn-secondary" title="Reset filter">Reset</a>
+                        <a href="{{ route('attendances.index') }}" class="btn-secondary w-full shrink-0 sm:w-auto" title="Reset filter">Reset</a>
                     @endif
                 </div>
             </form>

@@ -1,17 +1,18 @@
 @auth
-    <div class="app-mobile-bar sticky top-0 z-40 border-b-2 lg:hidden">
-        <div class="flex items-center justify-between gap-3 px-4 py-3">
-            <div class="flex min-w-0 items-center gap-2">
+    <div class="app-mobile-topbar app-mobile-bar sticky top-0 z-40 border-b-2 lg:hidden">
+        <div class="flex min-w-0 items-center justify-between gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
+            <div class="flex min-w-0 flex-1 items-center gap-2">
                 @if($appBranding->hasLogo())
-                    <img src="{{ $appBranding->logoUrl() }}" alt="{{ $appBranding->name() }}" class="h-8 w-auto max-w-[96px] shrink-0 object-contain">
+                    <img src="{{ $appBranding->logoUrl() }}" alt="{{ $appBranding->name() }}" class="h-7 w-auto max-w-[72px] shrink-0 object-contain sm:h-8 sm:max-w-[96px]">
                 @endif
                 <div class="min-w-0">
-                    <p class="truncate text-lg font-bold">{{ $appBranding->name() }}</p>
-                    <p class="truncate text-sm font-semibold app-muted-text">{{ auth()->user()->name }}</p>
+                    <p class="truncate text-base font-bold sm:text-lg">{{ $appBranding->name() }}</p>
+                    <p class="truncate text-xs font-semibold app-muted-text sm:text-sm">{{ auth()->user()->name }}</p>
                 </div>
             </div>
-            <div class="flex shrink-0 items-center gap-2">
+            <div class="mobile-toolbar flex shrink-0 items-center gap-1.5 sm:gap-2">
                 @include('partials.theme-toggle')
+                @include('partials.language-switcher')
                 <button
                     type="button"
                     id="mobile-nav-toggle"
@@ -53,8 +54,6 @@
             </div>
 
             <div class="space-y-3 border-t-2 p-3" style="border-color: var(--app-border)">
-                @include('partials.theme-toggle')
-                @include('partials.language-switcher')
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="btn-secondary w-full">{{ __('app.logout') }}</button>

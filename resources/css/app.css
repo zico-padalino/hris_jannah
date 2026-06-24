@@ -128,6 +128,52 @@ html.dark {
     background-color: var(--app-surface);
 }
 
+.app-mobile-bar .theme-switcher-shell {
+    align-items: center;
+    display: inline-flex;
+    height: 2.5rem;
+}
+
+.app-mobile-bar .theme-switcher-shell button {
+    min-height: 2rem;
+    padding-block: 0.25rem;
+}
+
+.mobile-toolbar .theme-toggle,
+.mobile-toolbar #mobile-nav-toggle {
+    height: 2.25rem;
+    min-height: 2.25rem;
+    min-width: 2.25rem;
+}
+
+.mobile-toolbar .theme-switcher-shell {
+    height: 2.25rem;
+}
+
+.mobile-toolbar .theme-switcher-shell button {
+    font-size: 0.6875rem;
+    min-height: 1.75rem;
+    padding-inline: 0.375rem;
+}
+
+@media (min-width: 640px) {
+    .mobile-toolbar .theme-toggle,
+    .mobile-toolbar #mobile-nav-toggle {
+        height: 2.5rem;
+        min-height: 2.5rem;
+        min-width: 2.5rem;
+    }
+
+    .mobile-toolbar .theme-switcher-shell {
+        height: 2.5rem;
+    }
+
+    .mobile-toolbar .theme-switcher-shell button {
+        font-size: 0.75rem;
+        padding-inline: 0.5rem;
+    }
+}
+
 .theme-toggle {
     align-items: center;
     background-color: var(--app-surface);
@@ -292,6 +338,36 @@ html.dark .theme-toggle__moon {
     border-color: var(--app-primary);
     box-shadow: 0 0 0 3px var(--app-focus-ring);
     outline: none;
+}
+
+.easy-read input[type="date"],
+.easy-read input[type="datetime-local"],
+.easy-read input[type="time"],
+.easy-read .form-date-input {
+    box-sizing: border-box;
+    display: block;
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+}
+
+.easy-read input[type="date"]::-webkit-date-and-time-value,
+.easy-read input[type="datetime-local"]::-webkit-date-and-time-value {
+    min-width: 0;
+    text-align: left;
+}
+
+.easy-read input[type="date"]::-webkit-calendar-picker-indicator,
+.easy-read input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    margin-left: 0;
+    opacity: 0.7;
+}
+
+.form-date-wrap {
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    width: 100%;
 }
 
 .easy-read main label,
@@ -526,6 +602,8 @@ html.dark .theme-toggle__moon {
     border: 2px solid var(--app-border-strong);
     border-radius: 0.75rem;
     margin-bottom: 1.5rem;
+    min-width: 0;
+    overflow: hidden;
     padding: 1rem 1.25rem;
 }
 
@@ -1127,8 +1205,44 @@ body {
         padding: 0.875rem 1rem;
     }
 
+    .easy-read .filter-bar form {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .easy-read .filter-bar label,
+    .easy-read .filter-bar .block {
+        min-width: 0;
+    }
+
+    .easy-read .filter-bar input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+    .easy-read .filter-bar select {
+        max-width: 100%;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .easy-read .filter-bar > .flex {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .easy-read .filter-bar > .flex > .btn-primary,
+    .easy-read .filter-bar > .flex > a.btn-primary {
+        width: 100%;
+    }
+
     .easy-read .page-title {
         font-size: 1.25rem;
+    }
+
+    .easy-read .page-subtitle {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .header-live-clock {
+        max-width: 100%;
     }
 
     .table-mobile-scroll {
@@ -1215,9 +1329,73 @@ body {
 }
 
 @media (max-width: 639px) {
+    .easy-read main {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .easy-read .filter-bar {
+        padding: 0.75rem;
+    }
+
+    .easy-read .filter-bar form.grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .easy-read .filter-bar form > .flex,
+    .easy-read .filter-bar form .flex.flex-col {
+        width: 100%;
+    }
+
     .filter-bar form > .flex .btn-primary,
-    .filter-bar form > .flex .btn-secondary {
+    .filter-bar form > .flex .btn-secondary,
+    .filter-bar form .flex.flex-col .btn-primary,
+    .filter-bar form .flex.flex-col .btn-secondary {
         min-height: 2.875rem;
+        width: 100%;
+    }
+
+    .easy-read .btn-primary,
+    .easy-read .btn-secondary {
+        padding-left: 0.875rem;
+        padding-right: 0.875rem;
+    }
+
+    .easy-read input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
+    .easy-read select,
+    .easy-read textarea {
+        font-size: 1rem;
+        min-height: 2.625rem;
+        padding: 0.5rem 0.625rem;
+    }
+
+    .easy-read .form-label {
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .app-mobile-topbar .app-muted-text {
+        display: none;
+    }
+
+    .header-live-clock__divider {
+        display: none;
+    }
+
+    .header-live-clock {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.125rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .mobile-toolbar {
+        gap: 0.25rem;
+    }
+
+    .app-mobile-topbar img {
+        max-width: 56px;
     }
 }
 

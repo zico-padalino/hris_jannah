@@ -86,15 +86,15 @@
                     </div>
                 </header>
 
-                <div class="app-header app-mobile-bar shrink-0 border-b-2 px-4 py-3 lg:hidden">
-                    <h1 class="page-title text-lg">@yield('title', __('nav.dashboard'))</h1>
+                <div class="app-header app-mobile-bar min-w-0 shrink-0 border-b-2 px-3 py-2.5 sm:px-4 sm:py-3 lg:hidden">
+                    <h1 class="page-title text-lg sm:text-xl">@yield('title', __('nav.dashboard'))</h1>
                     @hasSection('subtitle')
-                        <p class="page-subtitle text-sm">@yield('subtitle')</p>
+                        <p class="page-subtitle text-sm sm:text-base">@yield('subtitle')</p>
                     @endif
                 </div>
             @endauth
 
-            <main class="flex-1 overflow-y-auto px-3 py-4 sm:px-4 sm:py-6 lg:px-8">
+            <main class="flex-1 overflow-y-auto overflow-x-hidden px-3 py-4 sm:px-4 sm:py-6 lg:px-8">
                 @include('partials.alerts')
                 @yield('content')
             </main>
