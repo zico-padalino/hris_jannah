@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Http\Controllers\Web;
+
+use App\Models\Attendance;
+use App\Models\Branch;
+use App\Models\Employee;
+use App\Enums\AttendanceStatus;
+use App\Services\AnnouncementService;
+use App\Services\DashboardAttendanceChartService;
+use App\Services\LeaveBadgeService;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+
+class DashboardController extends WebController
+{
+    public function index(Request $request): View
+    {
+        $user = $request->user();
+        $branchIds = $this->manageableBranchIds($request);
+
+        $statsQuery = fn ($model) => $branchIds === null
+            ? $model::query()
+            : $model::query()->whereIn('branch_id', $branchIds);
+
+        $attendanceTodayQuery = Attendance::query()
+            ->when($branchIds !== null, fn ($q) => $q->whereIn('branch_id', $branchIds))
+            ->when($user->role->value === 'employee' && $user->employee, fn ($q) => $q->where('employee_id', $user->employee->id))
+            ->whereDate('attended_at', today());
+
+        $stats = [
+            'branches' => $branchIds === null
+                ? Branch::query()->where('is_active', true)->count()
+                : count($branchIds),
+            'employees' => $statsQuery(Employee::class)->where('is_active', true)->count(),
+            'attendances_today' => (clone $attendanceTodayQuery)->count(),
+            'on_time_today' => (clone $attendanceTodayQuery)->where('status', AttendanceStatus::Valid)->count(),
+            'late_today' => (clone $attendanceTodayQuery)->where('status', AttendanceStatus::Late)->count(),
+            'invalid_today' => (clone $attendanceTodayQuery)->whereIn('status', [
+                AttendanceStatus::InvalidFace,
+                AttendanceStatus::InvalidLocation,
+                AttendanceStatus::InvalidBoth,
+            ])->count(),
+        ];
+
+        $recentAttendances = Attendance::query()
+            ->with(['employee', 'branch', 'branchLocation'])
+            ->when($branchIds !== null, fn ($q) => $q->whereIn('branch_id', $branchIds))
+            ->when($user->role->value === 'employee' && $user->employee, function ($q) use ($user) {
+                $q->where('employee_id', $user->employee->id);
+            })
+            ->latest('attended_at')
+            ->limit(10)
+            ->get();
+
+        $badgeService = app(LeaveBadgeService::class);
+        $pendingLeaveApprovalCount = $badgeService->pendingApprovalCount($user);
+        $pendingOwnLeaveCount = $badgeService->pendingOwnCount($user);
+        $approverNotifications = [
+            'breakdown' => $badgeService->pendingApprovalBreakdown($user),
+            'recent' => $badgeService->recentPendingApprovals($user),
+        ];
+
+        $chartService = app(DashboardAttendanceChartService::class);
+        $employeeId = $user->role->value === 'employee' && $user->employee
+            ? $user->employee->id
+            : null;
+        $attendanceChart = $chartService->build($branchIds, $employeeId);
+        $showAttendanceChart = $user->role->value !== 'employee';
+
+        $announcements = app(AnnouncementService::class)->forDashboard($user);
+
+        return view('dashboard.index', compact(
+            'stats',
+            'recentAttendances',
+            'pendingLeaveApprovalCount',
+            'pendingOwnLeaveCount',
+            'approverNotifications',
+            'attendanceChart',
+            'showAttendanceChart',
+            'announcements',
+        ));
+    }
+}
