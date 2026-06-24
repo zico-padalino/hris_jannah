@@ -114,8 +114,59 @@ html.dark {
     border-color: var(--app-header-border);
 }
 
-.app-header__user-cluster {
+.app-header__inner {
+    align-items: center;
+    display: flex;
     flex-wrap: nowrap;
+    gap: 1rem;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.app-header__title {
+    flex-shrink: 1;
+    margin: 0;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.app-header__actions {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+}
+
+.app-header__leave-badge {
+    max-width: 11rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.app-header__user-cluster {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+}
+
+.app-header__logout {
+    font-size: 0.875rem;
+    min-height: 2.375rem;
+    padding: 0.5rem 0.875rem;
+}
+
+.app-header .theme-toggle {
+    flex-shrink: 0;
+}
+
+.app-header .theme-switcher-shell {
+    flex-shrink: 0;
 }
 
 .user-profile-chip {
@@ -133,6 +184,20 @@ html.dark {
 
 .user-profile-chip:hover {
     background-color: var(--app-surface-muted);
+}
+
+.user-profile-chip--compact {
+    max-width: none;
+}
+
+.user-profile-chip--compact .user-profile-chip__name {
+    font-size: 0.875rem;
+    max-width: 8.5rem;
+}
+
+.user-profile-chip--compact .user-profile-chip__badge {
+    font-size: 0.5625rem;
+    padding: 0.2rem 0.4rem;
 }
 
 .user-profile-chip__body {
@@ -924,6 +989,10 @@ html.dark .theme-toggle__moon {
     font-size: 1rem;
     font-weight: 600;
     margin-top: 0.25rem;
+}
+
+.page-subtitle--main {
+    margin-top: 0;
 }
 
 /* Link aksi di tabel */

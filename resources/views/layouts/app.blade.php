@@ -54,30 +54,25 @@
             @include('partials.mobile-nav')
 
             @auth
-                <header class="app-header hidden shrink-0 border-b-2 px-4 py-4 lg:block lg:px-8">
-                    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                        <div class="min-w-0">
-                            <h1 class="page-title">@yield('title', __('nav.dashboard'))</h1>
-                            @hasSection('subtitle')
-                                <p class="page-subtitle">@yield('subtitle')</p>
-                            @endif
-                        </div>
-                        <div class="flex flex-wrap items-center justify-end gap-3">
+                <header class="app-header hidden shrink-0 border-b-2 px-4 py-3 lg:block lg:px-8">
+                    <div class="app-header__inner">
+                        <h1 class="page-title app-header__title">@yield('title', __('nav.dashboard'))</h1>
+                        <div class="app-header__actions">
                             @include('partials.theme-toggle')
                             @include('partials.language-switcher')
                             @if($sidebar->visible(auth()->user(), SidebarNavItem::LeaveApproval) && $pendingLeaveApprovalCount > 0)
                                 <a
                                     href="{{ route('leave-approvals.index', ['status' => 'pending']) }}"
-                                    class="leave-badge-pulse inline-flex items-center gap-2 rounded-lg border-2 border-amber-500 bg-amber-100 px-4 py-2 text-base font-bold text-amber-900 hover:bg-amber-200 dark:border-amber-400 dark:bg-amber-950 dark:text-amber-100 dark:hover:bg-amber-900"
+                                    class="leave-badge-pulse app-header__leave-badge inline-flex shrink-0 items-center rounded-lg border-2 border-amber-500 bg-amber-100 px-3 py-1.5 text-sm font-bold text-amber-900 hover:bg-amber-200 dark:border-amber-400 dark:bg-amber-950 dark:text-amber-100 dark:hover:bg-amber-900"
                                 >
                                     {{ __('app.new_requests', ['count' => $pendingLeaveApprovalCount]) }}
                                 </a>
                             @endif
-                            <div class="app-header__user-cluster flex shrink-0 items-center gap-3">
-                                @include('partials.user-profile-chip')
-                                <form method="POST" action="{{ route('logout') }}" class="shrink-0">
+                            <div class="app-header__user-cluster">
+                                @include('partials.user-profile-chip', ['compact' => true])
+                                <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="btn-secondary whitespace-nowrap">{{ __('app.logout') }}</button>
+                                    <button type="submit" class="btn-secondary app-header__logout whitespace-nowrap">{{ __('app.logout') }}</button>
                                 </form>
                             </div>
                         </div>
@@ -94,6 +89,9 @@
 
             <main class="flex-1 min-h-0 min-w-0 overflow-y-auto px-3 py-4 sm:px-4 sm:py-6 lg:px-8">
                 @include('partials.alerts')
+                @hasSection('subtitle')
+                    <p class="page-subtitle page-subtitle--main mb-4 hidden lg:block">@yield('subtitle')</p>
+                @endif
                 @yield('content')
             </main>
         </div>
