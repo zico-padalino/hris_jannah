@@ -57,10 +57,9 @@
             </svg>
         </span>
         <div class="attendance-status-entry__text">
-            <span class="attendance-status-entry__label">{{ $status->label() }}</span>
-            @if($lateMinutes)
-                <span class="attendance-status-entry__detail">{{ __('attendance.minutes', ['count' => $lateMinutes]) }}</span>
-            @endif
+            <span class="attendance-status-entry__label">
+                {{ $status->label() }}@if($lateMinutes) {{ __('attendance.minutes', ['count' => $lateMinutes]) }}@endif
+            </span>
         </div>
     </div>
     @if($hint)

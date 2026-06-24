@@ -816,9 +816,11 @@ html.dark .theme-toggle__moon {
     border-radius: 0.75rem;
     -webkit-overflow-scrolling: touch;
     max-width: 100%;
+    min-width: 0;
     overflow-x: auto;
     overflow-y: visible;
     overscroll-behavior-x: contain;
+    width: 100%;
 }
 
 .easy-read main div:has(> table.table-readable) {
@@ -1189,13 +1191,90 @@ html.dark .table-actions {
 
 .table-readable .cell-status-header,
 .table-readable .cell-status {
-    min-width: 10.5rem;
-    width: 10.5rem;
+    min-width: 12rem;
+    width: 12rem;
 }
 
 .table-readable .cell-absensi .attendance-time-entry,
 .table-readable .cell-status .attendance-status-entry {
     max-width: 11rem;
+}
+
+/* Riwayat absensi — kolom lengkap & scroll horizontal */
+.attendance-table-shell {
+    min-width: 0;
+    width: 100%;
+}
+
+.attendance-history-table {
+    min-width: 62rem;
+}
+
+.attendance-history-table .cell-date {
+    min-width: 6.5rem;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.attendance-history-table .cell-employee {
+    min-width: 10rem;
+    vertical-align: top;
+}
+
+.attendance-history-table .cell-verify-header,
+.attendance-history-table .cell-verify {
+    min-width: 8rem;
+    vertical-align: top;
+}
+
+.table-readable.attendance-history-table .cell-absensi .attendance-time-entry,
+.table-readable.attendance-history-table .cell-status .attendance-status-entry {
+    max-width: none;
+    min-width: 10.5rem;
+    width: 100%;
+}
+
+.attendance-history-table .cell-sticky-deduction {
+    box-shadow: -4px 0 8px -4px rgb(15 23 42 / 0.12);
+    position: sticky;
+    right: 0;
+    z-index: 2;
+}
+
+.attendance-history-table .cell-sticky-status {
+    box-shadow: -4px 0 8px -4px rgb(15 23 42 / 0.08);
+    position: sticky;
+    right: 9rem;
+    z-index: 2;
+}
+
+.attendance-history-table thead .cell-sticky-deduction,
+.attendance-history-table thead .cell-sticky-status {
+    background-color: var(--app-table-head-bg);
+    z-index: 4;
+}
+
+.attendance-history-table tbody tr .cell-sticky-deduction,
+.attendance-history-table tbody tr .cell-sticky-status {
+    background-color: var(--app-surface);
+}
+
+.attendance-history-table tbody tr:nth-child(even) .cell-sticky-deduction,
+.attendance-history-table tbody tr:nth-child(even) .cell-sticky-status {
+    background-color: var(--app-table-stripe);
+}
+
+.attendance-history-table tbody tr:hover .cell-sticky-deduction,
+.attendance-history-table tbody tr:hover .cell-sticky-status {
+    background-color: var(--app-table-hover);
+}
+
+.attendance-status-entry--late .attendance-status-entry__label {
+    color: #c2410c;
+}
+
+.attendance-status-entry--valid .attendance-status-entry__label {
+    color: #047857;
 }
 
 .table-readable .empty-dash {

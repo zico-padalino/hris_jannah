@@ -4,6 +4,7 @@
 @section('subtitle', __('pages.attendance_history.subtitle'))
 
 @section('content')
+    <div class="min-w-0">
     @php
         $hasFilters = request()->filled('branch_id') || request()->filled('date') || request()->filled('status');
     @endphp
@@ -110,64 +111,64 @@
     </div>
 
     {{-- Desktop: tabel --}}
-    <div class="panel-table table-mobile-scroll hidden overflow-x-auto lg:block">
-            <table class="table-readable table-readable--scroll-only min-w-full">
-                <thead>
+    <div class="panel-table table-mobile-scroll attendance-table-shell hidden lg:block">
+        <table class="table-readable table-readable--scroll-only attendance-history-table">
+            <thead>
+                <tr>
+                    <th class="cell-date">{{ __('app.date') }}</th>
+                    <th class="cell-employee">{{ __('app.employee') }}</th>
+                    <th class="cell-absensi-header">{{ __('attendance.attendance_time') }}</th>
+                    <th class="cell-verify-header">{{ __('attendance.verification') }}</th>
+                    <th class="cell-status-header cell-sticky-status">{{ __('app.status') }}</th>
+                    <th class="cell-deduction-header cell-sticky-deduction">{{ __('attendance.deduction') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($attendances as $dayGroup)
                     <tr>
-                        <th>Tanggal</th>
-                        <th>Pegawai</th>
-                        <th>Jam Absensi</th>
-                        <th>Verifikasi</th>
-                        <th>Status</th>
-                        <th class="cell-deduction-header">Potongan</th>
+                        <td class="cell-date">
+                            <p class="cell-primary">{{ $dayGroup->date->format('d/m/Y') }}</p>
+                            <p class="cell-secondary">{{ $dayGroup->date->locale(app()->getLocale())->translatedFormat('l') }}</p>
+                        </td>
+                        <td class="cell-employee">
+                            <p class="cell-primary">{{ $dayGroup->employee->name }}</p>
+                            <p class="cell-secondary">{{ $dayGroup->branchLabel() }}</p>
+                        </td>
+                        <td class="cell-absensi">
+                            <div class="attendance-time-list">
+                                @foreach($dayGroup->displayRecords() as $record)
+                                    @include('partials.attendance-time-entry', ['attendance' => $record])
+                                @endforeach
+                            </div>
+                        </td>
+                        <td class="cell-verify">
+                            <div class="attendance-verify-list">
+                                @foreach($dayGroup->displayRecords() as $record)
+                                    <div class="attendance-verify-item">
+                                        @include('partials.attendance-day-verification', ['attendance' => $record, 'large' => true])
+                                    </div>
+                                @endforeach
+                            </div>
+                        </td>
+                        <td class="cell-status cell-sticky-status">
+                            <div class="attendance-status-list">
+                                @foreach($dayGroup->displayRecords() as $record)
+                                    @include('partials.attendance-status-entry', ['attendance' => $record])
+                                @endforeach
+                            </div>
+                        </td>
+                        <td class="cell-deduction cell-sticky-deduction">
+                            <div class="cell-deduction-inner">
+                                @if($dayGroup->totalDeduction() > 0)
+                                    <span class="deduction-amount">
+                                        Rp {{ number_format($dayGroup->totalDeduction(), 0, ',', '.') }}
+                                    </span>
+                                @else
+                                    <span class="empty-dash">—</span>
+                                @endif
+                            </div>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @forelse($attendances as $dayGroup)
-                        <tr>
-                            <td class="whitespace-nowrap">
-                                <p class="cell-primary">{{ $dayGroup->date->format('d/m/Y') }}</p>
-                                <p class="cell-secondary">{{ $dayGroup->date->locale('id')->translatedFormat('l') }}</p>
-                            </td>
-                            <td>
-                                <p class="cell-primary">{{ $dayGroup->employee->name }}</p>
-                                <p class="cell-secondary">{{ $dayGroup->branchLabel() }}</p>
-                            </td>
-                            <td>
-                                <div class="attendance-time-list">
-                                    @foreach($dayGroup->displayRecords() as $record)
-                                        @include('partials.attendance-time-entry', ['attendance' => $record])
-                                    @endforeach
-                                </div>
-                            </td>
-                            <td>
-                                <div class="attendance-verify-list">
-                                    @foreach($dayGroup->displayRecords() as $record)
-                                        <div class="attendance-verify-item">
-                                            @include('partials.attendance-day-verification', ['attendance' => $record, 'large' => true])
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </td>
-                            <td>
-                                <div class="attendance-status-list">
-                                    @foreach($dayGroup->displayRecords() as $record)
-                                        @include('partials.attendance-status-entry', ['attendance' => $record])
-                                    @endforeach
-                                </div>
-                            </td>
-                            <td class="cell-deduction">
-                                <div class="cell-deduction-inner">
-                                    @if($dayGroup->totalDeduction() > 0)
-                                        <span class="deduction-amount">
-                                            Rp {{ number_format($dayGroup->totalDeduction(), 0, ',', '.') }}
-                                        </span>
-                                    @else
-                                        <span class="empty-dash">—</span>
-                                    @endif
-                                </div>
-                            </td>
-                        </tr>
                     @empty
                         <tr>
                             <td colspan="6" class="px-4 py-16 text-center">
@@ -201,4 +202,5 @@
     @endif
 
     @include('partials.attendance-photo-modal')
+    </div>
 @endsection
