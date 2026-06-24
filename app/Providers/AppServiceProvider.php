@@ -7,6 +7,7 @@ use App\Services\AppBrandingService;
 use App\Services\LeaveBadgeService;
 use App\Services\SidebarService;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,6 +20,19 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        if (! $this->app->runningInConsole()) {
+            $request = request();
+            $host = $request->header('X-Forwarded-Host') ?: $request->getHost();
+
+            if ($request->header('X-Forwarded-Proto') === 'https' || str_ends_with($host, '.trycloudflare.com')) {
+                URL::forceScheme('https');
+            }
+
+            if (str_ends_with($host, '.trycloudflare.com')) {
+                URL::forceRootUrl('https://'.$host);
+            }
+        }
+
         Blade::if('perm', function (string $permission) {
             $user = auth()->user();
 
