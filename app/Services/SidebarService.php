@@ -466,6 +466,196 @@ class SidebarService
         $this->visibility = $matrix;
     }
 
+    /** @param list<string> $permissionValues */
+    public function syncBuiltinVisibilityFromPermissions(UserRole $role, array $permissionValues): void
+    {
+        if ($role === UserRole::SuperAdmin) {
+            return;
+        }
+
+        $permissions = $this->parsePermissionValues($permissionValues);
+        $matrix = $this->visibility;
+
+        foreach ($this->builtinMenuItems() as $item) {
+            if (! isset($matrix[$item->value])) {
+                $matrix[$item->value] = self::defaultVisibility()[$item->value] ?? $this->defaultVisibilityForModule();
+            }
+
+            $matrix[$item->value][$role->value] = $this->itemVisibleForPermissions($item, $permissions);
+        }
+
+        $this->persistVisibilityMatrix($matrix);
+    }
+
+    public function syncBuiltinVisibilityFromAllRoles(PermissionService $permissionService): void
+    {
+        $matrix = $this->visibility;
+        $changed = false;
+
+        foreach (UserRole::cases() as $role) {
+            if ($role === UserRole::SuperAdmin) {
+                continue;
+            }
+
+            $permissions = $permissionService->forRole($role);
+
+            foreach ($this->builtinMenuItems() as $item) {
+                if (! isset($matrix[$item->value])) {
+                    $matrix[$item->value] = self::defaultVisibility()[$item->value] ?? $this->defaultVisibilityForModule();
+                }
+
+                $visible = $this->itemVisibleForPermissions($item, $permissions);
+
+                if (($matrix[$item->value][$role->value] ?? true) !== $visible) {
+                    $matrix[$item->value][$role->value] = $visible;
+                    $changed = true;
+                }
+            }
+        }
+
+        if ($changed) {
+            $this->persistVisibilityMatrix($matrix);
+        }
+    }
+
+    public function syncPermissionsFromVisibilityForAllRoles(PermissionService $permissionService): void
+    {
+        foreach (UserRole::cases() as $role) {
+            if ($role === UserRole::SuperAdmin) {
+                continue;
+            }
+
+            $this->syncPermissionsFromVisibilityForRole($role, $permissionService);
+        }
+    }
+
+    private function syncPermissionsFromVisibilityForRole(UserRole $role, PermissionService $permissionService): void
+    {
+        $permissionSet = [];
+
+        foreach ($permissionService->forRole($role) as $permission) {
+            $permissionSet[$permission->value] = true;
+        }
+
+        foreach ($this->builtinMenuItems() as $item) {
+            $itemPermissions = $item->permissions();
+
+            if ($itemPermissions === []) {
+                continue;
+            }
+
+            $visible = $this->visibility[$item->value][$role->value] ?? true;
+
+            if ($visible) {
+                foreach ($this->defaultPermissionsForItemAndRole($item, $role) as $permission) {
+                    $permissionSet[$permission->value] = true;
+                }
+
+                continue;
+            }
+
+            foreach ($itemPermissions as $permission) {
+                if ($this->permissionRequiredByVisibleItem($permission, $role)) {
+                    continue;
+                }
+
+                unset($permissionSet[$permission->value]);
+            }
+        }
+
+        $permissionService->saveRolePermissions($role, array_keys($permissionSet));
+    }
+
+    /** @param list<Permission> $permissions */
+    private function itemVisibleForPermissions(SidebarNavItem $item, array $permissions): bool
+    {
+        $required = $item->permissions();
+
+        if ($required === []) {
+            return true;
+        }
+
+        foreach ($required as $permission) {
+            if (in_array($permission, $permissions, true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function permissionRequiredByVisibleItem(Permission $permission, UserRole $role): bool
+    {
+        foreach ($this->builtinMenuItems() as $item) {
+            if (! ($this->visibility[$item->value][$role->value] ?? false)) {
+                continue;
+            }
+
+            if (in_array($permission, $item->permissions(), true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /** @return list<Permission> */
+    private function defaultPermissionsForItemAndRole(SidebarNavItem $item, UserRole $role): array
+    {
+        $itemPermissions = $item->permissions();
+
+        if ($itemPermissions === []) {
+            return [];
+        }
+
+        $roleDefaults = PermissionService::defaultMatrix()[$role->value] ?? [];
+        $matched = array_values(array_filter(
+            $itemPermissions,
+            fn (Permission $permission) => in_array($permission, $roleDefaults, true)
+        ));
+
+        if ($matched !== []) {
+            return $matched;
+        }
+
+        return [$itemPermissions[0]];
+    }
+
+    /** @param list<string> $permissionValues @return list<Permission> */
+    private function parsePermissionValues(array $permissionValues): array
+    {
+        $permissions = [];
+
+        foreach ($permissionValues as $permissionValue) {
+            if (! is_string($permissionValue)) {
+                continue;
+            }
+
+            $permission = Permission::tryFrom($permissionValue);
+
+            if ($permission !== null) {
+                $permissions[] = $permission;
+            }
+        }
+
+        return $permissions;
+    }
+
+    /** @return list<SidebarNavItem> */
+    private function builtinMenuItems(): array
+    {
+        return [SidebarNavItem::Dashboard, ...SidebarNavItem::linkItems()];
+    }
+
+    /** @param array<string, array<string, bool>> $matrix */
+    private function persistVisibilityMatrix(array $matrix): void
+    {
+        $this->menuRepository->saveVisibility($matrix);
+
+        Cache::forget(self::CACHE_KEY_VISIBILITY);
+        $this->visibility = $matrix;
+    }
+
     /** @param list<string> $moduleKeys */
     private function ensureCustomModuleVisibilityRows(array $moduleKeys): void
     {

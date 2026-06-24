@@ -9,6 +9,7 @@ use App\Models\SystemSetting;
 use App\Services\AppBrandingService;
 use App\Services\AttendanceMethodSettingsService;
 use App\Services\ModuleMaintenanceService;
+use App\Services\PermissionService;
 use App\Services\SidebarService;
 use App\Services\UserDefaultPasswordService;
 use Illuminate\Http\RedirectResponse;
@@ -18,9 +19,11 @@ use Illuminate\View\View;
 
 class SettingsController extends WebController
 {
-    public function index(Request $request, SidebarService $sidebarService, AttendanceMethodSettingsService $attendanceMethods, ModuleMaintenanceService $moduleMaintenance, UserDefaultPasswordService $defaultPasswords, AppBrandingService $branding): View
+    public function index(Request $request, SidebarService $sidebarService, PermissionService $permissionService, AttendanceMethodSettingsService $attendanceMethods, ModuleMaintenanceService $moduleMaintenance, UserDefaultPasswordService $defaultPasswords, AppBrandingService $branding): View
     {
         $this->authorizePermission($request, Permission::SettingsManage);
+
+        $sidebarService->syncBuiltinVisibilityFromAllRoles($permissionService);
 
         $settings = [
             'face_match_threshold' => SystemSetting::getValue('face_match_threshold', config('attendance.face_match_threshold')),
@@ -52,7 +55,7 @@ class SettingsController extends WebController
         ));
     }
 
-    public function update(Request $request, SidebarService $sidebarService, AttendanceMethodSettingsService $attendanceMethods, ModuleMaintenanceService $moduleMaintenance, UserDefaultPasswordService $defaultPasswords, AppBrandingService $branding): RedirectResponse
+    public function update(Request $request, SidebarService $sidebarService, PermissionService $permissionService, AttendanceMethodSettingsService $attendanceMethods, ModuleMaintenanceService $moduleMaintenance, UserDefaultPasswordService $defaultPasswords, AppBrandingService $branding): RedirectResponse
     {
         $this->authorizePermission($request, Permission::SettingsManage);
 
@@ -139,6 +142,7 @@ class SettingsController extends WebController
         $usedModuleKeys = $sidebarService->collectModuleKeysFromGroups($sidebarService->groups());
         $sidebarService->saveCustomModules($data['sidebar_modules'] ?? [], $usedModuleKeys);
         $sidebarService->saveVisibility($data['sidebar_visibility'] ?? []);
+        $sidebarService->syncPermissionsFromVisibilityForAllRoles($permissionService);
 
         $moduleMaintenance->save(
             $data['maintenance_modules'] ?? [],

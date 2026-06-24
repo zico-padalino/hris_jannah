@@ -70,6 +70,8 @@ class RoleController extends WebController
     ): View {
         $this->authorizePermission($request, Permission::RolesView);
 
+        $sidebarService->syncBuiltinVisibilityFromAllRoles($permissionService);
+
         $permissions = Permission::cases();
         $assigned = $role->isProtected()
             ? $permissions
@@ -149,6 +151,7 @@ class RoleController extends WebController
 
         $permissionService->saveRolePermissions($role, $data['permissions'] ?? []);
         $sidebarService->saveCustomModuleVisibilityForRole($role, $data['custom_modules'] ?? []);
+        $sidebarService->syncBuiltinVisibilityFromPermissions($role, $data['permissions'] ?? []);
         $moduleActionService->saveForRole($role, $data['module_action_ids'] ?? []);
 
         return redirect()
