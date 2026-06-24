@@ -119,8 +119,8 @@
                     <th class="cell-employee">{{ __('app.employee') }}</th>
                     <th class="cell-absensi-header">{{ __('attendance.attendance_time') }}</th>
                     <th class="cell-verify-header">{{ __('attendance.verification') }}</th>
-                    <th class="cell-status-header cell-sticky-status">{{ __('app.status') }}</th>
-                    <th class="cell-deduction-header cell-sticky-deduction">{{ __('attendance.deduction') }}</th>
+                    <th class="cell-status-header">{{ __('app.status') }}</th>
+                    <th class="cell-deduction-header">{{ __('attendance.deduction') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -150,14 +150,14 @@
                                 @endforeach
                             </div>
                         </td>
-                        <td class="cell-status cell-sticky-status">
+                        <td class="cell-status">
                             <div class="attendance-status-list">
                                 @foreach($dayGroup->displayRecords() as $record)
                                     @include('partials.attendance-status-entry', ['attendance' => $record])
                                 @endforeach
                             </div>
                         </td>
-                        <td class="cell-deduction cell-sticky-deduction">
+                        <td class="cell-deduction">
                             <div class="cell-deduction-inner">
                                 @if($dayGroup->totalDeduction() > 0)
                                     <span class="deduction-amount">
