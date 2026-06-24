@@ -25,7 +25,6 @@ class SettingsController extends WebController
         $settings = [
             'face_match_threshold' => SystemSetting::getValue('face_match_threshold', config('attendance.face_match_threshold')),
             'location_buffer_meters' => SystemSetting::getValue('location_buffer_meters', config('attendance.location_buffer_meters')),
-            'payroll_deduction_invalid' => SystemSetting::getValue('payroll_deduction_invalid', 50000),
             'sidebar_position' => $sidebarService->position(),
             'attendance_methods' => $attendanceMethods->all(),
             'maintenance_modules' => $moduleMaintenance->enabledModules(),
@@ -68,7 +67,6 @@ class SettingsController extends WebController
             'remove_app_logo' => ['nullable', 'boolean'],
             'face_match_threshold' => ['required', 'numeric', 'min:0.1', 'max:1'],
             'location_buffer_meters' => ['required', 'integer', 'min:0', 'max:500'],
-            'payroll_deduction_invalid' => ['required', 'numeric', 'min:0'],
             'attendance_method_fingerprint' => ['nullable', 'boolean'],
             'attendance_method_photo' => ['nullable', 'boolean'],
             'attendance_method_gps' => ['nullable', 'boolean'],
@@ -102,7 +100,6 @@ class SettingsController extends WebController
 
         SystemSetting::setValue('face_match_threshold', $data['face_match_threshold'], 'Ambang kecocokan wajah');
         SystemSetting::setValue('location_buffer_meters', $data['location_buffer_meters'], 'Buffer radius lokasi (meter)');
-        SystemSetting::setValue('payroll_deduction_invalid', $data['payroll_deduction_invalid'], 'Potongan per absensi terlambat/invalid');
 
         try {
             $branding->save(

@@ -75,7 +75,7 @@
             <h2 class="text-lg font-bold text-slate-900">{{ __('pages.settings.general_title') }}</h2>
             <p class="mt-1 text-sm text-slate-500">{{ __('pages.settings.general_hint') }}</p>
 
-            <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div class="mt-4 grid gap-4 sm:grid-cols-2">
                 <label class="block text-sm">
                     {{ __('pages.settings.face_threshold') }}
                     <input name="face_match_threshold" type="number" step="0.01" value="{{ $settings['face_match_threshold'] }}" class="mt-1 w-full rounded-lg border px-3 py-2">
@@ -84,12 +84,13 @@
                     {{ __('pages.settings.location_buffer') }}
                     <input name="location_buffer_meters" type="number" value="{{ $settings['location_buffer_meters'] }}" class="mt-1 w-full rounded-lg border px-3 py-2">
                 </label>
-                <label class="block text-sm">
-                    {{ __('pages.settings.payroll_deduction') }}
-                    <input name="payroll_deduction_invalid" type="number" value="{{ $settings['payroll_deduction_invalid'] }}" class="mt-1 w-full rounded-lg border px-3 py-2">
-                </label>
             </div>
-            <p class="mt-3 text-xs text-slate-500">{{ __('pages.settings.payroll_deduction_hint') }}</p>
+            <p class="mt-3 text-xs text-slate-500">
+                {{ __('pages.settings.payroll_deduction_moved') }}
+                @perm('payroll.manage')
+                    <a href="{{ route('potongan.index') }}" class="font-semibold text-teal-700 hover:underline">{{ __('pages.potongan.title') }}</a>
+                @endperm
+            </p>
 
             <div class="mt-6 border-t border-slate-200 pt-6">
                 <h3 class="text-base font-bold text-slate-900">{{ __('pages.settings.user_password_title') }}</h3>

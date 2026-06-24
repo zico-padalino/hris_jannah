@@ -19,6 +19,7 @@ use App\Http\Controllers\Web\LeaveRequestController;
 use App\Http\Controllers\Web\LocaleController;
 use App\Http\Controllers\Web\LoginController;
 use App\Http\Controllers\Web\PayrollController;
+use App\Http\Controllers\Web\PotonganController;
 use App\Http\Controllers\Web\PositionController;
 use App\Http\Controllers\Web\ReportController;
 use App\Http\Controllers\Web\RoleController;
@@ -154,6 +155,8 @@ Route::middleware('guest')->group(function () {
     });
 
     Route::middleware('permission:payroll.manage')->group(function () {
+        Route::get('/potongan', [PotonganController::class, 'index'])->name('potongan.index');
+        Route::put('/potongan', [PotonganController::class, 'update'])->name('potongan.update');
         Route::post('/payrolls', [PayrollController::class, 'store'])->name('payrolls.store');
         Route::get('/payrolls/{payroll}', [PayrollController::class, 'show'])->name('payrolls.show');
         Route::post('/payrolls/{payroll}/regenerate', [PayrollController::class, 'regenerate'])->name('payrolls.regenerate');

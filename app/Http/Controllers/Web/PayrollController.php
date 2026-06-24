@@ -8,7 +8,7 @@ use App\Enums\AttendanceStatus;
 use App\Models\Branch;
 use App\Models\PayrollItem;
 use App\Models\PayrollPeriod;
-use App\Models\SystemSetting;
+use App\Services\PayrollDeductionConfig;
 use App\Services\PayrollService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,7 +16,10 @@ use Illuminate\View\View;
 
 class PayrollController extends WebController
 {
-    public function __construct(private readonly PayrollService $payrollService) {}
+    public function __construct(
+        private readonly PayrollService $payrollService,
+        private readonly PayrollDeductionConfig $deductionConfig,
+    ) {}
 
     public function index(Request $request): View
     {
@@ -140,7 +143,7 @@ class PayrollController extends WebController
         $payroll->load('branch');
 
         $attendances = $this->payrollService->deductibleAttendances($item->employee, $payroll);
-        $deductionPer = SystemSetting::payrollDeductionPerAttendance();
+        $deductionPer = $this->deductionConfig->attendanceAmount();
 
         $lateCount = $attendances->where('status', AttendanceStatus::Late)->count();
         $invalidCount = $attendances->count() - $lateCount;

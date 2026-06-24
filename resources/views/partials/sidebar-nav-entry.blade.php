@@ -12,10 +12,12 @@
         $module = $entry['module'] ?? ['label' => '', 'url' => '#'];
         $moduleUrl = $module['url'];
         $isExternal = str_starts_with($moduleUrl, 'http://') || str_starts_with($moduleUrl, 'https://');
+        $modulePath = $isExternal ? null : '/'.ltrim(parse_url($moduleUrl, PHP_URL_PATH) ?? $moduleUrl, '/');
+        $isActive = ! $isExternal && $modulePath !== null && request()->is(ltrim($modulePath, '/'));
     @endphp
     <a
         href="{{ $moduleUrl }}"
-        class="{{ $linkClass }}{{ $nestedClass }} {{ $inactiveClass }}"
+        class="{{ $linkClass }}{{ $nestedClass }} {{ $isActive ? $activeClass : $inactiveClass }}"
         @if($isExternal) target="_blank" rel="noopener noreferrer" @endif
     >
         {{ $module['label'] }}

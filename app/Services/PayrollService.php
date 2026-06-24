@@ -6,12 +6,13 @@ use App\Enums\AttendanceStatus;
 use App\Enums\PayrollStatus;
 use App\Models\Employee;
 use App\Models\PayrollPeriod;
-use App\Models\SystemSetting;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class PayrollService
 {
+    public function __construct(private readonly PayrollDeductionConfig $deductionConfig) {}
+
     public function generate(PayrollPeriod $period): PayrollPeriod
     {
         return DB::transaction(function () use ($period) {
@@ -19,8 +20,6 @@ class PayrollService
                 ->where('is_active', true)
                 ->when($period->branch_id, fn ($q) => $q->where('branch_id', $period->branch_id))
                 ->get();
-
-            $deductionPerAttendance = SystemSetting::payrollDeductionPerAttendance();
 
             foreach ($employees as $employee) {
                 $monthAttendances = $employee->attendances()
@@ -41,29 +40,19 @@ class PayrollService
                     ->count();
 
                 $deductibleCount = $lateCount + $invalidCount;
-                $deductions = $deductibleCount * $deductionPerAttendance;
                 $baseSalary = (float) $employee->base_salary;
-                $allowances = 0;
-                $netSalary = max(0, $baseSalary + $allowances - $deductions);
-
-                $noteParts = [];
-                if ($lateCount > 0) {
-                    $noteParts[] = "{$lateCount}x terlambat";
-                }
-                if ($invalidCount > 0) {
-                    $noteParts[] = "{$invalidCount}x invalid";
-                }
+                $allowances = 0.0;
+                $breakdown = $this->deductionConfig->calculate($baseSalary, $allowances, $deductibleCount);
+                $netSalary = max(0, $baseSalary + $allowances - $breakdown['total']);
 
                 $period->items()->updateOrCreate(
                     ['employee_id' => $employee->id],
                     [
                         'base_salary' => $baseSalary,
                         'allowances' => $allowances,
-                        'deductions' => $deductions,
+                        'deductions' => $breakdown['total'],
                         'net_salary' => $netSalary,
-                        'notes' => $noteParts !== []
-                            ? 'Potongan '.implode(', ', $noteParts).' @ Rp '.number_format($deductionPerAttendance, 0, ',', '.')
-                            : null,
+                        'notes' => $breakdown['notes'] !== [] ? implode(' · ', $breakdown['notes']) : null,
                     ]
                 );
             }
