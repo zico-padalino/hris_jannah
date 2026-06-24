@@ -284,7 +284,7 @@ return [
     ],
     'profile' => [
         'edit_title' => 'My Profile',
-        'open_label' => 'Profile',
+        'open_label' => 'Edit Profile',
         'edit_subtitle' => 'Update your profile photo and account details.',
         'account_section' => 'Account Details',
         'security_section' => 'Security',

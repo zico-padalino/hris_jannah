@@ -283,7 +283,7 @@ return [
     ],
     'profile' => [
         'edit_title' => 'Profil Saya',
-        'open_label' => 'Profil',
+        'open_label' => 'Edit Profil',
         'edit_subtitle' => 'Perbarui foto profil dan data akun Anda.',
         'account_section' => 'Data Akun',
         'security_section' => 'Keamanan',
