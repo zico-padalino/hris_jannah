@@ -59,7 +59,8 @@ Aplikasi absensi pegawai rumah sakit berbasis **Laravel 13** dengan dukungan **f
 ### 1. Clone & masuk ke folder proyek
 
 ```bash
-cd "absensi rumah sakit"
+git clone https://github.com/zico-padalino/hris_jannah.git
+cd hris_jannah
 ```
 
 ### 2. Install dependensi & setup otomatis

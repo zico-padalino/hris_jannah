@@ -1,0 +1,22 @@
+<?php
+
+return [
+    'request_type' => 'Request Type',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'overtime_date' => 'Overtime Date',
+    'overtime_date_same' => 'Overtime Date (same)',
+    'upload_proof' => 'Upload Proof',
+    'proof_hint' => 'Required for sick leave and permission. Optional for annual leave and overtime. Format: JPG, PNG, or PDF (max. 5 MB).',
+    'submit' => 'Submit Request',
+    'empty' => 'No leave, permission, or overtime requests yet.',
+    'approval_empty' => 'No leave, permission, or overtime requests for this filter.',
+    'waiting_approval' => 'awaiting approval',
+    'filter_status' => 'Filter Status',
+    'approval_alert_title' => 'Attention: unprocessed requests',
+    'approval_alert_message' => 'Please review and process :count leave, permission, and overtime request(s) below.',
+    'review_list' => 'Review List',
+    'category_leave' => 'Leave',
+    'category_permission' => 'Permission',
+    'category_overtime' => 'Overtime',
+];

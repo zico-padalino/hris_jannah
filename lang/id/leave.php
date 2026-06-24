@@ -1,0 +1,22 @@
+<?php
+
+return [
+    'request_type' => 'Jenis Pengajuan',
+    'start_date' => 'Tanggal Mulai',
+    'end_date' => 'Tanggal Selesai',
+    'overtime_date' => 'Tanggal Lembur',
+    'overtime_date_same' => 'Tanggal Lembur (sama)',
+    'upload_proof' => 'Upload Bukti',
+    'proof_hint' => 'Wajib untuk cuti sakit dan izin. Opsional untuk cuti tahunan dan lembur. Format: JPG, PNG, atau PDF (maks. 5 MB).',
+    'submit' => 'Kirim Pengajuan',
+    'empty' => 'Belum ada pengajuan cuti, izin, atau lembur.',
+    'approval_empty' => 'Tidak ada pengajuan cuti, izin, atau lembur untuk filter ini.',
+    'waiting_approval' => 'menunggu persetujuan',
+    'filter_status' => 'Filter Status',
+    'approval_alert_title' => 'Perhatian: ada pengajuan yang belum diproses',
+    'approval_alert_message' => 'Segera tinjau dan proses :count pengajuan cuti, izin, dan lembur di bawah ini.',
+    'review_list' => 'Tinjau Daftar',
+    'category_leave' => 'Cuti',
+    'category_permission' => 'Izin',
+    'category_overtime' => 'Lembur',
+];
