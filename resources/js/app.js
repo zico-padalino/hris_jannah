@@ -223,6 +223,53 @@ function initUserAccountMenus() {
     });
 }
 
+function initMobileNav() {
+    const toggle = document.getElementById('mobile-nav-toggle');
+    const close = document.getElementById('mobile-nav-close');
+    const overlay = document.getElementById('mobile-nav-overlay');
+    const backdrop = document.getElementById('mobile-nav-backdrop');
+
+    if (!overlay) {
+        return;
+    }
+
+    function openMenu() {
+        overlay.classList.add('mobile-nav-overlay--open');
+        overlay.setAttribute('aria-hidden', 'false');
+        toggle?.setAttribute('aria-expanded', 'true');
+        toggle?.setAttribute('aria-label', toggle.dataset.closeLabel || toggle.getAttribute('aria-label') || '');
+        document.body.classList.add('overflow-hidden');
+    }
+
+    function closeMenu() {
+        overlay.classList.remove('mobile-nav-overlay--open');
+        overlay.setAttribute('aria-hidden', 'true');
+        toggle?.setAttribute('aria-expanded', 'false');
+        toggle?.setAttribute('aria-label', toggle.dataset.openLabel || toggle.getAttribute('aria-label') || '');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    if (toggle) {
+        toggle.addEventListener('click', () => {
+            if (toggle.getAttribute('aria-expanded') === 'true') {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+    }
+
+    close?.addEventListener('click', closeMenu);
+    backdrop?.addEventListener('click', closeMenu);
+    overlay.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && overlay.classList.contains('mobile-nav-overlay--open')) {
+            closeMenu();
+        }
+    });
+}
+
 function initLeaveProofModal() {
     const modal = document.getElementById('leave-proof-modal');
 
@@ -325,5 +372,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initRupiahInputs();
     initLiveClock();
     initUserAccountMenus();
+    initMobileNav();
     initLeaveProofModal();
 });

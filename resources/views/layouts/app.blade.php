@@ -65,10 +65,14 @@
                             aria-expanded="false"
                             aria-controls="mobile-nav-menu"
                             aria-label="{{ __('app.open_menu') }}"
+                            data-open-label="{{ __('app.open_menu') }}"
+                            data-close-label="{{ __('app.close_menu') }}"
                         >
-                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
+                            <span class="app-header__menu-icon" aria-hidden="true">
+                                <span class="app-header__menu-line"></span>
+                                <span class="app-header__menu-line"></span>
+                                <span class="app-header__menu-line"></span>
+                            </span>
                         </button>
 
                         <h1 class="page-title app-header__title">@yield('title', __('nav.dashboard'))</h1>

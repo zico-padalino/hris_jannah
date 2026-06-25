@@ -1,9 +1,9 @@
 @auth
-    <div id="mobile-nav-overlay" class="fixed inset-0 z-50 hidden lg:hidden" aria-hidden="true">
-        <div id="mobile-nav-backdrop" class="absolute inset-0" style="background-color: var(--app-overlay)"></div>
+    <div id="mobile-nav-overlay" class="mobile-nav-overlay lg:hidden" aria-hidden="true">
+        <div id="mobile-nav-backdrop" class="mobile-nav-overlay__backdrop"></div>
         <nav
             id="mobile-nav-menu"
-            class="app-mobile-menu absolute left-0 top-0 flex h-full w-full max-w-sm flex-col overflow-y-auto shadow-2xl sm:max-w-xs"
+            class="app-mobile-menu"
             aria-label="{{ __('app.menu') }}"
         >
             <div class="app-mobile-menu__head flex items-center justify-between border-b-2 px-4 py-4 text-white">
@@ -36,34 +36,4 @@
             </div>
         </nav>
     </div>
-
-    @push('scripts')
-        <script>
-            (function () {
-                const toggle = document.getElementById('mobile-nav-toggle');
-                const close = document.getElementById('mobile-nav-close');
-                const overlay = document.getElementById('mobile-nav-overlay');
-                const backdrop = document.getElementById('mobile-nav-backdrop');
-
-                function openMenu() {
-                    overlay?.classList.remove('hidden');
-                    overlay?.setAttribute('aria-hidden', 'false');
-                    toggle?.setAttribute('aria-expanded', 'true');
-                    document.body.classList.add('overflow-hidden');
-                }
-
-                function closeMenu() {
-                    overlay?.classList.add('hidden');
-                    overlay?.setAttribute('aria-hidden', 'true');
-                    toggle?.setAttribute('aria-expanded', 'false');
-                    document.body.classList.remove('overflow-hidden');
-                }
-
-                toggle?.addEventListener('click', openMenu);
-                close?.addEventListener('click', closeMenu);
-                backdrop?.addEventListener('click', closeMenu);
-                overlay?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
-            })();
-        </script>
-    @endpush
 @endauth
