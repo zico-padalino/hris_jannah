@@ -43,16 +43,6 @@ class DashboardController extends WebController
             ])->count(),
         ];
 
-        $recentAttendances = Attendance::query()
-            ->with(['employee', 'branch', 'branchLocation'])
-            ->when($branchIds !== null, fn ($q) => $q->whereIn('branch_id', $branchIds))
-            ->when($user->role->value === 'employee' && $user->employee, function ($q) use ($user) {
-                $q->where('employee_id', $user->employee->id);
-            })
-            ->latest('attended_at')
-            ->limit(10)
-            ->get();
-
         $badgeService = app(LeaveBadgeService::class);
         $pendingLeaveApprovalCount = $badgeService->pendingApprovalCount($user);
         $pendingOwnLeaveCount = $badgeService->pendingOwnCount($user);
@@ -72,7 +62,6 @@ class DashboardController extends WebController
 
         return view('dashboard.index', compact(
             'stats',
-            'recentAttendances',
             'pendingLeaveApprovalCount',
             'pendingOwnLeaveCount',
             'approverNotifications',

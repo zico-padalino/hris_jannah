@@ -69,6 +69,7 @@ class AppBrandingService
             $this->deleteStoredLogo($branding->logo_path);
             $extension = strtolower($logo->getClientOriginalExtension() ?: 'png');
             $branding->logo_path = $logo->storeAs('branding', 'app-logo.'.$extension, 'public');
+            $this->normalizeUploadedLogo($branding->logo_path);
         }
 
         $branding->save();
@@ -83,5 +84,57 @@ class AppBrandingService
         if ($path !== '' && Storage::disk('public')->exists($path)) {
             Storage::disk('public')->delete($path);
         }
+    }
+
+    /**
+     * Strip baked-in checkerboard / light backgrounds from PNG logos.
+     * Common when a design tool's transparency grid is saved as part of the image.
+     */
+    private function normalizeUploadedLogo(string $storedPath): void
+    {
+        if (! str_ends_with(strtolower($storedPath), '.png') || ! extension_loaded('gd')) {
+            return;
+        }
+
+        $fullPath = Storage::disk('public')->path($storedPath);
+        $image = @imagecreatefrompng($fullPath);
+
+        if ($image === false) {
+            return;
+        }
+
+        imagealphablending($image, false);
+        imagesavealpha($image, true);
+
+        $width = imagesx($image);
+        $height = imagesy($image);
+        $transparent = imagecolorallocatealpha($image, 0, 0, 0, 127);
+
+        for ($y = 0; $y < $height; $y++) {
+            for ($x = 0; $x < $width; $x++) {
+                $color = imagecolorat($image, $x, $y);
+                $red = ($color >> 16) & 0xFF;
+                $green = ($color >> 8) & 0xFF;
+                $blue = $color & 0xFF;
+
+                if ($this->isBakedLogoBackground($red, $green, $blue)) {
+                    imagesetpixel($image, $x, $y, $transparent);
+                }
+            }
+        }
+
+        imagepng($image, $fullPath);
+        imagedestroy($image);
+    }
+
+    private function isBakedLogoBackground(int $red, int $green, int $blue): bool
+    {
+        if ($red >= 245 && $green >= 245 && $blue >= 245) {
+            return true;
+        }
+
+        $channelSpread = max(abs($red - $green), abs($green - $blue), abs($red - $blue));
+
+        return $channelSpread <= 8 && $red >= 168 && $red <= 238;
     }
 }

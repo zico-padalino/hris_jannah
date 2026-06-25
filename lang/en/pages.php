@@ -82,7 +82,7 @@ return [
         'branding_hint' => 'Change the application name and upload a logo for the login page and sidebar.',
         'branding_name' => 'Application name',
         'branding_logo' => 'Application logo',
-        'branding_logo_hint' => 'JPG, PNG, or WebP. Max 2 MB. Shown on the login page and above the sidebar.',
+        'branding_logo_hint' => 'JPG, PNG, or WebP. Max 2 MB. For PNG, use a truly transparent background — do not save the gray checkerboard from design tools (Canva, Photoshop, etc.) as part of the image.',
         'branding_logo_remove' => 'Remove current logo',
         'branding_preview' => 'Preview',
         'branding_preview_login' => 'Login page',

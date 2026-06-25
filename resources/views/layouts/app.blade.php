@@ -34,10 +34,11 @@
                 'border-l-2' => $sidebar->isRight(),
                 'border-r-2' => ! $sidebar->isRight(),
             ])>
-                <div class="shrink-0 border-b-2 border-inherit px-6 py-5" style="border-color: var(--app-sidebar-border)">
+                <div class="sidebar-brand app-topbar shrink-0 border-b-2">
                     @include('partials.app-branding', [
-                        'nameClass' => 'text-xl font-bold',
-                        'logoClass' => 'h-10 w-auto max-w-[160px] object-contain',
+                        'layout' => 'row',
+                        'nameClass' => 'sidebar-brand__name font-bold',
+                        'logoClass' => 'sidebar-brand__logo shrink-0',
                     ])
                 </div>
                 <nav class="sidebar-nav-scroll flex-1 space-y-0.5 overflow-y-auto p-4" aria-label="Menu utama">
@@ -54,7 +55,7 @@
             @include('partials.mobile-nav')
 
             @auth
-                <header class="app-header hidden shrink-0 border-b-2 px-4 py-3 lg:block lg:px-8">
+                <header class="app-header app-topbar hidden shrink-0 border-b-2 px-4 lg:block lg:px-8">
                     <div class="app-header__inner">
                         <h1 class="page-title app-header__title">@yield('title', __('nav.dashboard'))</h1>
                         <div class="app-header__actions">

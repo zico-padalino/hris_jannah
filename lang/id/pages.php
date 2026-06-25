@@ -81,7 +81,7 @@ return [
         'branding_hint' => 'Ubah nama aplikasi dan unggah logo untuk halaman login serta sidebar.',
         'branding_name' => 'Nama aplikasi',
         'branding_logo' => 'Logo aplikasi',
-        'branding_logo_hint' => 'Format JPG, PNG, atau WebP. Maks. 2 MB. Logo ditampilkan di halaman login dan atas sidebar.',
+        'branding_logo_hint' => 'Format JPG, PNG, atau WebP. Maks. 2 MB. Untuk PNG, gunakan background transparan — jangan simpan kotak abu-abu dari aplikasi desain (Canva, Photoshop, dll.) sebagai bagian gambar.',
         'branding_logo_remove' => 'Hapus logo saat ini',
         'branding_preview' => 'Pratinjau',
         'branding_preview_login' => 'Halaman login',
