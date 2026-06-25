@@ -90,7 +90,7 @@
     </div>
 
     {{-- Mobile: kartu per pegawai/hari --}}
-    <div class="space-y-4 lg:hidden">
+    <div class="space-y-2.5 lg:hidden">
         @forelse($attendances as $dayGroup)
             @include('partials.attendance-day-card', ['dayGroup' => $dayGroup])
         @empty

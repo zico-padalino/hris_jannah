@@ -85,7 +85,7 @@
             </p>
         </div>
 
-        <div class="space-y-4 lg:hidden">
+        <div class="space-y-2.5 lg:hidden">
             @forelse($attendances as $dayGroup)
                 @include('partials.attendance-day-card-manage', ['dayGroup' => $dayGroup])
             @empty
