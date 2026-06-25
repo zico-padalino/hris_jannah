@@ -15,6 +15,8 @@
 
     @include('partials.dashboard-approver-notifications')
 
+    @include('partials.dashboard-payroll-signature-notifications')
+
     @include('partials.dashboard-announcements', ['announcements' => $announcements])
 
     @if(auth()->user()->employee && $pendingOwnLeaveCount > 0)
@@ -125,6 +127,46 @@
                     <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                        </svg>
+                    </div>
+                </div>
+            </a>
+        @endperm
+
+        @perm('payroll.manage')
+            <a
+                href="{{ route('payrolls.index') }}"
+                @class([
+                    'group relative overflow-hidden rounded-2xl border p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md',
+                    'dashboard-pending-card border-orange-300 bg-gradient-to-br from-orange-50 to-amber-100 ring-2 ring-orange-200/60 leave-badge-pulse' => $pendingPayrollSignatureCount > 0,
+                    'dashboard-pending-card--idle border-slate-200/80 bg-orange-50 dark:bg-slate-800/50' => $pendingPayrollSignatureCount === 0,
+                ])
+            >
+                @if($pendingPayrollSignatureCount > 0)
+                    <span class="absolute right-4 top-4 flex h-3 w-3">
+                        <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-500 opacity-75"></span>
+                        <span class="relative inline-flex h-3 w-3 rounded-full bg-orange-600"></span>
+                    </span>
+                @endif
+                <div class="flex items-start justify-between gap-3">
+                    <div>
+                        <p @class(['text-sm font-medium', 'text-orange-800 dark:text-orange-200' => $pendingPayrollSignatureCount > 0, 'text-slate-600 dark:text-slate-400' => $pendingPayrollSignatureCount === 0])>
+                            {{ __('pages.dashboard.signature_approval_title') }}
+                        </p>
+                        <p @class(['mt-2 text-3xl font-bold tracking-tight', 'text-orange-700 dark:text-orange-300' => $pendingPayrollSignatureCount > 0, 'text-slate-400 dark:text-slate-500' => $pendingPayrollSignatureCount === 0])>
+                            {{ $pendingPayrollSignatureCount }}
+                        </p>
+                        @if($pendingPayrollSignatureCount > 0)
+                            <span class="mt-2 inline-flex rounded-full bg-orange-500 px-2.5 py-0.5 text-xs font-semibold text-white">
+                                {{ __('pages.dashboard.needs_processing') }}
+                            </span>
+                        @else
+                            <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">{{ __('pages.dashboard.signature_approval_clear') }}</p>
+                        @endif
+                    </div>
+                    <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-700">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                         </svg>
                     </div>
                 </div>

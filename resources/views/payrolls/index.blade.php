@@ -3,6 +3,16 @@
 @section('title', 'Payroll')
 
 @section('content')
+    @if(($pendingPayrollSignatureCount ?? 0) > 0)
+        @include('partials.leave-alert-banner', [
+            'count' => $pendingPayrollSignatureCount,
+            'title' => __('pages.dashboard.signature_approval_title'),
+            'message' => __('pages.dashboard.signature_approval_pending', ['count' => $pendingPayrollSignatureCount]),
+            'href' => '#payroll-periods-table',
+            'buttonLabel' => __('pages.dashboard.signature_approval_process'),
+        ])
+    @endif
+
     <form method="POST" action="{{ route('payrolls.store') }}" class="filter-bar mb-6 flex w-full flex-col gap-3 !mb-6 sm:flex-row sm:flex-wrap sm:items-end">
         @csrf
         <label class="min-w-0 sm:min-w-[12rem]">
@@ -32,7 +42,7 @@
         </button>
     </form>
 
-    <div class="panel-table table-mobile-scroll">
+    <div id="payroll-periods-table" class="panel-table table-mobile-scroll">
         <table class="table-readable min-w-full">
             <thead>
                 <tr>

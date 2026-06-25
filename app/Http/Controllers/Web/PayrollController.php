@@ -52,7 +52,7 @@ class PayrollController extends WebController
         abort_unless($employee, 403);
 
         $items = $employee->payrollItems()
-            ->with('payrollPeriod.branch')
+            ->with(['payrollPeriod.branch', 'slipSignature'])
             ->latest('id')
             ->paginate(15);
 
@@ -96,7 +96,11 @@ class PayrollController extends WebController
 
         $payroll->load(['items.employee', 'items.slipSignature', 'branch']);
 
-        return view('payrolls.show', compact('payroll'));
+        $pendingSignatureCount = $payroll->items
+            ->filter(fn ($item) => $item->slipSignature?->status === \App\Enums\PayrollSlipSignatureStatus::Pending)
+            ->count();
+
+        return view('payrolls.show', compact('payroll', 'pendingSignatureCount'));
     }
 
     public function regenerate(Request $request, PayrollPeriod $payroll): RedirectResponse

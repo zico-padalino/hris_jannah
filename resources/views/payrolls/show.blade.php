@@ -3,6 +3,16 @@
 @section('title', $payroll->name)
 
 @section('content')
+    @if(($pendingSignatureCount ?? 0) > 0)
+        @include('partials.leave-alert-banner', [
+            'count' => $pendingSignatureCount,
+            'title' => __('pages.dashboard.signature_approval_title'),
+            'message' => __('pages.dashboard.signature_approval_pending', ['count' => $pendingSignatureCount]),
+            'href' => '#payroll-items-table',
+            'buttonLabel' => __('pages.dashboard.signature_approval_process'),
+        ])
+    @endif
+
     <div class="mb-4 flex flex-wrap items-center gap-3">
         <a href="{{ route('payrolls.index') }}" class="payroll-deduction-back">
             <span class="payroll-deduction-back__icon" aria-hidden="true">
@@ -39,7 +49,7 @@
         @endif
     </div>
 
-    <div class="panel-table table-mobile-scroll">
+    <div id="payroll-items-table" class="panel-table table-mobile-scroll">
         <table class="table-readable min-w-full">
             <thead class="bg-slate-50 text-left text-slate-500">
                 <tr>
@@ -48,7 +58,7 @@
                     <th class="px-4 py-3">Potongan</th>
                     <th class="px-4 py-3">Net</th>
                     <th class="px-4 py-3">Catatan</th>
-                    <th class="px-4 py-3 text-right">{{ __('pages.payroll_slip.actions') }}</th>
+                    <th class="px-4 py-3 text-center">{{ __('pages.payroll_slip.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -59,7 +69,7 @@
                         <td class="px-4 py-3">Rp {{ number_format($item->deductions, 0, ',', '.') }}</td>
                         <td class="px-4 py-3 font-semibold">Rp {{ number_format($item->net_salary, 0, ',', '.') }}</td>
                         <td class="px-4 py-3 text-xs text-slate-600">{{ $item->notes ?? '-' }}</td>
-                        <td class="px-4 py-3 text-right" data-label="{{ __('pages.payroll_slip.actions') }}">
+                        <td class="px-4 py-3 text-center" data-label="{{ __('pages.payroll_slip.actions') }}">
                             @include('partials.payroll-item-actions', [
                                 'payroll' => $payroll,
                                 'item' => $item,

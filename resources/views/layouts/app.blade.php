@@ -90,6 +90,14 @@
                                     {{ __('app.new_requests', ['count' => $pendingLeaveApprovalCount]) }}
                                 </a>
                             @endif
+                            @if($sidebar->visible(auth()->user(), SidebarNavItem::Payroll) && auth()->user()->hasPermission(\App\Enums\Permission::PayrollManage) && ($pendingPayrollSignatureCount ?? 0) > 0)
+                                <a
+                                    href="{{ route('payrolls.index') }}"
+                                    class="leave-badge-pulse app-header__leave-badge app-header__leave-badge--desktop inline-flex shrink-0 items-center rounded-lg border-2 border-orange-500 bg-orange-100 px-3 py-1.5 text-sm font-bold text-orange-900 hover:bg-orange-200"
+                                >
+                                    {{ __('pages.dashboard.signature_approval_pending', ['count' => $pendingPayrollSignatureCount]) }}
+                                </a>
+                            @endif
                             <div class="app-header__user-cluster">
                                 @include('partials.user-account-menu')
                             </div>
@@ -106,6 +114,14 @@
                                 class="leave-badge-pulse app-header__leave-badge app-header__leave-badge--mobile inline-flex shrink-0 items-center rounded-lg border-2 border-amber-500 bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-900 hover:bg-amber-200 dark:border-amber-400 dark:bg-amber-950 dark:text-amber-100 dark:hover:bg-amber-900"
                             >
                                 {{ __('app.new_requests', ['count' => $pendingLeaveApprovalCount]) }}
+                            </a>
+                        @endif
+                        @if($sidebar->visible(auth()->user(), SidebarNavItem::Payroll) && auth()->user()->hasPermission(\App\Enums\Permission::PayrollManage) && ($pendingPayrollSignatureCount ?? 0) > 0)
+                            <a
+                                href="{{ route('payrolls.index') }}"
+                                class="leave-badge-pulse app-header__leave-badge app-header__leave-badge--mobile inline-flex shrink-0 items-center rounded-lg border-2 border-orange-500 bg-orange-100 px-2.5 py-1 text-xs font-bold text-orange-900 hover:bg-orange-200"
+                            >
+                                {{ __('pages.dashboard.signature_approval_pending', ['count' => $pendingPayrollSignatureCount]) }}
                             </a>
                         @endif
                     </div>

@@ -65,7 +65,15 @@
             @break
 
         @case(SidebarNavItem::Payroll)
-            <a href="{{ route('payrolls.index') }}" class="{{ $linkClass }}{{ $nestedClass }} {{ request()->routeIs('payrolls.*') ? $activeClass : $inactiveClass }}">{{ __($item->navLabelKey()) }}</a>
+            @include('partials.leave-nav-link', [
+                'href' => route('payrolls.index'),
+                'count' => ($canApprovePayroll ?? false) ? ($pendingPayrollTotal ?? 0) : 0,
+                'active' => request()->routeIs('payrolls.*'),
+                'label' => __($item->navLabelKey()),
+                'pendingLabel' => __('app.new'),
+                'mobile' => $mobile,
+                'nested' => $nested,
+            ])
             @break
 
         @case(SidebarNavItem::Branches)

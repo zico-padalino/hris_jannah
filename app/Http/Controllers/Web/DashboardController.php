@@ -9,6 +9,7 @@ use App\Enums\AttendanceStatus;
 use App\Services\AnnouncementService;
 use App\Services\DashboardAttendanceChartService;
 use App\Services\LeaveBadgeService;
+use App\Services\PayrollSlipBadgeService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -44,12 +45,18 @@ class DashboardController extends WebController
         ];
 
         $badgeService = app(LeaveBadgeService::class);
+        $payrollBadgeService = app(PayrollSlipBadgeService::class);
         $pendingLeaveApprovalCount = $badgeService->pendingApprovalCount($user);
         $pendingOwnLeaveCount = $badgeService->pendingOwnCount($user);
         $approverNotifications = [
             'breakdown' => $badgeService->pendingApprovalBreakdown($user),
             'recent' => $badgeService->recentPendingApprovals($user),
         ];
+        $payrollSignatureNotifications = [
+            'count' => $payrollBadgeService->pendingApprovalCount($user),
+            'recent' => $payrollBadgeService->recentPendingApprovals($user),
+        ];
+        $pendingPayrollSignatureCount = $payrollSignatureNotifications['count'];
 
         $chartService = app(DashboardAttendanceChartService::class);
         $employeeId = $user->role->value === 'employee' && $user->employee
@@ -65,6 +72,8 @@ class DashboardController extends WebController
             'pendingLeaveApprovalCount',
             'pendingOwnLeaveCount',
             'approverNotifications',
+            'payrollSignatureNotifications',
+            'pendingPayrollSignatureCount',
             'attendanceChart',
             'showAttendanceChart',
             'announcements',

@@ -6,7 +6,9 @@
     $user = auth()->user();
     $sidebar = $sidebar ?? app(\App\Services\SidebarService::class);
     $pendingTotal = $pendingLeaveApprovalCount ?? 0;
+    $pendingPayrollTotal = $pendingPayrollSignatureCount ?? 0;
     $canApprove = $user->hasPermission(\App\Enums\Permission::LeaveApprove);
+    $canApprovePayroll = $user->hasPermission(\App\Enums\Permission::PayrollManage);
 @endphp
 
 @foreach($sidebar->navigationGroups($user) as $group)
@@ -20,7 +22,9 @@
             'user' => $user,
             'sidebar' => $sidebar,
             'pendingTotal' => $pendingTotal,
+            'pendingPayrollTotal' => $pendingPayrollTotal,
             'canApprove' => $canApprove,
+            'canApprovePayroll' => $canApprovePayroll,
         ])
     @else
         @foreach($group['items'] as $entry)
@@ -33,7 +37,9 @@
                 'user' => $user,
                 'sidebar' => $sidebar,
                 'pendingTotal' => $pendingTotal,
+                'pendingPayrollTotal' => $pendingPayrollTotal,
                 'canApprove' => $canApprove,
+                'canApprovePayroll' => $canApprovePayroll,
                 'nested' => false,
             ])
         @endforeach
