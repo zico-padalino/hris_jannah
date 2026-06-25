@@ -146,8 +146,8 @@
 
             const options = {
                 text: @json($scan_text),
-                width: 148,
-                height: 148,
+                width: 128,
+                height: 128,
                 colorDark: '#1e293b',
                 colorLight: '#ffffff',
                 correctLevel: QRCode.CorrectLevel.H,
@@ -158,8 +158,8 @@
 
             @if($appBranding->hasLogo())
                 options.logo = @json(url($appBranding->logoUrl()));
-                options.logoWidth = 36;
-                options.logoHeight = 36;
+                options.logoWidth = 28;
+                options.logoHeight = 28;
                 options.logoBackgroundTransparent = true;
                 options.crossOrigin = 'anonymous';
             @endif

@@ -3830,44 +3830,54 @@ html.dark .payroll-deduction-back:hover {
     }
 }
 
-/* Slip gaji — tampilan & cetak */
+/* Slip gaji — pratinjau layar ringkas, cetak ukuran A4 penuh */
 .payslip-page {
+    --payslip-a4-width: 210mm;
+    --payslip-a4-height: 297mm;
+    --payslip-a4-padding-block: 12mm;
+    --payslip-a4-padding-inline: 14mm;
+    --payslip-screen-width: 34rem;
     background: var(--app-bg);
     color: var(--app-text);
+    font-size: 0.8125rem;
     min-height: 100vh;
-    padding: 1rem 0.75rem 2rem;
+    padding: 0.75rem 0.5rem 1.5rem;
 }
 
 .payslip-toolbar {
     align-items: center;
     display: flex;
-    gap: 0.75rem;
+    gap: 0.625rem;
     justify-content: space-between;
-    margin: 0 auto 1rem;
-    max-width: 48rem;
+    margin: 0 auto 0.75rem;
+    max-width: var(--payslip-screen-width);
+    width: 100%;
 }
 
 .payslip-sheet {
     background: #fff;
     border: 2px solid var(--app-border-strong);
-    border-radius: 1rem;
-    box-shadow: 0 12px 32px rgb(15 23 42 / 0.08);
+    border-radius: 0.5rem;
+    box-shadow: 0 8px 24px rgb(15 23 42 / 0.07);
+    box-sizing: border-box;
     margin: 0 auto;
-    max-width: 48rem;
+    max-width: var(--payslip-screen-width);
+    min-height: auto;
     overflow: hidden;
-    padding: 1rem;
+    padding: 0.75rem 0.875rem;
     position: relative;
+    width: 100%;
 }
 
 .payslip-draft-badge {
     background: #fef3c7;
     border-bottom: 1px solid #fcd34d;
     color: #92400e;
-    font-size: 0.75rem;
+    font-size: 0.625rem;
     font-weight: 800;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     left: 0;
-    padding: 0.375rem;
+    padding: 0.25rem;
     position: absolute;
     right: 0;
     text-align: center;
@@ -3875,34 +3885,35 @@ html.dark .payroll-deduction-back:hover {
 }
 
 .payslip-header {
-    border-bottom: 2px solid var(--app-header-border);
+    border-bottom: 1px solid var(--app-header-border);
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    margin-top: 0.25rem;
-    padding-bottom: 0.875rem;
+    gap: 0.5rem;
+    margin-top: 0.125rem;
+    min-width: 0;
+    padding-bottom: 0.625rem;
 }
 
 .payslip-sheet:has(.payslip-draft-badge) .payslip-header {
-    margin-top: 1.75rem;
+    margin-top: 1.25rem;
 }
 
 .payslip-header__brand {
     align-items: center;
     display: flex;
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 .payslip-header__logo {
-    height: 3rem;
-    max-width: 4.5rem;
+    height: 2.25rem;
+    max-width: 3.25rem;
     object-fit: contain;
     width: auto;
 }
 
 .payslip-header__org {
     color: var(--app-primary);
-    font-size: 0.6875rem;
+    font-size: 0.5625rem;
     font-weight: 800;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -3910,64 +3921,68 @@ html.dark .payroll-deduction-back:hover {
 
 .payslip-header__title {
     color: var(--app-text);
-    font-size: 1.125rem;
+    font-size: 0.9375rem;
     font-weight: 800;
     line-height: 1.2;
-    margin-top: 0.125rem;
+    margin-top: 0.0625rem;
 }
 
 .payslip-header__period {
     color: var(--app-text-muted);
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     font-weight: 600;
-    margin-top: 0.125rem;
+    margin-top: 0.0625rem;
 }
 
 .payslip-header__meta {
     display: grid;
-    gap: 0.25rem;
+    gap: 0.375rem;
+    min-width: 0;
+    width: 100%;
 }
 
 .payslip-header__meta p {
-    display: flex;
-    flex-wrap: wrap;
-    font-size: 0.6875rem;
-    gap: 0.375rem;
-    justify-content: space-between;
+    display: grid;
+    font-size: 0.625rem;
+    gap: 0.125rem;
     margin: 0;
 }
 
 .payslip-header__meta span {
     color: var(--app-text-muted);
     font-weight: 600;
+    line-height: 1.3;
 }
 
 .payslip-header__meta strong {
     color: var(--app-text);
+    font-size: 0.6875rem;
     font-weight: 800;
-    word-break: break-all;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .payslip-section {
-    margin-top: 0.875rem;
+    margin-top: 0.625rem;
 }
 
 .payslip-section__title {
     color: var(--app-text);
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     font-weight: 800;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.375rem;
 }
 
 .payslip-info-grid {
     display: grid;
-    gap: 0.5rem 0.75rem;
+    gap: 0.375rem 0.5rem;
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .payslip-info-grid dt {
     color: var(--app-text-muted);
-    font-size: 0.625rem;
+    font-size: 0.5625rem;
     font-weight: 700;
     letter-spacing: 0.03em;
     text-transform: uppercase;
@@ -3975,9 +3990,9 @@ html.dark .payroll-deduction-back:hover {
 
 .payslip-info-grid dd {
     color: var(--app-text);
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     font-weight: 700;
-    margin: 0.125rem 0 0;
+    margin: 0.0625rem 0 0;
 }
 
 .payslip-table {
@@ -3988,8 +4003,8 @@ html.dark .payroll-deduction-back:hover {
 
 .payslip-table td {
     border-bottom: 1px solid var(--app-border);
-    font-size: 0.75rem;
-    padding: 0.4375rem 0.5rem;
+    font-size: 0.6875rem;
+    padding: 0.3125rem 0.4375rem;
 }
 
 .payslip-table tr:last-child td {
@@ -4020,39 +4035,39 @@ html.dark .payroll-deduction-back:hover {
 .payslip-net {
     align-items: center;
     background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
-    border: 2px solid #fdba74;
-    border-radius: 0.75rem;
+    border: 1px solid #fdba74;
+    border-radius: 0.5rem;
     display: flex;
     justify-content: space-between;
-    margin-top: 0.875rem;
-    padding: 0.75rem;
+    margin-top: 0.625rem;
+    padding: 0.5rem 0.625rem;
 }
 
 .payslip-net span {
     color: #9a3412;
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     font-weight: 800;
 }
 
 .payslip-net strong {
     color: #c2410c;
-    font-size: 1.0625rem;
+    font-size: 0.9375rem;
     font-weight: 800;
 }
 
 .payslip-notes {
     color: var(--app-text-muted);
-    font-size: 0.6875rem;
-    line-height: 1.45;
-    margin-top: 0.75rem;
+    font-size: 0.625rem;
+    line-height: 1.4;
+    margin-top: 0.5rem;
 }
 
 .payslip-footer {
     border-top: 1px dashed var(--app-border-strong);
     display: flex;
     justify-content: center;
-    margin-top: 1rem;
-    padding-top: 0.875rem;
+    margin-top: 0.625rem;
+    padding-top: 0.625rem;
 }
 
 .payslip-footer__barcode {
@@ -4069,16 +4084,17 @@ html.dark .payroll-deduction-back:hover {
 .payslip-barcode__code {
     color: var(--app-text-muted);
     font-family: ui-monospace, monospace;
-    font-size: 0.625rem;
+    font-size: 0.5625rem;
     font-weight: 700;
-    line-height: 1.3;
+    line-height: 1.35;
     margin-top: 0.35rem;
-    word-break: break-all;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .payslip-footer__signature {
     flex-shrink: 0;
-    max-width: 11rem;
+    max-width: 8.5rem;
     text-align: center;
     width: 100%;
 }
@@ -4097,10 +4113,10 @@ html.dark .payroll-deduction-back:hover {
 .payslip-qr canvas,
 .payslip-qr img {
     border: 1px solid var(--app-border);
-    border-radius: 0.5rem;
+    border-radius: 0.375rem;
     display: block;
     height: auto;
-    max-width: 9.25rem;
+    max-width: 6.75rem;
     width: 100%;
 }
 
@@ -4218,11 +4234,7 @@ html.dark .payroll-deduction-back:hover {
 
 @media (min-width: 640px) {
     .payslip-page {
-        padding: 1.5rem;
-    }
-
-    .payslip-sheet {
-        padding: 1.25rem 1.5rem;
+        padding: 1rem;
     }
 
     .payslip-header {
@@ -4231,18 +4243,56 @@ html.dark .payroll-deduction-back:hover {
         justify-content: space-between;
     }
 
+    .payslip-header__brand {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .payslip-header__meta {
+        flex: 0 1 12.5rem;
+        gap: 0.5rem;
+        margin-left: 0.75rem;
+        width: auto;
+    }
+
+    .payslip-header__meta p {
+        gap: 0.1875rem;
+    }
+
+    .payslip-header__meta strong {
+        font-size: 0.625rem;
+        text-align: right;
+    }
+
     .payslip-info-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
 @media print {
+    @page {
+        margin: 0;
+        size: A4 portrait;
+    }
+
     .no-print {
         display: none !important;
     }
 
+    html,
+    body {
+        background: #fff !important;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        width: auto;
+    }
+
     .payslip-page {
         background: #fff;
+        font-size: 1rem;
+        margin: 0;
+        min-height: 0;
         padding: 0;
     }
 
@@ -4250,8 +4300,80 @@ html.dark .payroll-deduction-back:hover {
         border: none;
         border-radius: 0;
         box-shadow: none;
+        margin: 0;
         max-width: none;
-        padding: 0;
+        min-height: var(--payslip-a4-height);
+        padding: var(--payslip-a4-padding-block) var(--payslip-a4-padding-inline);
+        page-break-after: avoid;
+        page-break-inside: avoid;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+        width: var(--payslip-a4-width);
+    }
+
+    .payslip-header {
+        border-bottom-width: 2px;
+        gap: 0.75rem;
+        padding-bottom: 0.875rem;
+    }
+
+    .payslip-header__logo {
+        height: 3rem;
+        max-width: 4.5rem;
+    }
+
+    .payslip-header__title {
+        font-size: 1.125rem;
+    }
+
+    .payslip-section {
+        margin-top: 0.875rem;
+    }
+
+    .payslip-section__title {
+        font-size: 0.8125rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .payslip-info-grid dd {
+        font-size: 0.75rem;
+    }
+
+    .payslip-table td {
+        font-size: 0.75rem;
+        padding: 0.4375rem 0.5rem;
+    }
+
+    .payslip-net {
+        border-width: 2px;
+        border-radius: 0.75rem;
+        margin-top: 0.875rem;
+        padding: 0.75rem;
+    }
+
+    .payslip-net strong {
+        font-size: 1.0625rem;
+    }
+
+    .payslip-footer {
+        margin-top: 1rem;
+        padding-top: 0.875rem;
+    }
+
+    .payslip-footer__signature {
+        max-width: 11rem;
+    }
+
+    .payslip-qr canvas,
+    .payslip-qr img {
+        border-radius: 0.5rem;
+        max-width: 9.25rem;
+    }
+
+    .payslip-draft-badge,
+    .payslip-net {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
     }
 }
 
