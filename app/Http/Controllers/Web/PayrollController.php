@@ -148,6 +148,10 @@ class PayrollController extends WebController
         $lateCount = $attendances->where('status', AttendanceStatus::Late)->count();
         $invalidCount = $attendances->count() - $lateCount;
 
+        $backUrl = $user->hasPermission(Permission::PayrollManage)
+            ? route('payrolls.show', $payroll)
+            : route('payrolls.index');
+
         return view('payrolls.deduction-details', compact(
             'payroll',
             'item',
@@ -155,6 +159,7 @@ class PayrollController extends WebController
             'deductionPer',
             'lateCount',
             'invalidCount',
+            'backUrl',
         ));
     }
 }
