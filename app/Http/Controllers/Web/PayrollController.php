@@ -10,15 +10,21 @@ use App\Models\PayrollItem;
 use App\Models\PayrollPeriod;
 use App\Services\PayrollDeductionConfig;
 use App\Services\PayrollService;
+use App\Services\PayrollSlipConfig;
+use App\Services\PayrollSlipService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PayrollController extends WebController
 {
     public function __construct(
         private readonly PayrollService $payrollService,
         private readonly PayrollDeductionConfig $deductionConfig,
+        private readonly PayrollSlipService $slipService,
+        private readonly PayrollSlipConfig $slipConfig,
     ) {}
 
     public function index(Request $request): View
@@ -161,5 +167,65 @@ class PayrollController extends WebController
             'invalidCount',
             'backUrl',
         ));
+    }
+
+    public function slip(Request $request, PayrollPeriod $payroll, PayrollItem $item): View
+    {
+        abort_unless($item->payroll_period_id === $payroll->id, 404);
+
+        if ($payroll->branch_id) {
+            $this->authorizeBranchAccess($request, $payroll->branch_id);
+        }
+
+        $user = $request->user();
+
+        if ($user->hasPermission(Permission::PayrollManage)) {
+            // authorized
+        } elseif ($user->hasPermission(Permission::PayrollViewOwn)) {
+            abort_unless($user->employee?->id === $item->employee_id, 403);
+        } else {
+            abort(403);
+        }
+
+        $slip = $this->slipService->build($item, $payroll);
+
+        $backUrl = $user->hasPermission(Permission::PayrollManage)
+            ? route('payrolls.show', $payroll)
+            : route('payrolls.index');
+
+        return view('payrolls.slip', [
+            ...$slip,
+            'backUrl' => $backUrl,
+        ]);
+    }
+
+    public function signature(Request $request): StreamedResponse
+    {
+        $user = $request->user();
+
+        if (! $user->hasPermission(Permission::PayrollManage) && ! $user->hasPermission(Permission::PayrollViewOwn)) {
+            abort(403);
+        }
+
+        if (! $this->slipConfig->hasSignature()) {
+            abort(404);
+        }
+
+        $path = $this->slipConfig->all()['signature_path'];
+
+        return Storage::disk('public')->response(
+            $path,
+            basename($path),
+            ['Content-Disposition' => 'inline'],
+        );
+    }
+
+    public function verifySlip(string $code): View
+    {
+        $result = $this->slipService->verify($code);
+
+        abort_unless($result !== null, 404);
+
+        return view('payrolls.slip-verify', ['verification' => $result]);
     }
 }

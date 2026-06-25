@@ -4,21 +4,28 @@ namespace App\Http\Controllers\Web;
 
 use App\Enums\Permission;
 use App\Services\PayrollDeductionConfig;
+use App\Services\PayrollSlipConfig;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class PotonganController extends WebController
 {
-    public function __construct(private readonly PayrollDeductionConfig $deductionConfig) {}
+    public function __construct(
+        private readonly PayrollDeductionConfig $deductionConfig,
+        private readonly PayrollSlipConfig $slipConfig,
+    ) {}
 
     public function index(Request $request): View
     {
         $this->authorizePermission($request, Permission::PayrollManage);
 
         $settings = $this->deductionConfig->all();
+        $slipSettings = $this->slipConfig->all();
+        $hasSlipSignature = $this->slipConfig->hasSignature();
+        $slipSignatureUrl = $this->slipConfig->signatureUrl();
 
-        return view('potongan.index', compact('settings'));
+        return view('potongan.index', compact('settings', 'slipSettings', 'hasSlipSignature', 'slipSignatureUrl'));
     }
 
     public function update(Request $request): RedirectResponse
@@ -55,6 +62,22 @@ class PotonganController extends WebController
             'bpjs_kes_enabled' => $request->boolean('bpjs_kes_enabled'),
             'bpjs_tk_enabled' => $request->boolean('bpjs_tk_enabled'),
         ]);
+
+        $slipData = $request->validate([
+            'hrd_name' => ['required', 'string', 'max:120'],
+            'hrd_title' => ['required', 'string', 'max:120'],
+            'hrd_signature' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'remove_hrd_signature' => ['nullable', 'boolean'],
+        ]);
+
+        $this->slipConfig->save(
+            [
+                'hrd_name' => $slipData['hrd_name'],
+                'hrd_title' => $slipData['hrd_title'],
+            ],
+            $request->file('hrd_signature'),
+            $request->boolean('remove_hrd_signature'),
+        );
 
         return redirect()->route('potongan.index')->with('success', __('pages.potongan.saved'));
     }

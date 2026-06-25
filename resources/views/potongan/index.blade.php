@@ -4,7 +4,7 @@
 @section('subtitle', __('pages.potongan.subtitle'))
 
 @section('content')
-    <form method="POST" action="{{ route('potongan.update') }}" class="mx-auto max-w-4xl space-y-6">
+    <form method="POST" action="{{ route('potongan.update') }}" enctype="multipart/form-data" class="mx-auto max-w-4xl space-y-6">
         @csrf
         @method('PUT')
 
@@ -128,6 +128,37 @@
                 ])
             </div>
             <p class="mt-3 text-xs app-muted-text">{{ __('pages.potongan.bpjs_tk_employer_note') }}</p>
+        </section>
+
+        <section class="app-card p-5 sm:p-6">
+            <h2 class="text-lg font-bold text-slate-900">{{ __('pages.potongan.slip_section_title') }}</h2>
+            <p class="mt-1 text-sm app-muted-text">{{ __('pages.potongan.slip_section_hint') }}</p>
+
+            <div class="mt-4 grid gap-4 sm:grid-cols-2">
+                <label class="block min-w-0">
+                    <span class="form-label">{{ __('pages.potongan.slip_hrd_name') }}</span>
+                    <input type="text" name="hrd_name" value="{{ old('hrd_name', $slipSettings['hrd_name']) }}" required maxlength="120" class="w-full">
+                </label>
+                <label class="block min-w-0">
+                    <span class="form-label">{{ __('pages.potongan.slip_hrd_title') }}</span>
+                    <input type="text" name="hrd_title" value="{{ old('hrd_title', $slipSettings['hrd_title']) }}" required maxlength="120" class="w-full">
+                </label>
+            </div>
+
+            <div class="mt-4 max-w-md">
+                <span class="form-label">{{ __('pages.potongan.slip_hrd_signature') }}</span>
+                @if($hasSlipSignature && $slipSignatureUrl)
+                    <div class="mb-3 rounded-lg border border-slate-200 bg-white p-3">
+                        <img src="{{ $slipSignatureUrl }}" alt="" class="mx-auto max-h-24 object-contain">
+                    </div>
+                    <label class="mb-3 inline-flex items-center gap-2 text-sm font-semibold">
+                        <input type="checkbox" name="remove_hrd_signature" value="1" class="h-4 w-4 rounded">
+                        {{ __('pages.potongan.slip_hrd_signature_remove') }}
+                    </label>
+                @endif
+                <input type="file" name="hrd_signature" accept="image/png,image/jpeg,image/webp" class="w-full text-sm">
+                <p class="mt-1 text-xs app-muted-text">{{ __('pages.potongan.slip_hrd_signature_hint') }}</p>
+            </div>
         </section>
 
         <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">

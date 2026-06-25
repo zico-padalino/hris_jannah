@@ -34,6 +34,8 @@ Route::get('/', fn () => redirect()->route('login'));
 
 Route::get('/branding/logo', [AppBrandingController::class, 'logo'])->name('branding.logo');
 
+Route::get('/payroll-slip/verify/{code}', [PayrollController::class, 'verifySlip'])->name('payroll-slip.verify');
+
 Route::post('/locale', LocaleController::class)->name('locale.update');
 
 Route::middleware('guest')->group(function () {
@@ -158,6 +160,8 @@ Route::middleware('guest')->group(function () {
     Route::middleware('permission:payroll.manage|payroll.view_own')->group(function () {
         Route::get('/payrolls', [PayrollController::class, 'index'])->name('payrolls.index');
         Route::get('/payrolls/{payroll}/items/{item}/deductions', [PayrollController::class, 'deductionDetails'])->name('payrolls.items.deductions');
+        Route::get('/payrolls/{payroll}/items/{item}/slip', [PayrollController::class, 'slip'])->name('payrolls.items.slip');
+        Route::get('/payroll-slip/signature', [PayrollController::class, 'signature'])->name('payroll-slip.signature');
     });
 
     Route::middleware('permission:payroll.manage')->group(function () {
