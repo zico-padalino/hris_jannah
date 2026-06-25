@@ -1,6 +1,13 @@
+@php
+    $compact = $compact ?? false;
+@endphp
+
 <button
     type="button"
-    class="theme-toggle"
+    @class([
+        'theme-toggle',
+        'theme-toggle--compact' => $compact,
+    ])
     data-theme-toggle
     aria-label="{{ __('app.theme_toggle') }}"
     title="{{ __('app.theme_toggle') }}"

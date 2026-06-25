@@ -33,6 +33,7 @@ return [
     'notes' => 'Catatan',
     'time' => 'Waktu',
     'language' => 'Bahasa',
+    'theme' => 'Tema',
     'theme_toggle' => 'Ganti mode terang/gelap',
     'indonesian' => 'Indonesia',
     'english' => 'English',

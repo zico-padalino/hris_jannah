@@ -33,6 +33,7 @@ return [
     'notes' => 'Notes',
     'time' => 'Time',
     'language' => 'Language',
+    'theme' => 'Theme',
     'theme_toggle' => 'Toggle light/dark mode',
     'indonesian' => 'Indonesia',
     'english' => 'English',

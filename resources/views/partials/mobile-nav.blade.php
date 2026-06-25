@@ -21,8 +21,6 @@
                 </div>
             </div>
             <div class="mobile-toolbar flex shrink-0 items-center gap-1.5 sm:gap-2">
-                @include('partials.theme-toggle')
-                @include('partials.language-switcher')
                 <button
                     type="button"
                     id="mobile-nav-toggle"
@@ -64,6 +62,7 @@
             </div>
 
             <div class="space-y-3 border-t-2 p-3" style="border-color: var(--app-border)">
+                @include('partials.user-preferences')
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="btn-secondary w-full">{{ __('app.logout') }}</button>

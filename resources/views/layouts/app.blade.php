@@ -58,8 +58,6 @@
                     <div class="app-header__inner">
                         <h1 class="page-title app-header__title">@yield('title', __('nav.dashboard'))</h1>
                         <div class="app-header__actions">
-                            @include('partials.theme-toggle')
-                            @include('partials.language-switcher')
                             @if($sidebar->visible(auth()->user(), SidebarNavItem::LeaveApproval) && $pendingLeaveApprovalCount > 0)
                                 <a
                                     href="{{ route('leave-approvals.index', ['status' => 'pending']) }}"

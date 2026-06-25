@@ -154,11 +154,7 @@ html.dark {
     flex-wrap: nowrap;
 }
 
-.app-header .theme-toggle {
-    flex-shrink: 0;
-}
-
-.app-header .theme-switcher-shell {
+.app-header .locale-switcher {
     flex-shrink: 0;
 }
 
@@ -245,11 +241,11 @@ html.dark {
 
 .user-account-menu__panel {
     background-color: var(--app-surface);
-    border: 2px solid var(--app-border-strong);
-    border-radius: 0.625rem;
-    box-shadow: 0 10px 24px var(--app-shadow);
-    margin-top: 0.375rem;
-    min-width: 12.5rem;
+    border: 1px solid var(--app-border-strong);
+    border-radius: 0.75rem;
+    box-shadow: 0 12px 28px rgb(15 23 42 / 0.12);
+    margin-top: 0.5rem;
+    min-width: 15.5rem;
     overflow: hidden;
     position: absolute;
     right: 0;
@@ -258,44 +254,97 @@ html.dark {
 }
 
 .user-account-menu__header {
+    align-items: center;
     border-bottom: 1px solid var(--app-border);
-    padding: 0.75rem 1rem;
+    display: flex;
+    gap: 0.625rem;
+    padding: 0.875rem 1rem;
+}
+
+.user-account-menu__header-avatar {
+    border: 2px solid var(--app-border-strong);
+    border-radius: 9999px;
+    flex-shrink: 0;
+    height: 2.25rem;
+    object-fit: cover;
+    width: 2.25rem;
 }
 
 .user-account-menu__header-name {
     color: var(--app-text);
     font-size: 0.875rem;
     font-weight: 800;
-    line-height: 1.3;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .user-account-menu__header-role {
     color: var(--app-text-muted);
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     font-weight: 600;
+    line-height: 1.25;
     margin-top: 0.125rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-account-menu__prefs {
+    border-bottom: 1px solid var(--app-border);
+    padding: 0.625rem 1rem 0.75rem;
+}
+
+.user-preferences {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.user-preferences__row {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+    min-height: 1.875rem;
+}
+
+.user-preferences__label {
+    color: var(--app-text);
+    flex-shrink: 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+.user-account-menu__actions {
+    padding: 0.25rem 0;
 }
 
 .user-account-menu__form {
-    border-top: 1px solid var(--app-border);
     margin: 0;
 }
 
 .user-account-menu__item {
     align-items: center;
     background: transparent;
-    border: none;
+    border: none !important;
+    border-radius: 0;
+    box-shadow: none;
     color: var(--app-text);
     cursor: pointer;
     display: flex;
     font-family: inherit;
-    font-size: 0.875rem;
-    font-weight: 700;
+    font-size: 0.8125rem;
+    font-weight: 600;
     gap: 0.625rem;
-    padding: 0.75rem 1rem;
+    line-height: 1.25;
+    margin: 0;
+    min-height: 0;
+    padding: 0.625rem 1rem;
     text-align: left;
     text-decoration: none;
-    transition: background-color 0.15s ease;
+    transition: background-color 0.15s ease, color 0.15s ease;
     width: 100%;
 }
 
@@ -315,8 +364,9 @@ html.dark {
 
 .user-account-menu__item-icon {
     flex-shrink: 0;
-    height: 1.125rem;
-    width: 1.125rem;
+    height: 1rem;
+    opacity: 0.85;
+    width: 1rem;
 }
 
 .user-profile-chip {
@@ -517,15 +567,9 @@ html.dark {
     background-color: var(--app-surface);
 }
 
-.app-mobile-bar .theme-switcher-shell {
-    align-items: center;
-    display: inline-flex;
-    height: 2.5rem;
-}
-
-.app-mobile-bar .theme-switcher-shell button {
-    min-height: 2rem;
-    padding-block: 0.25rem;
+.app-mobile-bar .locale-switcher__btn {
+    height: 2.25rem;
+    min-width: 2.25rem;
 }
 
 .mobile-toolbar .theme-toggle,
@@ -535,14 +579,10 @@ html.dark {
     min-width: 2.25rem;
 }
 
-.mobile-toolbar .theme-switcher-shell {
+.mobile-toolbar .locale-switcher__btn {
+    font-size: 0.625rem;
     height: 2.25rem;
-}
-
-.mobile-toolbar .theme-switcher-shell button {
-    font-size: 0.6875rem;
-    min-height: 1.75rem;
-    padding-inline: 0.375rem;
+    min-width: 2.25rem;
 }
 
 @media (min-width: 640px) {
@@ -553,13 +593,10 @@ html.dark {
         min-width: 2.5rem;
     }
 
-    .mobile-toolbar .theme-switcher-shell {
+    .mobile-toolbar .locale-switcher__btn {
+        font-size: 0.6875rem;
         height: 2.5rem;
-    }
-
-    .mobile-toolbar .theme-switcher-shell button {
-        font-size: 0.75rem;
-        padding-inline: 0.5rem;
+        min-width: 2.5rem;
     }
 }
 
@@ -589,6 +626,22 @@ html.dark {
     width: 1.25rem;
 }
 
+.theme-toggle--compact {
+    border-width: 1px;
+    border-radius: 0.4375rem;
+    height: 1.875rem;
+    min-width: 1.875rem;
+}
+
+.theme-toggle--compact svg {
+    height: 0.9375rem;
+    width: 0.9375rem;
+}
+
+.user-preferences .theme-toggle--compact {
+    flex-shrink: 0;
+}
+
 .theme-toggle__moon {
     display: none;
 }
@@ -601,25 +654,86 @@ html.dark .theme-toggle__moon {
     display: block;
 }
 
-.theme-switcher-shell {
+.locale-switcher {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.25rem;
+}
+
+.locale-switcher__form {
+    display: inline-flex;
+    margin: 0;
+}
+
+.locale-switcher__btn {
+    align-items: center;
     background-color: var(--app-surface);
     border: 2px solid var(--app-border-strong);
     border-radius: 0.5rem;
-    padding: 0.125rem;
+    color: var(--app-text-muted);
+    cursor: pointer;
+    display: inline-flex;
+    font-family: inherit;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    height: 2.5rem;
+    justify-content: center;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    min-width: 2.5rem;
+    padding: 0 0.375rem;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
-.theme-switcher-shell button[data-active="true"] {
+.locale-switcher__btn[data-active="true"] {
     background-color: var(--app-primary);
+    border-color: var(--app-primary);
     color: var(--app-primary-text);
 }
 
-.theme-switcher-shell button[data-active="false"] {
+.locale-switcher__btn[data-active="false"]:hover {
+    background-color: var(--app-surface-muted);
+    border-color: var(--app-primary);
+    color: var(--app-text);
+}
+
+.locale-switcher--menu {
+    background-color: var(--app-surface-muted);
+    border-radius: 0.375rem;
+    flex-shrink: 0;
+    gap: 0.0625rem;
+    padding: 0.0625rem;
+}
+
+.user-preferences .locale-switcher--menu .locale-switcher__btn {
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 0.5625rem;
+    font-weight: 700;
+    height: 1.25rem;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    min-height: 0;
+    min-width: 1.375rem;
+    padding: 0 0.3125rem;
+}
+
+.locale-switcher--menu .locale-switcher__btn[data-active="true"] {
+    box-shadow: 0 1px 2px rgb(15 23 42 / 0.08);
+}
+
+.locale-switcher--menu .locale-switcher__btn[data-active="false"] {
+    background-color: transparent;
     color: var(--app-text-muted);
 }
 
-.theme-switcher-shell button[data-active="false"]:hover {
-    background-color: var(--app-surface-muted);
+.locale-switcher--menu .locale-switcher__btn[data-active="false"]:hover {
+    background-color: rgb(255 255 255 / 0.55);
     color: var(--app-text);
+}
+
+html.dark .locale-switcher--menu .locale-switcher__btn[data-active="false"]:hover {
+    background-color: rgb(255 255 255 / 0.08);
 }
 
 /* Kartu & section umum (blade tailwind) */
@@ -691,7 +805,7 @@ html.dark .theme-toggle__moon {
 }
 
 .easy-read .btn-secondary,
-.easy-read header button[type="submit"] {
+.easy-read header button[type="submit"]:not(.user-account-menu__item) {
     background-color: var(--app-surface);
     border: 2px solid var(--app-border-strong);
     border-radius: 0.5rem;
@@ -703,7 +817,7 @@ html.dark .theme-toggle__moon {
 }
 
 .easy-read .btn-secondary:hover,
-.easy-read header button[type="submit"]:hover {
+.easy-read header button[type="submit"]:not(.user-account-menu__item):hover {
     background-color: var(--app-surface-muted);
 }
 

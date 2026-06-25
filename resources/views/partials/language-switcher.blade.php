@@ -1,16 +1,21 @@
 @php
     $current = app()->getLocale();
+    $variant = $variant ?? 'default';
 @endphp
-<div class="theme-switcher-shell flex items-center gap-1" role="group" aria-label="{{ __('app.language') }}">
+<div @class([
+    'locale-switcher',
+    'locale-switcher--menu' => $variant === 'menu',
+]) role="group" aria-label="{{ __('app.language') }}">
     @foreach(['id' => __('app.indonesian'), 'en' => __('app.english')] as $code => $label)
-        <form method="POST" action="{{ route('locale.update') }}" class="inline">
+        <form method="POST" action="{{ route('locale.update') }}" class="locale-switcher__form">
             @csrf
             <input type="hidden" name="locale" value="{{ $code }}">
             <button
                 type="submit"
                 data-active="{{ $current === $code ? 'true' : 'false' }}"
-                class="rounded-md px-2.5 py-1.5 text-xs font-bold transition sm:px-3 sm:text-sm"
+                class="locale-switcher__btn"
                 aria-pressed="{{ $current === $code ? 'true' : 'false' }}"
+                title="{{ $label }}"
             >
                 {{ strtoupper($code) }}
             </button>
