@@ -2,16 +2,18 @@ import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 
+const BAR_RADIUS = 10;
+
 const chartPalette = {
-    masuk: { bg: 'rgba(5, 150, 105, 0.85)', border: '#047857' },
-    telat: { bg: 'rgba(234, 88, 12, 0.85)', border: '#c2410c' },
-    izin: { bg: 'rgba(2, 132, 199, 0.85)', border: '#0369a1' },
-    ga_masuk: { bg: 'rgba(100, 116, 139, 0.85)', border: '#475569' },
+    masuk: { from: '#22c55e', to: '#16a34a', border: '#15803d' },
+    telat: { from: '#FBB931', to: '#EC6014', border: '#c8510f' },
+    izin: { from: '#38bdf8', to: '#0ea5e9', border: '#0284c7' },
+    ga_masuk: { from: '#cbd5e1', to: '#94a3b8', border: '#64748b' },
 };
 
 const chartFont = {
     family: "'Instrument Sans', ui-sans-serif, system-ui, sans-serif",
-    size: 13,
+    size: 12,
     weight: '600',
 };
 
@@ -26,13 +28,74 @@ function chartTheme() {
     const dark = isDarkMode();
 
     return {
-        text: dark ? '#e2e8f0' : '#0f172a',
-        textMuted: dark ? '#94a3b8' : '#334155',
-        grid: dark ? 'rgba(148, 163, 184, 0.12)' : 'rgba(100, 116, 139, 0.2)',
-        doughnutBorder: dark ? '#151d2e' : '#ffffff',
-        tooltipBg: dark ? '#1e293b' : '#ffffff',
-        tooltipText: dark ? '#e2e8f0' : '#0f172a',
+        text: dark ? '#e2e8f0' : '#1e293b',
+        textMuted: dark ? '#94a3b8' : '#64748b',
+        grid: dark ? 'rgba(148, 163, 184, 0.14)' : 'rgba(148, 163, 184, 0.22)',
+        doughnutBorder: dark ? '#1a2332' : '#ffffff',
+        tooltipBg: dark ? 'rgba(30, 41, 59, 0.96)' : 'rgba(255, 255, 255, 0.98)',
+        tooltipText: dark ? '#f1f5f9' : '#0f172a',
+        tooltipBorder: dark ? 'rgba(148, 163, 184, 0.25)' : 'rgba(226, 232, 240, 0.9)',
     };
+}
+
+function stackBorderRadius(position) {
+    const flat = { topLeft: 0, topRight: 0, bottomLeft: 0, bottomRight: 0 };
+    const top = { topLeft: BAR_RADIUS, topRight: BAR_RADIUS, bottomLeft: 0, bottomRight: 0 };
+    const bottom = { topLeft: 0, topRight: 0, bottomLeft: BAR_RADIUS, bottomRight: BAR_RADIUS };
+
+    if (position === 'first') {
+        return bottom;
+    }
+
+    if (position === 'last') {
+        return top;
+    }
+
+    return flat;
+}
+
+function verticalGradient(ctx, area, palette) {
+    const gradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
+    gradient.addColorStop(0, palette.to);
+    gradient.addColorStop(1, palette.from);
+
+    return gradient;
+}
+
+function applyBarGradients(chart) {
+    const { ctx, chartArea } = chart;
+
+    if (!chartArea) {
+        return;
+    }
+
+    const keys = ['masuk', 'telat', 'izin', 'ga_masuk'];
+
+    chart.data.datasets.forEach((dataset, index) => {
+        dataset.backgroundColor = verticalGradient(ctx, chartArea, chartPalette[keys[index]]);
+        dataset.hoverBackgroundColor = verticalGradient(ctx, chartArea, chartPalette[keys[index]]);
+    });
+}
+
+function applyDoughnutGradients(chart) {
+    const { ctx, chartArea } = chart;
+
+    if (!chartArea) {
+        return;
+    }
+
+    const keys = ['masuk', 'telat', 'izin', 'ga_masuk'];
+    const centerX = (chartArea.left + chartArea.right) / 2;
+    const centerY = (chartArea.top + chartArea.bottom) / 2;
+    const radius = Math.min(chartArea.right - chartArea.left, chartArea.bottom - chartArea.top) / 2;
+
+    chart.data.datasets[0].backgroundColor = keys.map((key) => {
+        const gradient = ctx.createRadialGradient(centerX, centerY, radius * 0.2, centerX, centerY, radius);
+        gradient.addColorStop(0, chartPalette[key].from);
+        gradient.addColorStop(1, chartPalette[key].to);
+
+        return gradient;
+    });
 }
 
 function destroyDashboardCharts() {
@@ -42,30 +105,62 @@ function destroyDashboardCharts() {
     todayChart = null;
 }
 
+function tooltipOptions(theme) {
+    return {
+        enabled: true,
+        backgroundColor: theme.tooltipBg,
+        titleColor: theme.tooltipText,
+        bodyColor: theme.tooltipText,
+        borderColor: theme.tooltipBorder,
+        borderWidth: 1,
+        cornerRadius: 12,
+        padding: { top: 10, right: 14, bottom: 10, left: 14 },
+        boxPadding: 6,
+        boxWidth: 10,
+        boxHeight: 10,
+        usePointStyle: true,
+        titleFont: { ...chartFont, size: 13, weight: '700' },
+        bodyFont: { ...chartFont, size: 12 },
+        footerFont: { ...chartFont, size: 12, weight: '700' },
+        footerColor: theme.textMuted,
+        displayColors: true,
+    };
+}
+
+function legendOptions(theme) {
+    return {
+        position: 'bottom',
+        align: 'center',
+        labels: {
+            usePointStyle: true,
+            pointStyle: 'circle',
+            boxWidth: 8,
+            boxHeight: 8,
+            padding: 20,
+            font: { ...chartFont, size: 13, weight: '600' },
+            color: theme.text,
+        },
+    };
+}
+
 function baseOptions(isStacked = false, chartLabels = {}) {
     const theme = chartTheme();
 
     return {
         responsive: true,
         maintainAspectRatio: false,
+        animation: {
+            duration: 900,
+            easing: 'easeOutQuart',
+        },
+        interaction: {
+            mode: isStacked ? 'index' : 'nearest',
+            intersect: false,
+        },
         plugins: {
-            legend: {
-                position: 'bottom',
-                labels: {
-                    boxWidth: 14,
-                    boxHeight: 14,
-                    padding: 16,
-                    font: { ...chartFont, size: 14, weight: '700' },
-                    color: theme.text,
-                },
-            },
+            legend: legendOptions(theme),
             tooltip: {
-                titleFont: { ...chartFont, weight: '700' },
-                bodyFont: chartFont,
-                padding: 12,
-                backgroundColor: theme.tooltipBg,
-                titleColor: theme.tooltipText,
-                bodyColor: theme.tooltipText,
+                ...tooltipOptions(theme),
                 callbacks: isStacked
                     ? {
                           footer: (items) => {
@@ -80,23 +175,34 @@ function baseOptions(isStacked = false, chartLabels = {}) {
             ? {
                   x: {
                       stacked: true,
+                      border: { display: false },
                       grid: { display: false },
-                      ticks: { font: chartFont, color: theme.textMuted },
+                      ticks: {
+                          font: { ...chartFont, weight: '600' },
+                          color: theme.textMuted,
+                          padding: 8,
+                      },
                   },
                   y: {
                       stacked: true,
                       beginAtZero: true,
-                      grid: { color: theme.grid },
+                      border: { display: false, dash: [4, 4] },
+                      grid: {
+                          color: theme.grid,
+                          drawTicks: false,
+                      },
                       ticks: {
                           stepSize: 1,
                           font: chartFont,
                           color: theme.textMuted,
+                          padding: 10,
                       },
                       title: {
                           display: true,
                           text: chartLabels.employees ?? 'Employees',
                           font: { ...chartFont, weight: '700' },
                           color: theme.textMuted,
+                          padding: { bottom: 8 },
                       },
                   },
               }
@@ -152,38 +258,54 @@ function initDashboardCharts() {
                     {
                         label: seriesLabels.masuk,
                         data: data.series.masuk,
-                        backgroundColor: chartPalette.masuk.bg,
-                        borderColor: chartPalette.masuk.border,
-                        borderWidth: 1,
-                        borderRadius: 4,
+                        borderColor: 'transparent',
+                        borderWidth: 0,
+                        borderSkipped: false,
+                        borderRadius: stackBorderRadius('first'),
+                        barPercentage: 0.62,
+                        categoryPercentage: 0.72,
                     },
                     {
                         label: seriesLabels.telat,
                         data: data.series.telat,
-                        backgroundColor: chartPalette.telat.bg,
-                        borderColor: chartPalette.telat.border,
-                        borderWidth: 1,
-                        borderRadius: 4,
+                        borderColor: 'transparent',
+                        borderWidth: 0,
+                        borderSkipped: false,
+                        borderRadius: stackBorderRadius('middle'),
+                        barPercentage: 0.62,
+                        categoryPercentage: 0.72,
                     },
                     {
                         label: seriesLabels.izin,
                         data: data.series.izin,
-                        backgroundColor: chartPalette.izin.bg,
-                        borderColor: chartPalette.izin.border,
-                        borderWidth: 1,
-                        borderRadius: 4,
+                        borderColor: 'transparent',
+                        borderWidth: 0,
+                        borderSkipped: false,
+                        borderRadius: stackBorderRadius('middle'),
+                        barPercentage: 0.62,
+                        categoryPercentage: 0.72,
                     },
                     {
                         label: seriesLabels.ga_masuk,
                         data: data.series.ga_masuk,
-                        backgroundColor: chartPalette.ga_masuk.bg,
-                        borderColor: chartPalette.ga_masuk.border,
-                        borderWidth: 1,
-                        borderRadius: 4,
+                        borderColor: 'transparent',
+                        borderWidth: 0,
+                        borderSkipped: false,
+                        borderRadius: stackBorderRadius('last'),
+                        barPercentage: 0.62,
+                        categoryPercentage: 0.72,
                     },
                 ],
             },
             options: baseOptions(true, chartLabels),
+            plugins: [
+                {
+                    id: 'weeklyBarGradients',
+                    beforeDatasetsDraw(chart) {
+                        applyBarGradients(chart);
+                    },
+                },
+            ],
         });
     }
 
@@ -198,20 +320,23 @@ function initDashboardCharts() {
                     {
                         data: [today.masuk, today.telat, today.izin, today.ga_masuk],
                         backgroundColor: [
-                            chartPalette.masuk.bg,
-                            chartPalette.telat.bg,
-                            chartPalette.izin.bg,
-                            chartPalette.ga_masuk.bg,
+                            chartPalette.masuk.from,
+                            chartPalette.telat.from,
+                            chartPalette.izin.from,
+                            chartPalette.ga_masuk.from,
                         ],
                         borderColor: theme.doughnutBorder,
-                        borderWidth: 3,
-                        hoverOffset: 6,
+                        borderWidth: 4,
+                        spacing: 3,
+                        borderRadius: 8,
+                        hoverOffset: 10,
+                        hoverBorderWidth: 4,
                     },
                 ],
             },
             options: {
                 ...baseOptions(false, chartLabels),
-                cutout: '58%',
+                cutout: '62%',
                 plugins: {
                     ...baseOptions(false, chartLabels).plugins,
                     legend: {
@@ -219,6 +344,14 @@ function initDashboardCharts() {
                     },
                 },
             },
+            plugins: [
+                {
+                    id: 'todayDoughnutGradients',
+                    beforeDatasetsDraw(chart) {
+                        applyDoughnutGradients(chart);
+                    },
+                },
+            ],
         });
     }
 }

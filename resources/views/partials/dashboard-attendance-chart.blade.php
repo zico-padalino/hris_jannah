@@ -23,7 +23,7 @@
 
         <div class="grid gap-6 p-4 sm:p-6 lg:grid-cols-3">
             <div class="lg:col-span-2">
-                <div class="relative h-72 w-full sm:h-80">
+                <div class="dashboard-chart-canvas relative h-72 w-full sm:h-80">
                     <canvas id="attendance-weekly-chart" aria-label="{{ __('pages.dashboard.chart_title') }}"></canvas>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     </p>
                 </div>
 
-                <div class="relative mx-auto h-48 w-full max-w-xs sm:h-52">
+                <div class="dashboard-chart-canvas dashboard-chart-canvas--donut relative mx-auto h-48 w-full max-w-xs sm:h-52">
                     <canvas id="attendance-today-chart" aria-label="{{ __('app.today') }}"></canvas>
                 </div>
 
