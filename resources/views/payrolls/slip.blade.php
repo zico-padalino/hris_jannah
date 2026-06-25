@@ -46,10 +46,6 @@
                     <dt>{{ __('pages.payroll_slip.position') }}</dt>
                     <dd>{{ $employee->position?->name ?? '—' }}</dd>
                 </div>
-                <div>
-                    <dt>{{ __('app.status') }}</dt>
-                    <dd>{{ $period->status->label() }}</dd>
-                </div>
             </dl>
         </section>
 
