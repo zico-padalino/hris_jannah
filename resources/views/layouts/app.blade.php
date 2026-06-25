@@ -44,9 +44,10 @@
                 <nav class="sidebar-nav-scroll flex-1 space-y-0.5 overflow-y-auto p-4" aria-label="Menu utama">
                     @include('partials.sidebar-nav', ['mobile' => false])
                 </nav>
-                <div class="shrink-0 border-t-2 p-4" style="border-color: var(--app-sidebar-border)">
-                    <p class="truncate text-sm font-bold text-white">{{ auth()->user()->name }}</p>
-                    <p class="truncate text-xs font-semibold" style="color: var(--app-sidebar-text-muted)">{{ auth()->user()->role->label() }}</p>
+                <div class="sidebar-footer shrink-0 border-t-2 p-4" style="border-color: var(--app-sidebar-border)">
+                    <p class="sidebar-footer__text text-center text-xs font-semibold" style="color: var(--app-sidebar-text-muted)">
+                        {{ __('app.copyright', ['year' => 2026]) }}
+                    </p>
                 </div>
             </aside>
         @endauth

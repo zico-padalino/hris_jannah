@@ -55,4 +55,5 @@ return [
     'close_menu' => 'Close menu',
     'menu' => 'Menu',
     'new_requests' => ':count new requests',
+    'copyright' => '© RS JANNAH :year',
 ];

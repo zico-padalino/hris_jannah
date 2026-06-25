@@ -45,6 +45,12 @@ return [
         'title' => 'Riwayat Absensi',
         'subtitle' => 'Rekap absensi harian per pegawai',
     ],
+    'attendance_manage' => [
+        'title' => 'Kelola Absensi',
+        'subtitle' => 'Ubah status dan kelola data absensi pegawai',
+        'update_status' => 'Ubah Status',
+        'manual_input' => 'Input Manual',
+    ],
     'leave' => [
         'title' => 'Cuti, Izin & Lembur',
         'subtitle' => 'Riwayat pengajuan cuti, izin, dan lembur Anda',

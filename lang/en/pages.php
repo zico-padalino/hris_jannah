@@ -46,6 +46,12 @@ return [
         'title' => 'Attendance History',
         'subtitle' => 'Daily attendance summary per employee',
     ],
+    'attendance_manage' => [
+        'title' => 'Manage Attendance',
+        'subtitle' => 'Update status and manage employee attendance records',
+        'update_status' => 'Update Status',
+        'manual_input' => 'Manual Entry',
+    ],
     'leave' => [
         'title' => 'Leave, Permission & Overtime',
         'subtitle' => 'Your leave, permission, and overtime request history',

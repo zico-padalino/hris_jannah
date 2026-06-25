@@ -55,4 +55,5 @@ return [
     'close_menu' => 'Tutup menu',
     'menu' => 'Menu',
     'new_requests' => ':count pengajuan baru',
+    'copyright' => '© RS JANNAH :year',
 ];

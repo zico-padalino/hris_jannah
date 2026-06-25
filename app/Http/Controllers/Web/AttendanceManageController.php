@@ -9,6 +9,7 @@ use App\Enums\Permission;
 use App\Models\Attendance;
 use App\Models\Branch;
 use App\Models\Employee;
+use App\Services\AttendanceDayGroupService;
 use App\Services\ShiftScheduleService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ class AttendanceManageController extends WebController
 {
     public function __construct(
         private readonly ShiftScheduleService $shiftScheduleService,
+        private readonly AttendanceDayGroupService $attendanceDayGroupService,
     ) {}
 
     public function index(Request $request): View
@@ -25,13 +27,17 @@ class AttendanceManageController extends WebController
         $this->authorizePermission($request, Permission::AttendanceManage);
         $branchIds = $this->manageableBranchIds($request);
 
-        $attendances = Attendance::query()
-            ->with(['employee', 'branch'])
-            ->when($branchIds !== null, fn ($q) => $q->whereIn('branch_id', $branchIds))
-            ->latest('attended_at')
-            ->paginate(20);
+        $attendances = $this->attendanceDayGroupService
+            ->paginateForRequest($request, $branchIds)
+            ->withQueryString();
 
-        return view('attendances.manage', compact('attendances'));
+        $branches = Branch::query()
+            ->when($branchIds !== null, fn ($q) => $q->whereIn('id', $branchIds))
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get();
+
+        return view('attendances.manage', compact('attendances', 'branches'));
     }
 
     public function create(Request $request): View
