@@ -1,43 +1,4 @@
 @auth
-    <div class="app-mobile-topbar app-mobile-bar sticky top-0 z-40 border-b-2 lg:hidden">
-        <div class="flex min-w-0 items-center justify-between gap-2 px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
-            <div class="flex min-w-0 flex-1 items-center gap-2">
-                @if($appBranding->hasLogo())
-                    <img src="{{ $appBranding->logoUrl() }}" alt="{{ $appBranding->name() }}" class="h-7 w-auto max-w-[72px] shrink-0 object-contain sm:h-8 sm:max-w-[96px]">
-                @endif
-                <div class="min-w-0">
-                    <p class="truncate text-base font-bold sm:text-lg">{{ $appBranding->name() }}</p>
-                    <a href="{{ route('profile.edit') }}" class="mobile-profile-link group min-w-0">
-                        @if(auth()->user()->hasProfilePhoto())
-                            <img src="{{ auth()->user()->profilePhotoUrl() }}" alt="" class="mobile-profile-link__avatar">
-                        @else
-                            <span class="mobile-profile-link__avatar mobile-profile-link__avatar--placeholder" aria-hidden="true">
-                                {{ auth()->user()->profileInitials() }}
-                            </span>
-                        @endif
-                        <span class="mobile-profile-link__name truncate">{{ auth()->user()->name }}</span>
-                        <span class="user-profile-chip__badge">{{ __('pages.profile.open_label') }}</span>
-                    </a>
-                </div>
-            </div>
-            <div class="mobile-toolbar flex shrink-0 items-center gap-1.5 sm:gap-2">
-                <button
-                    type="button"
-                    id="mobile-nav-toggle"
-                    class="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-lg border-2"
-                    style="background-color: var(--app-surface-muted); border-color: var(--app-border-strong); color: var(--app-text)"
-                    aria-expanded="false"
-                    aria-controls="mobile-nav-menu"
-                    aria-label="{{ __('app.open_menu') }}"
-                >
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
     <div id="mobile-nav-overlay" class="fixed inset-0 z-50 hidden lg:hidden" aria-hidden="true">
         <div id="mobile-nav-backdrop" class="absolute inset-0" style="background-color: var(--app-overlay)"></div>
         <nav

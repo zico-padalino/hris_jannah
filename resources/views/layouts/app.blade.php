@@ -53,12 +53,13 @@
         @endauth
 
         <div class="flex min-h-0 min-w-0 flex-1 flex-col lg:h-screen lg:overflow-hidden">
-            @include('partials.mobile-nav')
-
             @auth
-                <header class="app-header app-topbar hidden shrink-0 border-b-2 px-4 lg:block lg:px-8">
+                <header class="app-header app-topbar sticky top-0 z-40 shrink-0 border-b-2 px-3 py-2.5 sm:px-4 sm:py-3 lg:px-8 lg:py-0">
                     <div class="app-header__inner">
                         <h1 class="page-title app-header__title">@yield('title', __('nav.dashboard'))</h1>
+                        <div class="app-header__clock">
+                            @include('partials.header-live-clock')
+                        </div>
                         <div class="app-header__actions">
                             @if($sidebar->visible(auth()->user(), SidebarNavItem::LeaveApproval) && $pendingLeaveApprovalCount > 0)
                                 <a
@@ -74,19 +75,12 @@
                         </div>
                     </div>
                 </header>
-
-                <div class="app-header app-mobile-bar min-w-0 shrink-0 border-b-2 px-3 py-2.5 sm:px-4 sm:py-3 lg:hidden">
-                    <h1 class="page-title text-lg sm:text-xl">@yield('title', __('nav.dashboard'))</h1>
-                    @hasSection('subtitle')
-                        <p class="page-subtitle text-sm sm:text-base">@yield('subtitle')</p>
-                    @endif
-                </div>
             @endauth
 
             <main class="flex-1 min-h-0 min-w-0 overflow-y-auto px-3 py-4 sm:px-4 sm:py-6 lg:px-8">
                 @include('partials.alerts')
                 @hasSection('subtitle')
-                    <p class="page-subtitle page-subtitle--main mb-4 hidden lg:block">@yield('subtitle')</p>
+                    <p class="page-subtitle page-subtitle--main mb-4">@yield('subtitle')</p>
                 @endif
                 @yield('content')
             </main>

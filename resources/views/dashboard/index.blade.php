@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('title', __('pages.dashboard.title'))
-@section('subtitle')
-    @include('partials.header-live-clock')
-@endsection
 
 @section('content')
     @php

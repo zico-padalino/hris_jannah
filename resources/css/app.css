@@ -146,13 +146,20 @@ html.dark {
     align-items: center;
     display: flex;
     flex-wrap: nowrap;
-    gap: 1rem;
-    justify-content: space-between;
+    gap: 0.75rem 1rem;
     min-width: 0;
 }
 
+.app-header__clock {
+    color: var(--app-text-muted);
+    flex-shrink: 0;
+    font-weight: 500;
+    margin-left: auto;
+    white-space: nowrap;
+}
+
 .app-header__title {
-    flex-shrink: 1;
+    flex: 0 1 auto;
     margin: 0;
     min-width: 0;
     overflow: hidden;
@@ -166,7 +173,6 @@ html.dark {
     flex-shrink: 0;
     flex-wrap: nowrap;
     gap: 0.5rem;
-    margin-left: auto;
 }
 
 .app-header__leave-badge {
@@ -959,31 +965,13 @@ html.dark {
     min-width: 2.25rem;
 }
 
-.mobile-toolbar .theme-toggle,
-.mobile-toolbar #mobile-nav-toggle {
-    height: 2.25rem;
-    min-height: 2.25rem;
-    min-width: 2.25rem;
-}
-
-.mobile-toolbar .locale-switcher__btn {
-    font-size: 0.625rem;
-    height: 2.25rem;
-    min-width: 2.25rem;
-}
-
-@media (min-width: 640px) {
-    .mobile-toolbar .theme-toggle,
-    .mobile-toolbar #mobile-nav-toggle {
-        height: 2.5rem;
-        min-height: 2.5rem;
-        min-width: 2.5rem;
+@media (max-width: 639px) {
+    .app-header__clock {
+        font-size: 0.75rem;
     }
 
-    .mobile-toolbar .locale-switcher__btn {
-        font-size: 0.6875rem;
-        height: 2.5rem;
-        min-width: 2.5rem;
+    .user-account-menu__trigger {
+        max-width: 10.5rem;
     }
 }
 
@@ -2469,30 +2457,6 @@ body {
     .easy-read .form-label {
         font-size: 0.875rem;
         margin-bottom: 0.25rem;
-    }
-
-    .app-mobile-topbar .app-muted-text {
-        display: none;
-    }
-
-    .header-live-clock__divider {
-        display: none;
-    }
-
-    .header-live-clock {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.125rem;
-    }
-}
-
-@media (max-width: 380px) {
-    .mobile-toolbar {
-        gap: 0.25rem;
-    }
-
-    .app-mobile-topbar img {
-        max-width: 56px;
     }
 }
 
