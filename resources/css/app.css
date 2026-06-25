@@ -3066,3 +3066,154 @@ html.dark .maintenance-badge {
     }
 }
 
+/* Bukti cuti/izin — popup pratinjau */
+.leave-proof-link {
+    background: none;
+    border: none;
+    color: var(--app-primary);
+    cursor: pointer;
+    font: inherit;
+    font-size: inherit;
+    font-weight: 700;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.leave-proof-link:hover {
+    color: var(--app-primary-hover);
+}
+
+.leave-proof-modal {
+    align-items: center;
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    padding: 1rem;
+    position: fixed;
+    z-index: 70;
+}
+
+.leave-proof-modal.hidden {
+    display: none;
+}
+
+.leave-proof-modal__backdrop {
+    background: rgb(15 23 42 / 0.72);
+    inset: 0;
+    position: absolute;
+}
+
+.leave-proof-modal__dialog {
+    background: var(--app-surface);
+    border: 2px solid var(--app-border-strong);
+    border-radius: 1rem;
+    box-shadow: 0 24px 48px rgb(15 23 42 / 0.22);
+    display: flex;
+    flex-direction: column;
+    max-height: min(92vh, 48rem);
+    max-width: min(100%, 42rem);
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+}
+
+.leave-proof-modal__head {
+    align-items: flex-start;
+    border-bottom: 1px solid var(--app-border);
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+}
+
+.leave-proof-modal__title {
+    color: var(--app-text);
+    font-size: 1.0625rem;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.leave-proof-modal__meta {
+    color: var(--app-text-muted);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    margin-top: 0.25rem;
+}
+
+.leave-proof-modal__close {
+    align-items: center;
+    background: var(--app-surface-muted);
+    border: 2px solid var(--app-border-strong);
+    border-radius: 0.5rem;
+    color: var(--app-text-muted);
+    cursor: pointer;
+    display: inline-flex;
+    flex-shrink: 0;
+    height: 2.25rem;
+    justify-content: center;
+    width: 2.25rem;
+}
+
+.leave-proof-modal__close:hover {
+    border-color: var(--app-primary);
+    color: var(--app-text);
+}
+
+.leave-proof-modal__body {
+    background: #0f172a;
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: 1rem;
+}
+
+.leave-proof-modal__image {
+    display: block;
+    margin: 0 auto;
+    max-height: min(60vh, 28rem);
+    max-width: 100%;
+    object-fit: contain;
+    width: auto;
+}
+
+.leave-proof-modal__pdf {
+    background: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    display: block;
+    height: min(60vh, 28rem);
+    width: 100%;
+}
+
+.leave-proof-modal__foot {
+    border-top: 1px solid var(--app-border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    padding: 0.875rem 1.25rem;
+}
+
+.leave-proof-modal__download {
+    text-decoration: none;
+}
+
+@media (max-width: 639px) {
+    .leave-proof-modal {
+        padding: 0.75rem;
+    }
+
+    .leave-proof-modal__dialog {
+        max-height: 94vh;
+    }
+
+    .leave-proof-modal__foot .btn-primary,
+    .leave-proof-modal__foot .btn-secondary {
+        flex: 1 1 auto;
+        justify-content: center;
+        min-width: 7rem;
+    }
+}
+

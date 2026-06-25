@@ -118,6 +118,7 @@
         </div>
     </div>
 
+    @stack('modals')
     @stack('scripts')
 </body>
 </html>

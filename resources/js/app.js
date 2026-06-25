@@ -223,6 +223,101 @@ function initUserAccountMenus() {
     });
 }
 
+function initLeaveProofModal() {
+    const modal = document.getElementById('leave-proof-modal');
+
+    if (!modal) {
+        return;
+    }
+
+    const image = document.getElementById('leave-proof-image');
+    const pdfFrame = document.getElementById('leave-proof-pdf');
+    const download = document.getElementById('leave-proof-download');
+    const title = document.getElementById('leave-proof-title');
+    const meta = document.getElementById('leave-proof-meta');
+
+    function show(el) {
+        el.classList.remove('hidden');
+    }
+
+    function hide(el) {
+        el.classList.add('hidden');
+    }
+
+    function close() {
+        modal.classList.add('hidden');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('overflow-hidden');
+
+        if (image) {
+            image.removeAttribute('src');
+            hide(image);
+        }
+
+        if (pdfFrame) {
+            pdfFrame.removeAttribute('src');
+            hide(pdfFrame);
+        }
+    }
+
+    function open(trigger) {
+        const url = trigger.dataset.proofUrl;
+        const kind = trigger.dataset.proofKind || 'image';
+
+        if (!url) {
+            return;
+        }
+
+        if (title) {
+            title.textContent = trigger.dataset.proofTitle || title.textContent;
+        }
+
+        if (meta) {
+            meta.textContent = trigger.dataset.proofMeta || '';
+        }
+
+        if (download) {
+            download.href = url;
+        }
+
+        if (kind === 'pdf' && pdfFrame) {
+            hide(image);
+            pdfFrame.src = url;
+            show(pdfFrame);
+        } else if (image) {
+            hide(pdfFrame);
+            image.src = url;
+            show(image);
+        }
+
+        modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('overflow-hidden');
+    }
+
+    document.addEventListener('click', (event) => {
+        const trigger = event.target.closest('[data-leave-proof-trigger]');
+
+        if (trigger) {
+            event.preventDefault();
+            open(trigger);
+
+            return;
+        }
+
+        if (event.target.closest('[data-leave-proof-close]')) {
+            event.preventDefault();
+            close();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+            close();
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
     initReadableTables();
@@ -230,4 +325,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initRupiahInputs();
     initLiveClock();
     initUserAccountMenus();
+    initLeaveProofModal();
 });

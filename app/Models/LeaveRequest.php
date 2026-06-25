@@ -62,6 +62,25 @@ class LeaveRequest extends Model
         return filled($this->proof_path) && Storage::disk('public')->exists($this->proof_path);
     }
 
+    public function proofExtension(): ?string
+    {
+        if (! $this->hasProof()) {
+            return null;
+        }
+
+        return strtolower(pathinfo($this->proof_path, PATHINFO_EXTENSION));
+    }
+
+    public function proofIsImage(): bool
+    {
+        return in_array($this->proofExtension(), ['jpg', 'jpeg', 'png', 'gif', 'webp'], true);
+    }
+
+    public function proofIsPdf(): bool
+    {
+        return $this->proofExtension() === 'pdf';
+    }
+
     protected function proofUrl(): Attribute
     {
         return Attribute::get(function (): ?string {
