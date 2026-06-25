@@ -61,17 +61,17 @@
                 <span class="text-xs font-medium text-slate-500">Filter aktif:</span>
                 @if(request('branch_id'))
                     @php $selectedBranch = $branches->firstWhere('id', (int) request('branch_id')); @endphp
-                    <span class="inline-flex items-center rounded-full bg-teal-50 px-2.5 py-1 text-xs text-teal-800 ring-1 ring-teal-200">
+                    <span class="inline-flex items-center rounded-full bg-campfire-4 px-2.5 py-1 text-xs text-campfire-1 ring-1 ring-campfire-3">
                         {{ $selectedBranch?->name ?? 'Cabang' }}
                     </span>
                 @endif
                 @if(request('date'))
-                    <span class="inline-flex items-center rounded-full bg-teal-50 px-2.5 py-1 text-xs text-teal-800 ring-1 ring-teal-200">
+                    <span class="inline-flex items-center rounded-full bg-campfire-4 px-2.5 py-1 text-xs text-campfire-1 ring-1 ring-campfire-3">
                         {{ \Carbon\Carbon::parse(request('date'))->format('d/m/Y') }}
                     </span>
                 @endif
                 @if(request('status'))
-                    <span class="inline-flex items-center rounded-full bg-teal-50 px-2.5 py-1 text-xs text-teal-800 ring-1 ring-teal-200">
+                    <span class="inline-flex items-center rounded-full bg-campfire-4 px-2.5 py-1 text-xs text-campfire-1 ring-1 ring-campfire-3">
                         {{ \App\Enums\AttendanceStatus::from(request('status'))->label() }}
                     </span>
                 @endif
@@ -187,7 +187,7 @@
                                         @endif
                                     </p>
                                     @if($hasFilters)
-                                        <a href="{{ route('attendances.index') }}" class="mt-4 inline-block text-base font-semibold text-teal-800 hover:underline">Reset filter</a>
+                                        <a href="{{ route('attendances.index') }}" class="mt-4 inline-block text-base font-semibold text-campfire-1 hover:underline">Reset filter</a>
                                     @endif
                                 </div>
                             </td>

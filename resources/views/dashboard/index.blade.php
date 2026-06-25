@@ -30,27 +30,27 @@
         ])
     @endif
 
-    <div class="mb-8 overflow-hidden rounded-2xl bg-gradient-to-br from-teal-800 via-teal-700 to-emerald-800 p-6 text-white shadow-lg sm:p-8">
+    <div class="mb-8 overflow-hidden rounded-2xl bg-gradient-to-br from-campfire-1 via-campfire-2 to-campfire-3 p-6 text-white shadow-xl shadow-campfire-1/25 sm:p-8">
         <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div>
-                <p class="text-sm font-medium text-teal-100">{{ $greeting }},</p>
+                <p class="text-sm font-medium text-campfire-4">{{ $greeting }},</p>
                 <h2 class="mt-1 text-2xl font-bold sm:text-3xl">{{ auth()->user()->name }}</h2>
-                <p class="mt-2 max-w-xl text-sm text-teal-100/90">
+                <p class="mt-2 max-w-xl text-sm text-campfire-4/90">
                     {{ __('pages.dashboard.summary', ['role' => auth()->user()->role->label()]) }}
                 </p>
             </div>
             <div class="grid grid-cols-1 gap-3 min-[380px]:grid-cols-3 sm:gap-4">
                 <div class="rounded-xl bg-white/10 px-4 py-3 text-center backdrop-blur-sm ring-1 ring-white/20">
                     <p class="text-2xl font-bold">{{ $stats['attendances_today'] }}</p>
-                    <p class="mt-0.5 text-sm font-semibold text-teal-100">Absensi hari ini</p>
+                    <p class="mt-0.5 text-sm font-semibold text-campfire-4">Absensi hari ini</p>
                 </div>
                 <div class="rounded-xl bg-white/10 px-4 py-3 text-center backdrop-blur-sm ring-1 ring-white/20">
-                    <p class="text-2xl font-bold text-emerald-200">{{ $stats['on_time_today'] }}</p>
-                    <p class="mt-0.5 text-sm font-semibold text-teal-100">Tepat waktu</p>
+                    <p class="text-2xl font-bold text-campfire-4">{{ $stats['on_time_today'] }}</p>
+                    <p class="mt-0.5 text-sm font-semibold text-campfire-4">Tepat waktu</p>
                 </div>
                 <div class="rounded-xl bg-white/10 px-4 py-3 text-center backdrop-blur-sm ring-1 ring-white/20">
-                    <p class="text-2xl font-bold text-orange-200">{{ $stats['late_today'] }}</p>
-                    <p class="mt-0.5 text-sm font-semibold text-teal-100">Terlambat</p>
+                    <p class="text-2xl font-bold text-white">{{ $stats['late_today'] }}</p>
+                    <p class="mt-0.5 text-sm font-semibold text-campfire-4">Terlambat</p>
                 </div>
             </div>
         </div>
@@ -201,7 +201,7 @@
             </div>
             <div class="space-y-2.5">
                 @perm('attendance.scan')
-                    <a href="{{ route('attendance.scan') }}" class="group flex items-center gap-3 rounded-xl bg-gradient-to-r from-teal-700 to-teal-600 px-4 py-3.5 text-sm font-medium text-white shadow-sm transition hover:from-teal-800 hover:to-teal-700 hover:shadow-md">
+                    <a href="{{ route('attendance.scan') }}" class="group flex items-center gap-3 rounded-xl bg-gradient-to-r from-campfire-1 to-campfire-2 px-4 py-3.5 text-sm font-medium text-white shadow-sm transition hover:from-campfire-1 hover:to-campfire-3 hover:shadow-md">
                         <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-white/15">
                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />

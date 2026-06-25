@@ -45,7 +45,7 @@
             class="app-mobile-menu absolute right-0 top-0 flex h-full w-full max-w-sm flex-col overflow-y-auto shadow-2xl sm:max-w-xs"
             aria-label="{{ __('app.menu') }}"
         >
-            <div class="flex items-center justify-between border-b-2 px-4 py-4 text-white" style="background-color: var(--app-sidebar-bg); border-color: var(--app-sidebar-border)">
+            <div class="app-mobile-menu__head flex items-center justify-between border-b-2 px-4 py-4 text-white">
                 <div>
                     <p class="text-lg font-bold">{{ __('app.menu') }}</p>
                     <p class="text-sm" style="color: var(--app-sidebar-text-muted)">{{ auth()->user()->role->label() }}</p>
