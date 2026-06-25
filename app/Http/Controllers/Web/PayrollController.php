@@ -12,6 +12,7 @@ use App\Services\PayrollDeductionConfig;
 use App\Services\PayrollService;
 use App\Services\PayrollSlipConfig;
 use App\Services\PayrollSlipService;
+use App\Services\PayrollSlipSignatureService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -25,6 +26,7 @@ class PayrollController extends WebController
         private readonly PayrollDeductionConfig $deductionConfig,
         private readonly PayrollSlipService $slipService,
         private readonly PayrollSlipConfig $slipConfig,
+        private readonly PayrollSlipSignatureService $signatureService,
     ) {}
 
     public function index(Request $request): View
@@ -92,7 +94,7 @@ class PayrollController extends WebController
 
         $this->authorizePermission($request, Permission::PayrollManage);
 
-        $payroll->load(['items.employee', 'branch']);
+        $payroll->load(['items.employee', 'items.slipSignature', 'branch']);
 
         return view('payrolls.show', compact('payroll'));
     }
@@ -227,5 +229,43 @@ class PayrollController extends WebController
         abort_unless($result !== null, 404);
 
         return view('payrolls.slip-verify', ['verification' => $result]);
+    }
+
+    public function requestSignature(Request $request, PayrollPeriod $payroll, PayrollItem $item): RedirectResponse
+    {
+        abort_unless($item->payroll_period_id === $payroll->id, 404);
+
+        if ($payroll->branch_id) {
+            $this->authorizeBranchAccess($request, $payroll->branch_id);
+        }
+
+        $user = $request->user();
+
+        if ($user->hasPermission(Permission::PayrollManage)) {
+            // authorized
+        } elseif ($user->hasPermission(Permission::PayrollViewOwn)) {
+            abort_unless($user->employee?->id === $item->employee_id, 403);
+        } else {
+            abort(403);
+        }
+
+        $this->signatureService->request($item, $user);
+
+        return back()->with('success', __('pages.payroll_slip.signature_requested'));
+    }
+
+    public function approveSignature(Request $request, PayrollPeriod $payroll, PayrollItem $item): RedirectResponse
+    {
+        abort_unless($item->payroll_period_id === $payroll->id, 404);
+
+        if ($payroll->branch_id) {
+            $this->authorizeBranchAccess($request, $payroll->branch_id);
+        }
+
+        $this->authorizePermission($request, Permission::PayrollManage);
+
+        $this->signatureService->approve($item, $request->user());
+
+        return back()->with('success', __('pages.payroll_slip.signature_approved'));
     }
 }

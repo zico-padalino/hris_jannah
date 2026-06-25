@@ -161,10 +161,12 @@ Route::middleware('guest')->group(function () {
         Route::get('/payrolls', [PayrollController::class, 'index'])->name('payrolls.index');
         Route::get('/payrolls/{payroll}/items/{item}/deductions', [PayrollController::class, 'deductionDetails'])->name('payrolls.items.deductions');
         Route::get('/payrolls/{payroll}/items/{item}/slip', [PayrollController::class, 'slip'])->name('payrolls.items.slip');
+        Route::post('/payrolls/{payroll}/items/{item}/request-signature', [PayrollController::class, 'requestSignature'])->name('payrolls.items.request-signature');
         Route::get('/payroll-slip/signature', [PayrollController::class, 'signature'])->name('payroll-slip.signature');
     });
 
     Route::middleware('permission:payroll.manage')->group(function () {
+        Route::post('/payrolls/{payroll}/items/{item}/approve-signature', [PayrollController::class, 'approveSignature'])->name('payrolls.items.approve-signature');
         Route::get('/potongan', [PotonganController::class, 'index'])->name('potongan.index');
         Route::put('/potongan', [PotonganController::class, 'update'])->name('potongan.update');
         Route::post('/payrolls', [PayrollController::class, 'store'])->name('payrolls.store');

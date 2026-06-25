@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\PayrollSlipSignatureStatus;
 use App\Models\PayrollItem;
 use App\Models\PayrollPeriod;
 
@@ -11,6 +12,7 @@ class PayrollSlipService
         private readonly PayrollService $payrollService,
         private readonly PayrollDeductionConfig $deductionConfig,
         private readonly PayrollSlipConfig $slipConfig,
+        private readonly PayrollSlipSignatureService $signatureService,
     ) {}
 
     /** @return array<string, mixed> */
@@ -30,6 +32,8 @@ class PayrollSlipService
         $gross = $baseSalary + $allowances;
 
         $verificationCode = $this->verificationCode($period, $item);
+        $signature = $this->signatureService->forItem($item);
+        $signatureApproved = $signature?->status === PayrollSlipSignatureStatus::Approved;
 
         return [
             'item' => $item,
@@ -46,6 +50,10 @@ class PayrollSlipService
             'hrd_title' => $this->slipConfig->hrdTitle(),
             'hrd_signature_url' => $this->slipConfig->signatureUrl(),
             'has_hrd_signature' => $this->slipConfig->hasSignature(),
+            'signature' => $signature,
+            'signature_approved' => $signatureApproved,
+            'can_request_signature' => $signature === null,
+            'signature_pending' => $signature?->status === PayrollSlipSignatureStatus::Pending,
         ];
     }
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PayrollItem extends Model
 {
@@ -35,5 +36,10 @@ class PayrollItem extends Model
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function slipSignature(): HasOne
+    {
+        return $this->hasOne(PayrollSlipSignature::class);
     }
 }

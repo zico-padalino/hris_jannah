@@ -47,6 +47,10 @@ return [
         'draft' => 'Draft',
         'finalized' => 'Final',
     ],
+    'payroll_slip_signature_status' => [
+        'pending' => 'Menunggu persetujuan',
+        'approved' => 'Disetujui',
+    ],
     'permission' => [
         'dashboard_view' => 'Lihat Dashboard',
         'attendance_scan' => 'Scan Absensi',

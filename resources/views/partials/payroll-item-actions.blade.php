@@ -3,6 +3,12 @@
     'item',
 ])
 
+@php
+    $signature = $item->slipSignature;
+    $signaturePending = $signature?->status === \App\Enums\PayrollSlipSignatureStatus::Pending;
+    $signatureApproved = $signature?->status === \App\Enums\PayrollSlipSignatureStatus::Approved;
+@endphp
+
 <div class="payroll-item-actions">
     <a
         href="{{ route('payrolls.items.slip', [$payroll, $item]) }}"
@@ -13,6 +19,20 @@
         </svg>
         {{ __('pages.payroll_slip.view') }}
     </a>
+
+    @if($signaturePending)
+        <form method="POST" action="{{ route('payrolls.items.approve-signature', [$payroll, $item]) }}" class="inline">
+            @csrf
+            <button type="submit" class="payroll-item-actions__btn payroll-item-actions__btn--approve">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                {{ __('pages.payroll_slip.approve_signature') }}
+            </button>
+        </form>
+    @elseif($signatureApproved)
+        <span class="payroll-item-actions__badge payroll-item-actions__badge--signed">{{ __('pages.payroll_slip.signature_signed') }}</span>
+    @endif
 
     @if($item->deductions > 0)
         <a

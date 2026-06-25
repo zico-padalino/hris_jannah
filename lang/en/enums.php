@@ -47,6 +47,10 @@ return [
         'draft' => 'Draft',
         'finalized' => 'Finalized',
     ],
+    'payroll_slip_signature_status' => [
+        'pending' => 'Pending approval',
+        'approved' => 'Approved',
+    ],
     'permission' => [
         'dashboard_view' => 'View Dashboard',
         'attendance_scan' => 'Scan Attendance',
