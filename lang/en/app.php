@@ -4,6 +4,7 @@ return [
     'name' => 'Hospital Attendance',
     'tagline' => 'Employee Management',
     'logout' => 'Logout',
+    'account_menu' => 'Account menu',
     'login' => 'Login',
     'save' => 'Save',
     'cancel' => 'Cancel',

@@ -164,10 +164,70 @@ function initLiveClock() {
     window.setInterval(tick, 1000);
 }
 
+function initUserAccountMenus() {
+    document.querySelectorAll('[data-user-account-menu]').forEach((menu) => {
+        const trigger = menu.querySelector('[data-user-account-menu-trigger]');
+        const panel = menu.querySelector('[data-user-account-menu-panel]');
+
+        if (!trigger || !panel) {
+            return;
+        }
+
+        function close() {
+            menu.classList.remove('user-account-menu--open');
+            trigger.setAttribute('aria-expanded', 'false');
+            panel.hidden = true;
+        }
+
+        function open() {
+            document.querySelectorAll('[data-user-account-menu].user-account-menu--open').forEach((other) => {
+                if (other === menu) {
+                    return;
+                }
+
+                other.classList.remove('user-account-menu--open');
+                other.querySelector('[data-user-account-menu-trigger]')?.setAttribute('aria-expanded', 'false');
+                const otherPanel = other.querySelector('[data-user-account-menu-panel]');
+
+                if (otherPanel) {
+                    otherPanel.hidden = true;
+                }
+            });
+
+            menu.classList.add('user-account-menu--open');
+            trigger.setAttribute('aria-expanded', 'true');
+            panel.hidden = false;
+        }
+
+        trigger.addEventListener('click', (event) => {
+            event.stopPropagation();
+
+            if (menu.classList.contains('user-account-menu--open')) {
+                close();
+            } else {
+                open();
+            }
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!menu.contains(event.target)) {
+                close();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                close();
+            }
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
     initReadableTables();
     initSidebarGroups();
     initRupiahInputs();
     initLiveClock();
+    initUserAccountMenus();
 });

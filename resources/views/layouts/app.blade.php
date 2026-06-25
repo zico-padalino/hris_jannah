@@ -69,11 +69,7 @@
                                 </a>
                             @endif
                             <div class="app-header__user-cluster">
-                                @include('partials.user-profile-chip', ['compact' => true])
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="btn-secondary app-header__logout whitespace-nowrap">{{ __('app.logout') }}</button>
-                                </form>
+                                @include('partials.user-account-menu')
                             </div>
                         </div>
                     </div>

@@ -4,6 +4,7 @@ return [
     'name' => 'Absensi RS',
     'tagline' => 'Manajemen Pegawai',
     'logout' => 'Keluar',
+    'account_menu' => 'Menu akun',
     'login' => 'Masuk',
     'save' => 'Simpan',
     'cancel' => 'Batal',
