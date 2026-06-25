@@ -36,13 +36,58 @@ function Stop-PortListeners {
 }
 
 function Test-LaravelServer {
-    param([string]$Url)
+    param(
+        [string]$Url,
+        [int]$TimeoutSec = 30
+    )
     try {
-        $response = Invoke-WebRequest -Uri $Url -UseBasicParsing -TimeoutSec 5
+        $response = Invoke-WebRequest -Uri $Url -UseBasicParsing -TimeoutSec $TimeoutSec -MaximumRedirection 5
         return $response.StatusCode -ge 200 -and $response.StatusCode -lt 500
     } catch {
         return $false
     }
+}
+
+function Get-ServeProcessOutput {
+    param([System.Diagnostics.Process]$Process)
+
+    if ($null -eq $Process -or -not $Process.HasExited) {
+        return $null
+    }
+
+    return "Proses PHP berhenti dengan exit code $($Process.ExitCode). Jalankan manual: php artisan serve"
+}
+
+function Wait-LaravelServer {
+    param(
+        [string]$Url,
+        [System.Diagnostics.Process]$Process,
+        [int]$TimeoutSec = 90
+    )
+
+    $deadline = (Get-Date).AddSeconds($TimeoutSec)
+    $attempt = 0
+
+    while ((Get-Date) -lt $deadline) {
+        $attempt++
+
+        if ($Process.HasExited) {
+            $details = Get-ServeProcessOutput -Process $Process
+            throw "Laravel berhenti sebelum siap.`n$details"
+        }
+
+        if (Test-LaravelServer -Url $Url) {
+            return $true
+        }
+
+        if ($attempt -eq 1 -or ($attempt % 4) -eq 0) {
+            Write-Host "    Menunggu Laravel merespons... (percobaan $attempt)"
+        }
+
+        Start-Sleep -Seconds 2
+    }
+
+    return $false
 }
 
 function Stop-ServeProcess {
@@ -140,14 +185,15 @@ Download: https://developers.cloudflare.com/cloudflare-one/connections/connect-n
 }
 
 $localUrl = "http://${ListenAddress}:${Port}"
+$healthUrl = "${localUrl}/login"
 
 Write-Host "==> Menghentikan tunnel cloudflared lama (jika ada)"
-Stop-CloudflaredProcesses
+Stop-CloudflaredProcesses | Out-Null
 Start-Sleep -Seconds 1
 
 Write-Host "==> Memulai ulang Laravel di port $Port"
-Stop-PortListeners -Port $Port
-Start-Sleep -Seconds 1
+Stop-PortListeners -Port $Port | Out-Null
+Start-Sleep -Seconds 2
 
 Write-Host "==> Menjalankan Laravel: $localUrl"
 $psi = New-Object System.Diagnostics.ProcessStartInfo
@@ -158,16 +204,21 @@ $psi.UseShellExecute = $false
 $psi.CreateNoWindow = $true
 $script:serveProcess = [System.Diagnostics.Process]::Start($psi)
 
-$deadline = (Get-Date).AddSeconds(15)
-$serverReady = $false
-do {
-    Start-Sleep -Milliseconds 500
-    $serverReady = Test-LaravelServer -Url $localUrl
-} while (-not $serverReady -and (Get-Date) -lt $deadline)
+Write-Host "    Permintaan pertama bisa memakan 15-30 detik, mohon tunggu..."
+$serverReady = Wait-LaravelServer -Url $healthUrl -Process $script:serveProcess -TimeoutSec 90
 
 if (-not $serverReady) {
+    $details = Get-ServeProcessOutput -Process $script:serveProcess
     Stop-ServeProcess
-    throw "Laravel tidak merespons di $localUrl. Cek database/MySQL lalu coba lagi."
+    throw @"
+Laravel tidak merespons di $healthUrl dalam 90 detik.
+Cek:
+  1. MySQL/MariaDB berjalan (php artisan db:show)
+  2. Port $Port tidak dipakai aplikasi lain
+  3. Jalankan manual: php artisan serve --host=$ListenAddress --port=$Port
+
+$details
+"@
 }
 
 Write-Host "    Laravel siap."
