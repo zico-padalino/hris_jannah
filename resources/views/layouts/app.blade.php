@@ -53,18 +53,35 @@
         @endauth
 
         <div class="flex min-h-0 min-w-0 flex-1 flex-col lg:h-screen lg:overflow-hidden">
+            @include('partials.mobile-nav')
+
             @auth
                 <header class="app-header app-topbar sticky top-0 z-40 shrink-0 border-b-2 px-3 py-2.5 sm:px-4 sm:py-3 lg:px-8 lg:py-0">
                     <div class="app-header__inner">
+                        <button
+                            type="button"
+                            id="mobile-nav-toggle"
+                            class="app-header__menu-btn lg:hidden"
+                            aria-expanded="false"
+                            aria-controls="mobile-nav-menu"
+                            aria-label="{{ __('app.open_menu') }}"
+                        >
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+
                         <h1 class="page-title app-header__title">@yield('title', __('nav.dashboard'))</h1>
-                        <div class="app-header__clock">
+
+                        <div class="app-header__clock app-header__clock--desktop">
                             @include('partials.header-live-clock')
                         </div>
+
                         <div class="app-header__actions">
                             @if($sidebar->visible(auth()->user(), SidebarNavItem::LeaveApproval) && $pendingLeaveApprovalCount > 0)
                                 <a
                                     href="{{ route('leave-approvals.index', ['status' => 'pending']) }}"
-                                    class="leave-badge-pulse app-header__leave-badge inline-flex shrink-0 items-center rounded-lg border-2 border-amber-500 bg-amber-100 px-3 py-1.5 text-sm font-bold text-amber-900 hover:bg-amber-200 dark:border-amber-400 dark:bg-amber-950 dark:text-amber-100 dark:hover:bg-amber-900"
+                                    class="leave-badge-pulse app-header__leave-badge app-header__leave-badge--desktop inline-flex shrink-0 items-center rounded-lg border-2 border-amber-500 bg-amber-100 px-3 py-1.5 text-sm font-bold text-amber-900 hover:bg-amber-200 dark:border-amber-400 dark:bg-amber-950 dark:text-amber-100 dark:hover:bg-amber-900"
                                 >
                                     {{ __('app.new_requests', ['count' => $pendingLeaveApprovalCount]) }}
                                 </a>
@@ -73,6 +90,20 @@
                                 @include('partials.user-account-menu')
                             </div>
                         </div>
+                    </div>
+
+                    <div class="app-header__mobile-meta lg:hidden">
+                        <div class="app-header__clock app-header__clock--mobile">
+                            @include('partials.header-live-clock')
+                        </div>
+                        @if($sidebar->visible(auth()->user(), SidebarNavItem::LeaveApproval) && $pendingLeaveApprovalCount > 0)
+                            <a
+                                href="{{ route('leave-approvals.index', ['status' => 'pending']) }}"
+                                class="leave-badge-pulse app-header__leave-badge app-header__leave-badge--mobile inline-flex shrink-0 items-center rounded-lg border-2 border-amber-500 bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-900 hover:bg-amber-200 dark:border-amber-400 dark:bg-amber-950 dark:text-amber-100 dark:hover:bg-amber-900"
+                            >
+                                {{ __('app.new_requests', ['count' => $pendingLeaveApprovalCount]) }}
+                            </a>
+                        @endif
                     </div>
                 </header>
             @endauth
