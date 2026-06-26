@@ -293,9 +293,21 @@ function initMobileNav() {
         return;
     }
 
+    function syncMobileHeaderOffset() {
+        const header = document.querySelector('.app-header');
+
+        if (!header) {
+            return;
+        }
+
+        document.documentElement.style.setProperty('--mobile-header-offset', `${header.offsetHeight}px`);
+    }
+
     function openMenu() {
+        syncMobileHeaderOffset();
         overlay.classList.add('mobile-nav-overlay--open');
         overlay.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('mobile-nav-open');
         toggle?.setAttribute('aria-expanded', 'true');
         toggle?.setAttribute('aria-label', toggle.dataset.closeLabel || toggle.getAttribute('aria-label') || '');
         document.body.classList.add('overflow-hidden');
@@ -304,10 +316,14 @@ function initMobileNav() {
     function closeMenu() {
         overlay.classList.remove('mobile-nav-overlay--open');
         overlay.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('mobile-nav-open');
         toggle?.setAttribute('aria-expanded', 'false');
         toggle?.setAttribute('aria-label', toggle.dataset.openLabel || toggle.getAttribute('aria-label') || '');
         document.body.classList.remove('overflow-hidden');
     }
+
+    syncMobileHeaderOffset();
+    window.addEventListener('resize', syncMobileHeaderOffset);
 
     if (toggle) {
         toggle.addEventListener('click', () => {
