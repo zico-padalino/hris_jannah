@@ -27,6 +27,8 @@ class AttendanceService
         array $faceDescriptor,
         ?UploadedFile $photo = null,
     ): Attendance {
+        $this->ensureEmployeeCanRecordAttendance($employee);
+
         return DB::transaction(function () use ($employee, $latitude, $longitude, $faceDescriptor, $photo) {
             $branch = Branch::query()->findOrFail($employee->branch_id);
             $locations = $this->geofenceService->getActiveLocationsForBranch($branch->id);
@@ -100,7 +102,15 @@ class AttendanceService
 
         /** @var Employee $employee */
         $employee = $match['employee'];
-        $attendance = $this->record($employee, $latitude, $longitude, $faceDescriptor, $photo);
+
+        try {
+            $attendance = $this->record($employee, $latitude, $longitude, $faceDescriptor, $photo);
+        } catch (\DomainException $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage(),
+            ];
+        }
 
         $message = $attendance->type->label();
         if ($attendance->is_late) {
@@ -119,6 +129,8 @@ class AttendanceService
 
     public function recordByGps(Employee $employee, float $latitude, float $longitude): Attendance
     {
+        $this->ensureEmployeeCanRecordAttendance($employee);
+
         return DB::transaction(function () use ($employee, $latitude, $longitude) {
             $branch = Branch::query()->findOrFail($employee->branch_id);
             $locations = $this->geofenceService->getActiveLocationsForBranch($branch->id);
@@ -161,7 +173,14 @@ class AttendanceService
     /** @return array{success: bool, message: string, attendance?: Attendance} */
     public function recordByGpsForEmployee(Employee $employee, float $latitude, float $longitude): array
     {
-        $attendance = $this->recordByGps($employee, $latitude, $longitude);
+        try {
+            $attendance = $this->recordByGps($employee, $latitude, $longitude);
+        } catch (\DomainException $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage(),
+            ];
+        }
 
         $message = $attendance->type->label();
         if ($attendance->is_late) {
@@ -191,6 +210,13 @@ class AttendanceService
             'is_primary' => $isPrimary,
             'enrolled_at' => now(),
         ]);
+    }
+
+    private function ensureEmployeeCanRecordAttendance(Employee $employee): void
+    {
+        if (! $employee->canRecordAttendance()) {
+            throw new \DomainException(__('attendance.no_shift_assigned'));
+        }
     }
 
     public function deleteFace(EmployeeFace $face): void

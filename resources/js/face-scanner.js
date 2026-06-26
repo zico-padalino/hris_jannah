@@ -409,6 +409,14 @@ async function captureAndSubmit({
         ? `Wajah cocok (${matchResult.face.employee_name}). Memproses absensi...`
         : 'Wajah terdaftar. Menyimpan data...';
 
+    if (config.attendanceBlocked) {
+        guide?.hide();
+        setStatus(statusEl, config.blockedMessage || 'Belum ada jadwal shift kerja.', 'error');
+        setCameraState(cameraEl, null);
+
+        return;
+    }
+
     guide?.hide();
     setStatus(statusEl, successMessage, 'ready');
     setCameraState(cameraEl, 'matched');
@@ -673,12 +681,23 @@ async function initFaceScanner(config) {
     });
 
     window.addEventListener('face-scanner:resume', () => {
+        if (config.attendanceBlocked) {
+            return;
+        }
+
         paused = false;
     });
 
     try {
         await loadModels(statusEl);
         await startCamera(video, statusEl);
+
+        if (config.attendanceBlocked) {
+            setStatus(statusEl, config.blockedMessage || 'Belum ada jadwal shift kerja.', 'error');
+            guide?.hide();
+
+            return;
+        }
 
         if (config.autoScan !== false) {
             setStatus(statusEl, 'Ikuti panduan animasi di kamera.', 'scanning');

@@ -8,6 +8,7 @@
         $photoEnabled = $methods['photo'] ?? false;
         $gpsEnabled = $methods['gps'] ?? false;
         $defaultMethod = $photoEnabled ? 'photo' : ($gpsEnabled ? 'gps' : null);
+        $shiftBlocksAttendance = $shiftBlocksAttendance ?? false;
     @endphp
 
     @if(! $photoEnabled && ! $gpsEnabled)
@@ -36,6 +37,15 @@
             </ol>
             <p class="mt-2 text-xs">Alternatif: buka <code>http://localhost:8000</code> langsung di komputer server.</p>
         </div>
+
+        @if($shiftBlocksAttendance)
+            <div class="app-notice app-notice--error mb-6">
+                <p>
+                    <strong>{{ __('attendance.no_shift_assigned') }}</strong>
+                    {{ __('attendance.no_shift_assigned_hint') }}
+                </p>
+            </div>
+        @endif
 
         @if($photoEnabled && $gpsEnabled)
             <div class="attendance-scan-tabs" role="tablist" aria-label="Metode absensi">
@@ -90,7 +100,7 @@
                     <h2 class="attendance-scan-panel__title {{ $gpsEnabled && $photoEnabled ? 'hidden' : '' }}" id="form-title-default">Form Absensi</h2>
                     <h2 class="attendance-scan-panel__title hidden" id="form-title-photo">Form Absensi</h2>
 
-                    <form id="attendance-form" method="POST" action="{{ route('attendance.scan.store') }}" enctype="multipart/form-data" class="attendance-scan-form">
+                    <form id="attendance-form" method="POST" action="{{ route('attendance.scan.store') }}" enctype="multipart/form-data" class="attendance-scan-form" @if($shiftBlocksAttendance) data-shift-blocked="1" @endif>
                         @csrf
                         <input type="hidden" name="method" id="attendance-method" value="{{ $defaultMethod }}">
                         <input type="hidden" name="face_descriptor" id="face-descriptor">
@@ -148,7 +158,7 @@
                         <div id="branch-locations" class="attendance-scan-locations"></div>
 
                         @if($gpsEnabled)
-                            <button type="submit" id="btn-submit-gps" class="btn-primary {{ $defaultMethod === 'photo' ? 'hidden' : '' }}">
+                            <button type="submit" id="btn-submit-gps" class="btn-primary {{ $defaultMethod === 'photo' ? 'hidden' : '' }}" @if($shiftBlocksAttendance) disabled @endif>
                                 Absen dengan GPS Lokasi
                             </button>
                         @endif
@@ -183,6 +193,7 @@
     <script>
         const branches = @json($branchesForJs);
         const defaultBranchId = @json($defaultBranchId);
+        const shiftBlocksAttendance = @json($shiftBlocksAttendance ?? false);
         const photoEnabled = @json($photoEnabled);
         const gpsEnabled = @json($gpsEnabled);
 
@@ -230,6 +241,13 @@
         fetchLocation();
         document.getElementById('btn-get-location')?.addEventListener('click', fetchLocation);
 
+        const attendanceForm = document.getElementById('attendance-form');
+        if (shiftBlocksAttendance && attendanceForm) {
+            attendanceForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+            });
+        }
+
         function setScanMethod(method) {
             const methodInput = document.getElementById('attendance-method');
             if (methodInput) methodInput.value = method;
@@ -245,7 +263,7 @@
             document.getElementById('employee-select-wrap')?.classList.toggle('hidden', method !== 'gps');
             document.getElementById('btn-submit-gps')?.classList.toggle('hidden', method !== 'gps');
 
-            if (method === 'photo') {
+            if (method === 'photo' && ! shiftBlocksAttendance) {
                 window.dispatchEvent(new CustomEvent('face-scanner:resume'));
             } else {
                 window.dispatchEvent(new CustomEvent('face-scanner:pause'));
@@ -282,8 +300,14 @@
                 scanIntervalMs: 450,
                 autoScan: true,
                 poseGuide: 'attendance',
-                startPaused: {{ $defaultMethod === 'gps' ? 'true' : 'false' }},
+                startPaused: {{ ($defaultMethod === 'gps' || ($shiftBlocksAttendance ?? false)) ? 'true' : 'false' }},
+                attendanceBlocked: @json($shiftBlocksAttendance ?? false),
+                blockedMessage: @json(__('attendance.no_shift_assigned')),
             };
+        }
+
+        if (shiftBlocksAttendance) {
+            window.dispatchEvent(new CustomEvent('face-scanner:pause'));
         }
     </script>
 @endpush

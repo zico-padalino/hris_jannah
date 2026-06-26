@@ -17,4 +17,6 @@ return [
     'web_disabled_body' => 'Metode scan foto & wajah serta GPS lokasi saat ini dinonaktifkan. Administrator dapat mengaktifkannya melalui',
     'fingerprint_notice_lead' => 'Petunjuk absensi:',
     'fingerprint_notice_body' => 'Silakan melakukan absensi melalui mesin sidik jari (fingerprint) yang tersedia, atau hubungi petugas operator apabila memerlukan bantuan.',
+    'no_shift_assigned' => 'Belum ada jadwal shift kerja. Hubungi HR untuk pengaturan shift sebelum absen.',
+    'no_shift_assigned_hint' => 'Shift kerja Anda belum diatur. Silakan hubungi HR atau administrator cabang.',
 ];

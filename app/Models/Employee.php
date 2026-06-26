@@ -112,6 +112,11 @@ class Employee extends Model
         return $this->shift_id ? ($this->shift?->name ?? '—') : 'Belum diatur';
     }
 
+    public function canRecordAttendance(): bool
+    {
+        return $this->is_non_shift || $this->shift_id !== null;
+    }
+
     /** @return array{is_non_shift: bool, shift_id: int|null} */
     public static function shiftFieldsFromSelection(string $selection): array
     {

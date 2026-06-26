@@ -17,4 +17,6 @@ return [
     'web_disabled_body' => 'Photo & face scan and GPS location methods are currently disabled. An administrator can enable them in',
     'fingerprint_notice_lead' => 'Attendance guidance:',
     'fingerprint_notice_body' => 'Please clock in using the available fingerprint machine, or contact the operator if you need assistance.',
+    'no_shift_assigned' => 'No work shift assigned yet. Contact HR to set up your shift before clocking in.',
+    'no_shift_assigned_hint' => 'Your work shift has not been configured. Please contact HR or your branch administrator.',
 ];

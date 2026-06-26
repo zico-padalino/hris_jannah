@@ -71,6 +71,7 @@ class AttendanceController extends WebController
 
         $methods = $this->attendanceMethods->all();
         $isEmployeeAccount = $user->employee !== null && $user->role->value === 'employee';
+        $shiftBlocksAttendance = $isEmployeeAccount && ! $user->employee->canRecordAttendance();
         $employeesForGps = collect();
 
         if ($methods['gps'] && ! $isEmployeeAccount) {
@@ -117,6 +118,7 @@ class AttendanceController extends WebController
             'defaultBranchId',
             'methods',
             'isEmployeeAccount',
+            'shiftBlocksAttendance',
             'employeesForGps',
             'facesForJs',
             'faceMatchThreshold',

@@ -110,13 +110,20 @@ class AttendanceController extends Controller
             return response()->json(['message' => 'Wajah belum didaftarkan. Hubungi HRD.'], 422);
         }
 
-        $attendance = $this->attendanceService->record(
-            employee: $employee,
-            latitude: (float) $data['latitude'],
-            longitude: (float) $data['longitude'],
-            faceDescriptor: $data['face_descriptor'],
-            photo: $request->file('photo'),
-        );
+        try {
+            $attendance = $this->attendanceService->record(
+                employee: $employee,
+                latitude: (float) $data['latitude'],
+                longitude: (float) $data['longitude'],
+                faceDescriptor: $data['face_descriptor'],
+                photo: $request->file('photo'),
+            );
+        } catch (\DomainException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 422);
+        }
 
         $success = $attendance->status->isSuccessful();
         $message = $attendance->type->label();

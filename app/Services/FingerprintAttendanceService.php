@@ -156,6 +156,15 @@ class FingerprintAttendanceService
             return 'failed';
         }
 
+        if (! $employee->canRecordAttendance()) {
+            $log->update([
+                'process_status' => 'failed',
+                'process_message' => __('attendance.no_shift_assigned'),
+            ]);
+
+            return 'failed';
+        }
+
         try {
             $attendance = DB::transaction(function () use ($device, $employee, $parsed) {
                 $evaluation = $this->shiftScheduleService->evaluatePunch(
