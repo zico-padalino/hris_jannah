@@ -6,6 +6,7 @@ use App\Enums\Permission;
 use App\Services\AppBrandingService;
 use App\Services\LeaveBadgeService;
 use App\Services\PayrollSlipBadgeService;
+use App\Services\ProfileFaceService;
 use App\Services\SidebarService;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\URL;
@@ -72,12 +73,16 @@ class AppServiceProvider extends ServiceProvider
 
             $badgeService = app(LeaveBadgeService::class);
             $payrollBadgeService = app(PayrollSlipBadgeService::class);
+            $profileFaceService = app(ProfileFaceService::class);
+
+            $user->loadMissing(['employee.faces']);
 
             $view->with([
                 'pendingLeaveApprovalCount' => $badgeService->pendingApprovalCount($user),
                 'pendingLeaveApprovalBreakdown' => $badgeService->pendingApprovalBreakdown($user),
                 'pendingOwnLeaveCount' => $badgeService->pendingOwnCount($user),
                 'pendingPayrollSignatureCount' => $payrollBadgeService->pendingApprovalCount($user),
+                'needsFaceEnrollment' => $profileFaceService->needsEnrollment($user),
             ]);
         });
     }

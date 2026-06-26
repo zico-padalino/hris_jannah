@@ -4,7 +4,9 @@
 @section('subtitle', __('pages.profile.edit_subtitle'))
 
 @section('content')
-    <div class="mx-auto max-w-2xl">
+    <div class="mx-auto max-w-2xl space-y-6">
+        @include('partials.profile-face-section')
+
         <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="app-card space-y-6 p-5 sm:p-6">
             @csrf
             @method('PUT')
@@ -29,7 +31,7 @@
                             type="file"
                             name="profile_photo"
                             accept="image/jpeg,image/png,image/webp"
-                            class="mt-1 block w-full text-sm file:mr-3 file:rounded-md file:border-0 file:bg-teal-50 file:px-3 file:py-2 file:text-sm file:font-semibold file:text-teal-800 hover:file:bg-teal-100"
+                            class="profile-photo-panel__file-input mt-1 block w-full text-sm"
                         >
                     </label>
                     <p class="text-xs app-muted-text">{{ __('pages.profile.photo_hint') }}</p>
@@ -44,7 +46,7 @@
             </section>
 
             <section class="space-y-4">
-                <h2 class="text-base font-bold text-slate-900">{{ __('pages.profile.account_section') }}</h2>
+                <h2 class="profile-section-title">{{ __('pages.profile.account_section') }}</h2>
 
                 <div class="grid gap-4 sm:grid-cols-2">
                     <label class="block min-w-0 sm:col-span-2">
@@ -71,8 +73,8 @@
                 </div>
             </section>
 
-            <section class="space-y-4 border-t border-slate-200 pt-4">
-                <h2 class="text-base font-bold text-slate-900">{{ __('pages.profile.security_section') }}</h2>
+            <section class="space-y-4 border-t pt-4" style="border-color: var(--app-border);">
+                <h2 class="profile-section-title">{{ __('pages.profile.security_section') }}</h2>
 
                 <div class="grid gap-4 sm:grid-cols-2">
                     <label class="block min-w-0">
@@ -87,7 +89,7 @@
                 </div>
             </section>
 
-            <div class="flex flex-col gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:justify-end">
+            <div class="flex flex-col gap-3 border-t pt-4 sm:flex-row sm:justify-end" style="border-color: var(--app-border);">
                 <a href="{{ url()->previous() !== url()->current() ? url()->previous() : route('dashboard') }}" class="btn-secondary w-full text-center sm:w-auto">
                     {{ __('app.cancel') }}
                 </a>

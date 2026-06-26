@@ -48,6 +48,7 @@ Route::middleware('guest')->group(function () {
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::post('/profile/face', [ProfileController::class, 'storeFace'])->name('profile.face.store');
         Route::get('/profile/photo', [ProfileController::class, 'photo'])->name('profile.photo');
 
     Route::middleware('permission:dashboard.view')->group(function () {

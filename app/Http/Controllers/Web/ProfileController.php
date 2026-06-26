@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Services\AttendanceMethodSettingsService;
+use App\Services\AttendanceService;
+use App\Services\ProfileFaceService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,14 +16,25 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ProfileController extends WebController
 {
+    public function __construct(
+        private readonly AttendanceService $attendanceService,
+        private readonly AttendanceMethodSettingsService $attendanceMethods,
+        private readonly ProfileFaceService $profileFaceService,
+    ) {}
+
     public function edit(Request $request): View
     {
         $user = $request->user();
-        $user->load('employee');
+        $user->load(['employee.faces', 'employee.branch']);
+
+        $employee = $user->employee;
 
         return view('profile.edit', [
             'user' => $user,
-            'employee' => $user->employee,
+            'employee' => $employee,
+            'canEnrollFace' => $this->profileFaceService->canEnrollFace($user),
+            'needsFaceEnrollment' => $this->profileFaceService->needsEnrollment($user),
+            'faceCount' => $this->profileFaceService->registeredFaceCount($user),
         ]);
     }
 
@@ -74,6 +88,46 @@ class ProfileController extends WebController
         return redirect()
             ->route('profile.edit')
             ->with('success', __('pages.profile.saved'));
+    }
+
+    public function storeFace(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+        $employee = $user->employee;
+
+        if ($employee === null) {
+            abort(403, 'Akun tidak terhubung ke data pegawai.');
+        }
+
+        if (! $this->attendanceMethods->photoEnabled()) {
+            return back()->with('error', __('pages.profile.face_method_disabled'));
+        }
+
+        $data = $request->validate([
+            'photo' => ['required', 'image', 'max:5120'],
+            'face_descriptor' => ['required', 'json'],
+            'is_primary' => ['sometimes', 'boolean'],
+        ]);
+
+        $descriptor = json_decode($data['face_descriptor'], true);
+
+        if (! is_array($descriptor) || count($descriptor) < 64) {
+            return back()
+                ->with('error', __('pages.profile.face_invalid'))
+                ->withFragment('face-enrollment');
+        }
+
+        $this->attendanceService->enrollFace(
+            employee: $employee,
+            faceDescriptor: $descriptor,
+            photo: $request->file('photo'),
+            isPrimary: $request->boolean('is_primary', true),
+        );
+
+        return redirect()
+            ->route('profile.edit')
+            ->with('success', __('pages.profile.face_enrolled'))
+            ->withFragment('face-enrollment');
     }
 
     public function photo(Request $request): BinaryFileResponse|Response
