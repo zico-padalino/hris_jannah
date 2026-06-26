@@ -3729,6 +3729,219 @@ html.dark .mobile-nav-overlay__backdrop {
     font-weight: 600;
 }
 
+.dashboard-notif-card {
+    margin-bottom: 0.875rem;
+}
+
+.dashboard-notif-card__head {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem 0.75rem;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+}
+
+.dashboard-notif-card__head--bordered {
+    border-bottom: 1px solid var(--app-border);
+}
+
+.dashboard-notif-card__main {
+    align-items: center;
+    display: flex;
+    flex: 1 1 12rem;
+    gap: 0.625rem;
+    min-width: 0;
+}
+
+.dashboard-notif-card__icon {
+    align-items: center;
+    background-color: var(--app-notification-icon-bg);
+    border-radius: 0.625rem;
+    box-shadow: 0 2px 6px var(--app-shadow);
+    color: var(--app-primary-text);
+    display: inline-flex;
+    flex-shrink: 0;
+    height: 2.25rem;
+    justify-content: center;
+    position: relative;
+    width: 2.25rem;
+}
+
+.dashboard-notif-card__icon--idle {
+    background-color: var(--app-table-head-bg);
+}
+
+.dashboard-notif-card__icon svg {
+    height: 1.125rem;
+    width: 1.125rem;
+}
+
+.dashboard-notif-card__count {
+    align-items: center;
+    background-color: var(--app-notification-count-bg);
+    border-radius: 9999px;
+    box-shadow: 0 0 0 1.5px var(--app-surface);
+    color: var(--app-notification-count-text);
+    display: flex;
+    font-size: 0.5625rem;
+    font-weight: 700;
+    height: 0.9375rem;
+    justify-content: center;
+    min-width: 0.9375rem;
+    padding: 0 0.1875rem;
+    position: absolute;
+    right: -0.1875rem;
+    top: -0.1875rem;
+}
+
+.dashboard-notif-card__body {
+    min-width: 0;
+}
+
+.dashboard-notif-card__title {
+    color: var(--app-text);
+    font-size: 0.9375rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.dashboard-notif-card__subtitle {
+    color: var(--app-text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-top: 0.125rem;
+}
+
+.dashboard-notif-card__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3125rem;
+    margin-top: 0.375rem;
+}
+
+.dashboard-notif-chip {
+    border-radius: 9999px;
+    font-size: 0.625rem;
+    font-weight: 700;
+    line-height: 1.2;
+    padding: 0.125rem 0.4375rem;
+    white-space: nowrap;
+}
+
+.dashboard-notif-chip--leave {
+    background-color: var(--app-primary-soft);
+    color: var(--app-primary-soft-text);
+}
+
+.dashboard-notif-chip--permission {
+    background-color: #f0f9ff;
+    color: #075985;
+}
+
+.dashboard-notif-chip--overtime {
+    background-color: #f5f3ff;
+    color: #5b21b6;
+}
+
+html.dark .dashboard-notif-chip--permission {
+    background-color: rgb(12 74 110 / 0.45);
+    color: #bae6fd;
+}
+
+html.dark .dashboard-notif-chip--overtime {
+    background-color: rgb(76 29 149 / 0.35);
+    color: #ddd6fe;
+}
+
+.easy-read .dashboard-notif-card__btn.btn-primary {
+    font-size: 0.8125rem;
+    min-height: 2.25rem;
+    padding: 0.375rem 0.875rem;
+}
+
+.dashboard-notif-card__recent {
+    background-color: var(--app-surface-muted);
+    padding: 0.625rem 1rem 0.75rem;
+}
+
+.dashboard-notif-card__recent-label {
+    color: var(--app-text-muted);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    margin-bottom: 0.4375rem;
+    text-transform: uppercase;
+}
+
+.dashboard-notif-card__recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.dashboard-notif-recent-item {
+    align-items: center;
+    background-color: var(--app-surface);
+    border: 1px solid var(--app-border);
+    border-radius: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+    padding: 0.4375rem 0.625rem;
+    text-decoration: none;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.dashboard-notif-recent-item:hover {
+    background-color: var(--app-surface-muted);
+    border-color: var(--app-primary);
+}
+
+.dashboard-notif-recent-item__name {
+    color: var(--app-text);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dashboard-notif-recent-item__meta {
+    color: var(--app-text-muted);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-top: 0.0625rem;
+}
+
+.dashboard-notif-recent-item__badges {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    gap: 0.3125rem;
+}
+
+.dashboard-notif-recent-item__type {
+    background-color: var(--app-surface-muted);
+    border: 1px solid var(--app-border);
+    border-radius: 0.3125rem;
+    color: var(--app-text);
+    font-size: 0.625rem;
+    font-weight: 700;
+    padding: 0.125rem 0.375rem;
+    white-space: nowrap;
+}
+
+.app-status-pending--compact {
+    font-size: 0.625rem;
+    font-weight: 700;
+    padding: 0.125rem 0.375rem;
+}
+
 .dashboard-chart-canvas {
     background: linear-gradient(180deg, rgb(255 250 243 / 0.65) 0%, rgb(255 255 255 / 0.35) 100%);
     border: 1px solid var(--app-border);

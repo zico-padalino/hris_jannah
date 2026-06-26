@@ -6,59 +6,61 @@
     @endphp
 
     <div @class([
-        'panel mb-6 overflow-hidden',
+        'panel dashboard-notif-card overflow-hidden',
         'app-notification-panel--active leave-badge-pulse' => $totalPending > 0,
     ])>
-        <div class="dashboard-section-head flex flex-col gap-4 border-b-2 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-            <div class="flex items-start gap-3">
+        <div @class([
+            'dashboard-notif-card__head',
+            'dashboard-notif-card__head--bordered' => $recent->isNotEmpty(),
+        ])>
+            <div class="dashboard-notif-card__main">
                 <span @class([
-                    'app-notification-icon',
+                    'dashboard-notif-card__icon',
                     'leave-badge-pulse' => $totalPending > 0,
-                    'app-notification-icon--idle' => $totalPending === 0,
+                    'dashboard-notif-card__icon--idle' => $totalPending === 0,
                 ])>
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
                     @if($totalPending > 0)
-                        <span class="app-notification-banner__count">
+                        <span class="dashboard-notif-card__count">
                             {{ $totalPending > 99 ? '99+' : $totalPending }}
                         </span>
                     @endif
                 </span>
-                <div>
-                    <h2 class="dashboard-section-title">{{ __('pages.dashboard.approval_title') }}</h2>
-                    <p class="dashboard-section-subtitle mt-0.5">
+                <div class="dashboard-notif-card__body">
+                    <h2 class="dashboard-notif-card__title">{{ __('pages.dashboard.approval_title') }}</h2>
+                    <p class="dashboard-notif-card__subtitle">
                         @if($totalPending > 0)
                             {{ __('pages.dashboard.approval_pending', ['count' => $totalPending]) }}
                         @else
                             {{ __('pages.dashboard.approval_clear') }}
                         @endif
                     </p>
-                    <div class="mt-2 flex flex-wrap gap-2 text-xs font-bold">
-                        <span class="rounded-md bg-emerald-100 px-2 py-1 text-emerald-800">{{ __('leave.category_leave') }} {{ $breakdown['cuti'] ?? 0 }}</span>
-                        <span class="rounded-md bg-sky-100 px-2 py-1 text-sky-800">{{ __('leave.category_permission') }} {{ $breakdown['izin'] ?? 0 }}</span>
-                        <span class="rounded-md bg-violet-100 px-2 py-1 text-violet-800">{{ __('leave.category_overtime') }} {{ $breakdown['lembur'] ?? 0 }}</span>
-                    </div>
+                    @if($totalPending > 0)
+                        <div class="dashboard-notif-card__chips">
+                            <span class="dashboard-notif-chip dashboard-notif-chip--leave">{{ __('leave.category_leave') }} {{ $breakdown['cuti'] ?? 0 }}</span>
+                            <span class="dashboard-notif-chip dashboard-notif-chip--permission">{{ __('leave.category_permission') }} {{ $breakdown['izin'] ?? 0 }}</span>
+                            <span class="dashboard-notif-chip dashboard-notif-chip--overtime">{{ __('leave.category_overtime') }} {{ $breakdown['lembur'] ?? 0 }}</span>
+                        </div>
+                    @endif
                 </div>
             </div>
-            <a href="{{ route('leave-approvals.index', ['status' => 'pending']) }}" class="btn-primary w-full sm:w-auto">
+            <a href="{{ route('leave-approvals.index', ['status' => 'pending']) }}" class="btn-primary dashboard-notif-card__btn shrink-0">
                 {{ __('pages.dashboard.approval_process') }}
             </a>
         </div>
 
         @if($recent->isNotEmpty())
-            <div class="bg-slate-50 px-4 py-4 dark:bg-slate-900/40 sm:px-6">
-                <h3 class="dashboard-section-subtitle mb-3 text-sm uppercase tracking-wide">{{ __('pages.dashboard.approval_recent') }}</h3>
-                <ul class="space-y-2">
+            <div class="dashboard-notif-card__recent">
+                <p class="dashboard-notif-card__recent-label">{{ __('pages.dashboard.approval_recent') }}</p>
+                <ul class="dashboard-notif-card__recent-list">
                     @foreach($recent as $leave)
                         <li>
-                            <a
-                                href="{{ route('leave-approvals.index', ['status' => 'pending']) }}"
-                                class="flex flex-col gap-2 rounded-lg border-2 border-slate-200 bg-white px-4 py-3 transition hover:border-teal-300 dark:border-slate-600 dark:bg-slate-800/60 dark:hover:border-teal-500 sm:flex-row sm:items-center sm:justify-between"
-                            >
+                            <a href="{{ route('leave-approvals.index', ['status' => 'pending']) }}" class="dashboard-notif-recent-item">
                                 <div class="min-w-0">
-                                    <p class="truncate font-bold text-slate-900 dark:text-slate-100">{{ $leave->employee->name }}</p>
-                                    <p class="text-sm font-semibold text-slate-600 dark:text-slate-400">
+                                    <p class="dashboard-notif-recent-item__name">{{ $leave->employee->name }}</p>
+                                    <p class="dashboard-notif-recent-item__meta">
                                         {{ $leave->branch->name }}
                                         · {{ $leave->start_date->format('d/m/Y') }}
                                         @if(! $leave->start_date->isSameDay($leave->end_date))
@@ -66,13 +68,9 @@
                                         @endif
                                     </p>
                                 </div>
-                                <div class="flex shrink-0 items-center gap-2">
-                                    <span class="rounded-md border-2 border-slate-300 bg-slate-50 px-2.5 py-1 text-xs font-bold text-slate-800">
-                                        {{ $leave->type->label() }}
-                                    </span>
-                                    <span class="app-status-pending">
-                                        {{ __('app.pending') }}
-                                    </span>
+                                <div class="dashboard-notif-recent-item__badges">
+                                    <span class="dashboard-notif-recent-item__type">{{ $leave->type->label() }}</span>
+                                    <span class="app-status-pending app-status-pending--compact">{{ __('app.pending') }}</span>
                                 </div>
                             </a>
                         </li>
