@@ -45,18 +45,26 @@
     --app-header-bg: #ffffff;
     --app-header-border: #F88F23;
     --app-topbar-height: 4.5rem;
-    --app-alert-success-bg: #ecfdf5;
-    --app-alert-success-border: #10b981;
-    --app-alert-success-text: #047857;
-    --app-alert-error-bg: #fef2f2;
-    --app-alert-error-border: #ef4444;
-    --app-alert-error-text: #b91c1c;
+    --app-alert-success-bg: #fffdf8;
+    --app-alert-success-border: #bbf7d0;
+    --app-alert-success-accent: #10b981;
+    --app-alert-success-text: #065f46;
+    --app-alert-success-icon: #059669;
+    --app-alert-error-bg: #fff8f8;
+    --app-alert-error-border: #fecaca;
+    --app-alert-error-accent: #ef4444;
+    --app-alert-error-text: #991b1b;
+    --app-alert-error-icon: #dc2626;
     --app-alert-warning-bg: #fff8eb;
-    --app-alert-warning-border: #FBB931;
+    --app-alert-warning-border: #FFE3B3;
+    --app-alert-warning-accent: #F88F23;
     --app-alert-warning-text: #9a4210;
+    --app-alert-warning-icon: #EC6014;
     --app-alert-info-bg: #fffdf8;
-    --app-alert-info-border: #F88F23;
+    --app-alert-info-border: #FFE3B3;
+    --app-alert-info-accent: #EC6014;
     --app-alert-info-text: #7c2d12;
+    --app-alert-info-icon: #EC6014;
     --app-notification-bg: #fff8eb;
     --app-notification-bg-end: #ffe9c2;
     --app-notification-border: #FBB931;
@@ -122,18 +130,26 @@ html.dark {
     --app-sidebar-active: #9a3412;
     --app-header-bg: #24180c;
     --app-header-border: #EC6014;
-    --app-alert-success-bg: #052e24;
-    --app-alert-success-border: #10b981;
-    --app-alert-success-text: #6ee7b7;
+    --app-alert-success-bg: #1a2e24;
+    --app-alert-success-border: #065f46;
+    --app-alert-success-accent: #10b981;
+    --app-alert-success-text: #a7f3d0;
+    --app-alert-success-icon: #34d399;
     --app-alert-error-bg: #3f0d12;
-    --app-alert-error-border: #f87171;
+    --app-alert-error-border: #7f1d1d;
+    --app-alert-error-accent: #f87171;
     --app-alert-error-text: #fecaca;
+    --app-alert-error-icon: #fca5a5;
     --app-alert-warning-bg: #3d2a14;
-    --app-alert-warning-border: #F88F23;
+    --app-alert-warning-border: #6b4d2a;
+    --app-alert-warning-accent: #F88F23;
     --app-alert-warning-text: #FFE3B3;
+    --app-alert-warning-icon: #FBB931;
     --app-alert-info-bg: #2d2012;
-    --app-alert-info-border: #EC6014;
+    --app-alert-info-border: #6b4d2a;
+    --app-alert-info-accent: #EC6014;
     --app-alert-info-text: #FFE3B3;
+    --app-alert-info-icon: #FBB931;
     --app-notification-bg: #3d2a14;
     --app-notification-bg-end: #2d2012;
     --app-notification-border: #6b4d2a;
@@ -1834,36 +1850,88 @@ html.dark .theme-toggle__moon {
 
 /* Alert */
 .easy-read .alert {
-    border-radius: 0.5rem;
-    border-width: 2px;
-    font-size: 1rem;
+    align-items: flex-start;
+    border: 1px solid var(--app-border);
+    border-left-width: 4px;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 10px var(--app-shadow);
+    display: flex;
+    font-size: 0.9375rem;
     font-weight: 600;
-    margin-bottom: 1.5rem;
-    padding: 1rem 1.25rem;
+    gap: 0.75rem;
+    line-height: 1.45;
+    margin-bottom: 1.25rem;
+    padding: 0.875rem 1rem;
+}
+
+.alert__icon-wrap {
+    align-items: center;
+    border-radius: 9999px;
+    display: inline-flex;
+    flex-shrink: 0;
+    height: 1.75rem;
+    justify-content: center;
+    margin-top: 0.0625rem;
+    width: 1.75rem;
+}
+
+.alert__icon {
+    height: 1rem;
+    width: 1rem;
+}
+
+.alert__message {
+    flex: 1;
+    min-width: 0;
+    padding-top: 0.125rem;
 }
 
 .easy-read .alert--success {
-    background-color: var(--app-alert-success-bg);
+    background: linear-gradient(135deg, var(--app-alert-success-bg) 0%, var(--app-surface) 100%);
     border-color: var(--app-alert-success-border);
+    border-left-color: var(--app-alert-success-accent);
     color: var(--app-alert-success-text);
 }
 
+.alert--success .alert__icon-wrap {
+    background-color: rgb(16 185 129 / 0.14);
+    color: var(--app-alert-success-icon);
+}
+
 .easy-read .alert--error {
-    background-color: var(--app-alert-error-bg);
+    background: linear-gradient(135deg, var(--app-alert-error-bg) 0%, var(--app-surface) 100%);
     border-color: var(--app-alert-error-border);
+    border-left-color: var(--app-alert-error-accent);
     color: var(--app-alert-error-text);
 }
 
+.alert--error .alert__icon-wrap {
+    background-color: rgb(239 68 68 / 0.14);
+    color: var(--app-alert-error-icon);
+}
+
 .easy-read .alert--warning {
-    background-color: var(--app-alert-warning-bg);
+    background: linear-gradient(135deg, var(--app-alert-warning-bg) 0%, var(--app-surface) 100%);
     border-color: var(--app-alert-warning-border);
+    border-left-color: var(--app-alert-warning-accent);
     color: var(--app-alert-warning-text);
 }
 
+.alert--warning .alert__icon-wrap {
+    background-color: rgb(236 96 20 / 0.14);
+    color: var(--app-alert-warning-icon);
+}
+
 .easy-read .alert--info {
-    background-color: var(--app-alert-info-bg);
+    background: linear-gradient(135deg, var(--app-alert-info-bg) 0%, var(--app-surface) 100%);
     border-color: var(--app-alert-info-border);
+    border-left-color: var(--app-alert-info-accent);
     color: var(--app-alert-info-text);
+}
+
+.alert--info .alert__icon-wrap {
+    background-color: rgb(236 96 20 / 0.14);
+    color: var(--app-alert-info-icon);
 }
 
 /* Kotak pemberitahuan / info */
@@ -2062,6 +2130,46 @@ html.dark .theme-toggle__moon {
     font-weight: 700;
     padding: 0.25rem 0.625rem;
     box-shadow: 0 0 0 1px var(--app-notification-border);
+}
+
+.app-status-badge {
+    align-items: center;
+    border-radius: 9999px;
+    display: inline-flex;
+    font-size: 0.75rem;
+    font-weight: 700;
+    gap: 0.375rem;
+    line-height: 1;
+    padding: 0.3125rem 0.625rem;
+    white-space: nowrap;
+}
+
+.app-status-badge__dot {
+    border-radius: 9999px;
+    flex-shrink: 0;
+    height: 0.4375rem;
+    width: 0.4375rem;
+}
+
+.app-status-badge--active {
+    background-color: var(--app-primary-soft);
+    box-shadow: 0 0 0 1px var(--app-notification-border);
+    color: var(--app-primary-soft-text);
+}
+
+.app-status-badge--active .app-status-badge__dot {
+    background-color: var(--app-primary);
+    box-shadow: 0 0 0 2px rgb(236 96 20 / 0.18);
+}
+
+.app-status-badge--inactive {
+    background-color: var(--app-surface-muted);
+    box-shadow: 0 0 0 1px var(--app-border);
+    color: var(--app-text-muted);
+}
+
+.app-status-badge--inactive .app-status-badge__dot {
+    background-color: var(--app-border-strong);
 }
 
 .app-notification-dot {

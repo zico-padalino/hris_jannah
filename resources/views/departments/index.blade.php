@@ -45,9 +45,7 @@
                         <td>{{ $department->branch->name }}</td>
                         <td>{{ $department->employees_count }}</td>
                         <td>
-                            <span class="badge-readable {{ $department->is_active ? 'bg-emerald-100 text-emerald-900' : 'bg-slate-200 text-slate-800' }}">
-                                {{ $department->is_active ? 'Aktif' : 'Nonaktif' }}
-                            </span>
+                            @include('partials.active-status-badge', ['active' => $department->is_active])
                         </td>
                         <td class="cell-actions">
                             @include('partials.table-actions', [

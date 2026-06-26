@@ -36,9 +36,7 @@
                         <td>{{ $position->description ?: '—' }}</td>
                         <td>{{ $position->employees_count }}</td>
                         <td>
-                            <span class="badge-readable {{ $position->is_active ? 'bg-emerald-100 text-emerald-900' : 'bg-slate-200 text-slate-800' }}">
-                                {{ $position->is_active ? 'Aktif' : 'Nonaktif' }}
-                            </span>
+                            @include('partials.active-status-badge', ['active' => $position->is_active])
                         </td>
                         <td class="cell-actions">
                             @include('partials.table-actions', [

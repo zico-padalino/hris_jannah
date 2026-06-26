@@ -32,9 +32,7 @@
                         <td>{{ $branch->employees_count }}</td>
                         <td>{{ $branch->locations_count }}</td>
                         <td>
-                            <span class="badge-readable {{ $branch->is_active ? 'bg-emerald-100 text-emerald-900' : 'bg-slate-200 text-slate-800' }}">
-                                {{ $branch->is_active ? 'Aktif' : 'Nonaktif' }}
-                            </span>
+                            @include('partials.active-status-badge', ['active' => $branch->is_active])
                         </td>
                         <td class="cell-actions">
                             @include('partials.table-actions', [

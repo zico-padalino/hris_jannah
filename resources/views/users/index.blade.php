@@ -29,9 +29,7 @@
                         <td>{{ $user->role->label() }}</td>
                         <td>{{ $user->branch->name ?? 'Pusat' }}</td>
                         <td>
-                            <span class="badge-readable {{ $user->is_active ? 'bg-emerald-100 text-emerald-900' : 'bg-slate-200 text-slate-800' }}">
-                                {{ $user->is_active ? 'Aktif' : 'Nonaktif' }}
-                            </span>
+                            @include('partials.active-status-badge', ['active' => $user->is_active])
                         </td>
                         <td class="cell-actions">
                             @include('partials.table-actions', [
