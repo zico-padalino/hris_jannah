@@ -16,6 +16,10 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+html {
+    font-size: 87.5%;
+}
+
 /* ============================================================
    TEMA APLIKASI — light & dark (ramah pengguna)
    ============================================================ */
@@ -44,7 +48,17 @@
     --app-sidebar-active: #c8510f;
     --app-header-bg: #ffffff;
     --app-header-border: #F88F23;
-    --app-topbar-height: 4.5rem;
+    --app-topbar-height: 3.25rem;
+    --app-sidebar-width: 14rem;
+    --app-density-base: 0.875rem;
+    --app-density-line: 1.45;
+    --app-density-control-h: 2.125rem;
+    --app-density-control-font: 0.8125rem;
+    --app-density-btn-pad-y: 0.4375rem;
+    --app-density-btn-pad-x: 0.75rem;
+    --app-density-radius: 0.4375rem;
+    --app-density-radius-lg: 0.625rem;
+    --app-density-icon-btn: 2.125rem;
     --app-alert-success-bg: #fffdf8;
     --app-alert-success-border: #bbf7d0;
     --app-alert-success-accent: #10b981;
@@ -213,16 +227,16 @@ html.dark {
 .app-header__menu-btn {
     align-items: center;
     background-color: var(--app-surface-muted);
-    border: 2px solid var(--app-border-strong);
-    border-radius: 0.5rem;
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-density-radius);
     color: var(--app-text);
     cursor: pointer;
     display: inline-flex;
     flex-shrink: 0;
-    height: 2.5rem;
+    height: var(--app-density-icon-btn);
     justify-content: center;
-    min-height: 2.5rem;
-    min-width: 2.5rem;
+    min-height: var(--app-density-icon-btn);
+    min-width: var(--app-density-icon-btn);
     padding: 0;
     transition: background-color 0.15s ease, border-color 0.15s ease;
 }
@@ -244,9 +258,9 @@ html.dark {
 
 .app-header__menu-icon {
     display: block;
-    height: 0.875rem;
+    height: 0.75rem;
     position: relative;
-    width: 1.25rem;
+    width: 1.125rem;
 }
 
 .app-header__menu-line {
@@ -347,11 +361,12 @@ html.dark {
 
 .app-header__leave-badge {
     background-color: var(--app-header-notif-bg);
-    border: 2px solid var(--app-header-notif-border);
-    border-radius: 0.5rem;
+    border: 1px solid var(--app-header-notif-border);
+    border-radius: var(--app-density-radius);
     color: var(--app-header-notif-text);
+    font-size: 0.75rem;
     font-weight: 700;
-    max-width: 11rem;
+    max-width: 10rem;
     overflow: hidden;
     text-overflow: ellipsis;
     transition: background-color 0.15s ease;
@@ -369,15 +384,15 @@ html.dark {
 .header-notifications__trigger {
     align-items: center;
     background-color: var(--app-surface);
-    border: 2px solid var(--app-border-strong);
-    border-radius: 0.625rem;
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-density-radius-lg);
     color: var(--app-text);
     cursor: pointer;
     display: inline-flex;
     font-family: inherit;
-    height: 2.5rem;
+    height: var(--app-density-icon-btn);
     justify-content: center;
-    min-width: 2.5rem;
+    min-width: var(--app-density-icon-btn);
     padding: 0.25rem;
     transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
@@ -392,10 +407,10 @@ html.dark {
 .header-notifications__icon-wrap {
     align-items: center;
     background: var(--app-gradient-primary);
-    border-radius: 0.4375rem;
+    border-radius: 0.375rem;
     color: var(--app-primary-text);
     display: inline-flex;
-    height: 1.875rem;
+    height: 1.5rem;
     justify-content: center;
     position: relative;
     width: 1.875rem;
@@ -644,17 +659,17 @@ html.dark {
 .user-account-menu__trigger {
     align-items: center;
     background-color: var(--app-surface);
-    border: 2px solid var(--app-border-strong);
-    border-radius: 0.625rem;
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-density-radius-lg);
     color: inherit;
     cursor: pointer;
     display: inline-flex;
     font-family: inherit;
-    gap: 0.5rem;
-    max-width: 14rem;
-    min-height: 2.5rem;
+    gap: 0.375rem;
+    max-width: 12rem;
+    min-height: var(--app-density-icon-btn);
     min-width: 0;
-    padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+    padding: 0.1875rem 0.4375rem 0.1875rem 0.1875rem;
     text-align: left;
     transition: background-color 0.15s ease, border-color 0.15s ease;
 }
@@ -666,12 +681,12 @@ html.dark {
 }
 
 .user-account-menu__avatar {
-    border: 2px solid var(--app-border-strong);
+    border: 1px solid var(--app-border-strong);
     border-radius: 9999px;
     flex-shrink: 0;
-    height: 2rem;
+    height: 1.625rem;
     object-fit: cover;
-    width: 2rem;
+    width: 1.625rem;
 }
 
 .user-account-menu__avatar--placeholder {
@@ -699,7 +714,7 @@ html.dark {
 
 .user-account-menu__name {
     color: var(--app-text);
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     font-weight: 700;
 }
 
@@ -1240,6 +1255,7 @@ html.dark {
 .app-sidebar {
     background: var(--app-gradient-sidebar);
     border-color: var(--app-sidebar-border);
+    width: var(--app-sidebar-width);
 }
 
 /* Halaman login */
@@ -1292,11 +1308,11 @@ html.dark {
 .login-card {
     background: #ffffff;
     border: 1px solid rgb(255 255 255 / 0.65);
-    border-radius: 1.25rem;
+    border-radius: 1rem;
     box-shadow:
-        0 24px 48px rgb(154 66 16 / 0.18),
-        0 8px 16px rgb(154 66 16 / 0.08);
-    max-width: 28rem;
+        0 16px 32px rgb(154 66 16 / 0.14),
+        0 6px 12px rgb(154 66 16 / 0.06);
+    max-width: 24rem;
     overflow: hidden;
     width: 100%;
 }
@@ -1325,8 +1341,8 @@ html.dark {
     display: block;
     height: auto;
     margin-inline: auto;
-    max-height: 5.5rem;
-    max-width: min(100%, 11rem);
+    max-height: 4.5rem;
+    max-width: min(100%, 9rem);
     object-fit: contain;
     width: auto;
 }
@@ -1344,12 +1360,12 @@ html.dark {
 }
 
 .login-card__body {
-    padding: 0 1.5rem 1.5rem;
+    padding: 0 1.125rem 1.125rem;
 }
 
 .login-form {
     display: grid;
-    gap: 0.875rem;
+    gap: 0.625rem;
 }
 
 .login-form__field {
@@ -1482,8 +1498,8 @@ html.dark {
     }
 
     .sidebar-brand.app-topbar .sidebar-brand__logo {
-        height: 3.5rem;
-        max-width: 4.75rem;
+        height: 2.75rem;
+        max-width: 3.75rem;
     }
 }
 
@@ -1494,7 +1510,7 @@ html.dark {
 
 .sidebar-brand__name {
     color: var(--app-primary);
-    font-size: 1rem;
+    font-size: 0.875rem;
     line-height: 1.2;
     margin-top: 0;
     margin-left: -0.125rem;
@@ -1502,8 +1518,8 @@ html.dark {
 
 .sidebar-brand__logo {
     display: block;
-    height: 6.5rem;
-    max-width: 8rem;
+    height: 5rem;
+    max-width: 6.5rem;
     object-fit: contain;
     width: auto;
 }
@@ -1654,14 +1670,14 @@ html.dark {
 .theme-toggle {
     align-items: center;
     background-color: var(--app-surface);
-    border: 2px solid var(--app-border-strong);
-    border-radius: 0.5rem;
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-density-radius);
     color: var(--app-text);
     cursor: pointer;
     display: inline-flex;
-    height: 2.5rem;
+    height: var(--app-density-icon-btn);
     justify-content: center;
-    min-width: 2.5rem;
+    min-width: var(--app-density-icon-btn);
     padding: 0;
     transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
@@ -1673,8 +1689,8 @@ html.dark {
 }
 
 .theme-toggle svg {
-    height: 1.25rem;
-    width: 1.25rem;
+    height: 1rem;
+    width: 1rem;
 }
 
 .theme-toggle--compact {
@@ -1797,8 +1813,8 @@ html.dark .theme-toggle__moon {
    MODE MUDAH DIBACA — ramah lansia & gangguan penglihatan
    ============================================================ */
 .easy-read {
-    font-size: 1.0625rem;
-    line-height: 1.55;
+    font-size: var(--app-density-base);
+    line-height: var(--app-density-line);
     color: var(--app-text);
 }
 
@@ -1812,14 +1828,14 @@ html.dark .theme-toggle__moon {
 .easy-read .btn-primary,
 .easy-read main button[type="submit"]:not(.btn-secondary):not(.table-action-btn):not([class*="border-slate"]):not(.payroll-item-actions__btn) {
     background: var(--app-gradient-primary);
-    border: 2px solid transparent;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 14px rgb(236 96 20 / 0.22);
+    border: 1px solid transparent;
+    border-radius: var(--app-density-radius);
+    box-shadow: 0 3px 10px rgb(236 96 20 / 0.18);
     color: var(--app-primary-text);
-    font-size: 1rem;
+    font-size: var(--app-density-control-font);
     font-weight: 700;
-    min-height: 2.75rem;
-    padding: 0.625rem 1.25rem;
+    min-height: var(--app-density-control-h);
+    padding: var(--app-density-btn-pad-y) var(--app-density-btn-pad-x);
     transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
 
@@ -1833,13 +1849,13 @@ html.dark .theme-toggle__moon {
 .easy-read .btn-secondary,
 .easy-read header button[type="submit"]:not(.user-account-menu__item):not(.locale-switcher__btn) {
     background-color: var(--app-surface);
-    border: 2px solid var(--app-border-strong);
-    border-radius: 0.5rem;
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-density-radius);
     color: var(--app-text);
-    font-size: 1rem;
+    font-size: var(--app-density-control-font);
     font-weight: 700;
-    min-height: 2.75rem;
-    padding: 0.625rem 1rem;
+    min-height: var(--app-density-control-h);
+    padding: var(--app-density-btn-pad-y) 0.75rem;
 }
 
 .easy-read .btn-secondary:hover,
@@ -1852,13 +1868,13 @@ html.dark .theme-toggle__moon {
 .easy-read select,
 .easy-read textarea {
     background-color: var(--app-input-bg);
-    border: 2px solid var(--app-border-strong);
-    border-radius: 0.5rem;
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-density-radius);
     color: var(--app-input-text);
-    font-size: 1rem;
+    font-size: var(--app-density-control-font);
     font-weight: 500;
-    min-height: 2.75rem;
-    padding: 0.625rem 0.75rem;
+    min-height: var(--app-density-control-h);
+    padding: 0.4375rem 0.625rem;
 }
 
 .easy-read input:focus,
@@ -1910,28 +1926,28 @@ html.dark .theme-toggle__moon {
 .rupiah-field__prefix {
     align-items: center;
     background-color: var(--app-surface-muted);
-    border: 2px solid var(--app-border-strong);
-    border-radius: 0.5rem 0 0 0.5rem;
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-density-radius) 0 0 var(--app-density-radius);
     border-right: none;
     color: var(--app-text-muted);
     display: inline-flex;
     flex-shrink: 0;
-    font-size: 0.9375rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    padding: 0 0.75rem;
+    padding: 0 0.5rem;
 }
 
 .rupiah-field__input {
     background-color: var(--app-input-bg);
-    border: 2px solid var(--app-border-strong);
-    border-radius: 0 0.5rem 0.5rem 0;
+    border: 1px solid var(--app-border-strong);
+    border-radius: 0 var(--app-density-radius) var(--app-density-radius) 0;
     color: var(--app-input-text);
     flex: 1;
-    font-size: 1rem;
+    font-size: var(--app-density-control-font);
     font-weight: 600;
-    min-height: 2.75rem;
+    min-height: var(--app-density-control-h);
     min-width: 0;
-    padding: 0.625rem 0.75rem;
+    padding: 0.4375rem 0.625rem;
     width: 100%;
 }
 
@@ -1949,26 +1965,26 @@ html.dark .theme-toggle__moon {
 .easy-read .form-label {
     color: var(--app-text);
     display: block;
-    font-size: 0.9375rem;
+    font-size: 0.8125rem;
     font-weight: 700;
-    margin-bottom: 0.375rem;
+    margin-bottom: 0.25rem;
 }
 
 .easy-read input[type="checkbox"],
 .easy-read input[type="radio"] {
     accent-color: var(--app-primary);
-    height: 1.125rem;
-    width: 1.125rem;
+    height: 0.9375rem;
+    width: 0.9375rem;
 }
 
 /* Sidebar */
 .easy-read .nav-link {
-    border-radius: 0.5rem;
+    border-radius: var(--app-density-radius);
     display: block;
-    font-size: 1rem;
+    font-size: var(--app-density-control-font);
     font-weight: 600;
-    min-height: 2.75rem;
-    padding: 0.625rem 0.875rem;
+    min-height: var(--app-density-control-h);
+    padding: 0.4375rem 0.75rem;
 }
 
 .easy-read .nav-link--active {
@@ -1983,10 +1999,10 @@ html.dark .theme-toggle__moon {
 
 .easy-read .nav-section {
     color: var(--app-sidebar-text-muted);
-    font-size: 0.8125rem;
+    font-size: 0.6875rem;
     font-weight: 800;
     letter-spacing: 0.06em;
-    padding: 0.75rem 0.875rem 0.25rem;
+    padding: 0.5rem 0.75rem 0.125rem;
     text-transform: uppercase;
 }
 
@@ -1999,20 +2015,20 @@ html.dark .theme-toggle__moon {
     align-items: center;
     background: transparent;
     border: none;
-    border-radius: 0.5rem;
+    border-radius: var(--app-density-radius);
     color: #ffffff;
     cursor: pointer;
     display: flex;
     font-family: inherit;
-    font-size: 0.8125rem;
+    font-size: 0.6875rem;
     font-weight: 800;
-    gap: 0.5rem;
+    gap: 0.375rem;
     justify-content: space-between;
     letter-spacing: 0.08em;
     line-height: 1.3;
     margin: 0.125rem 0;
-    min-height: 2.5rem;
-    padding: 0.625rem 0.875rem;
+    min-height: 2rem;
+    padding: 0.4375rem 0.75rem;
     text-align: left;
     text-transform: uppercase;
     transition: background-color 0.15s ease, color 0.15s ease;
@@ -2059,11 +2075,11 @@ html.dark .theme-toggle__moon {
 }
 
 .easy-read .nav-link--nested {
-    font-size: 0.9375rem;
+    font-size: 0.8125rem;
     font-weight: 600;
-    margin-left: 0.375rem;
-    min-height: 2.5rem;
-    padding-left: 1.25rem;
+    margin-left: 0.25rem;
+    min-height: 2rem;
+    padding-left: 1rem;
     position: relative;
 }
 
@@ -2115,13 +2131,13 @@ html.dark .theme-toggle__moon {
 }
 
 .easy-read .nav-link-mobile {
-    border: 2px solid transparent;
-    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    border-radius: var(--app-density-radius);
     display: block;
-    font-size: 1rem;
+    font-size: var(--app-density-control-font);
     font-weight: 700;
-    min-height: 2.75rem;
-    padding: 0.625rem 0.875rem;
+    min-height: var(--app-density-control-h);
+    padding: 0.4375rem 0.75rem;
 }
 
 .easy-read .nav-link-mobile--active,
@@ -2160,16 +2176,16 @@ html.dark .theme-toggle__moon {
 /* Panel & filter */
 .easy-read .panel {
     background-color: var(--app-surface);
-    border: 2px solid var(--app-border-strong);
-    border-radius: 0.75rem;
-    box-shadow: 0 1px 3px var(--app-shadow);
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-density-radius-lg);
+    box-shadow: 0 1px 2px var(--app-shadow);
     color: var(--app-text);
 }
 
 .easy-read .panel-table {
     background-color: var(--app-surface);
-    border: 2px solid var(--app-border-strong);
-    border-radius: 0.75rem;
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-density-radius-lg);
     -webkit-overflow-scrolling: touch;
     max-width: 100%;
     min-width: 0;
@@ -2205,22 +2221,22 @@ html.dark .theme-toggle__moon {
 
 .easy-read .filter-bar {
     background-color: var(--app-surface);
-    border: 2px solid var(--app-border-strong);
-    border-radius: 0.75rem;
-    margin-bottom: 1.5rem;
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-density-radius-lg);
+    margin-bottom: 1rem;
     min-width: 0;
     overflow: hidden;
-    padding: 1rem 1.25rem;
+    padding: 0.75rem 0.875rem;
 }
 
 .easy-read .filter-bar__actions {
     align-items: center;
-    border-top: 2px solid var(--app-border);
+    border-top: 1px solid var(--app-border);
     display: flex;
     flex-wrap: wrap;
-    gap: 0.625rem;
-    margin-top: 1rem;
-    padding-top: 1rem;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
 }
 
 .easy-read .filter-bar__actions .btn-primary,
@@ -2249,16 +2265,16 @@ html.dark .theme-toggle__moon {
 .easy-read .alert {
     align-items: flex-start;
     border: 1px solid var(--app-border);
-    border-left-width: 4px;
-    border-radius: 0.75rem;
-    box-shadow: 0 2px 10px var(--app-shadow);
+    border-left-width: 3px;
+    border-radius: var(--app-density-radius-lg);
+    box-shadow: 0 1px 6px var(--app-shadow);
     display: flex;
-    font-size: 0.9375rem;
+    font-size: 0.8125rem;
     font-weight: 600;
-    gap: 0.75rem;
-    line-height: 1.45;
-    margin-bottom: 1.25rem;
-    padding: 0.875rem 1rem;
+    gap: 0.625rem;
+    line-height: 1.4;
+    margin-bottom: 0.875rem;
+    padding: 0.625rem 0.75rem;
 }
 
 .alert__icon-wrap {
@@ -2266,15 +2282,15 @@ html.dark .theme-toggle__moon {
     border-radius: 9999px;
     display: inline-flex;
     flex-shrink: 0;
-    height: 1.75rem;
+    height: 1.5rem;
     justify-content: center;
     margin-top: 0.0625rem;
-    width: 1.75rem;
+    width: 1.5rem;
 }
 
 .alert__icon {
-    height: 1rem;
-    width: 1rem;
+    height: 0.875rem;
+    width: 0.875rem;
 }
 
 .alert__message {
@@ -2334,12 +2350,12 @@ html.dark .theme-toggle__moon {
 /* Kotak pemberitahuan / info */
 .app-notice {
     background-color: var(--app-alert-warning-bg);
-    border: 2px solid var(--app-alert-warning-border);
-    border-radius: 0.75rem;
+    border: 1px solid var(--app-alert-warning-border);
+    border-radius: var(--app-density-radius-lg);
     color: var(--app-alert-warning-text);
-    font-size: 0.875rem;
-    line-height: 1.5;
-    padding: 1rem 1.25rem;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    padding: 0.625rem 0.875rem;
 }
 
 .app-notice--error {
@@ -2351,14 +2367,14 @@ html.dark .theme-toggle__moon {
 /* Banner notifikasi */
 .app-notification-banner {
     background: linear-gradient(to right, var(--app-notification-bg), var(--app-notification-bg-end));
-    border: 2px solid var(--app-notification-border);
-    border-radius: 0.75rem;
+    border: 1px solid var(--app-notification-border);
+    border-radius: var(--app-density-radius-lg);
     box-shadow: 0 1px 2px var(--app-shadow);
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    padding: 1rem;
+    gap: 0.625rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
 }
 
 @media (min-width: 640px) {
@@ -2379,15 +2395,15 @@ html.dark .theme-toggle__moon {
     align-items: center;
     background-color: var(--app-notification-icon-bg);
     border-radius: 9999px;
-    box-shadow: 0 4px 6px var(--app-shadow);
+    box-shadow: 0 2px 4px var(--app-shadow);
     color: var(--app-primary-text);
     display: flex;
     flex-shrink: 0;
-    height: 2.5rem;
+    height: 2rem;
     justify-content: center;
-    margin-top: 0.125rem;
+    margin-top: 0.0625rem;
     position: relative;
-    width: 2.5rem;
+    width: 2rem;
 }
 
 .app-notification-banner__count {
@@ -2414,22 +2430,22 @@ html.dark .theme-toggle__moon {
 
 .app-notification-banner__message {
     color: var(--app-notification-text);
-    font-size: 0.875rem;
-    margin-top: 0.125rem;
+    font-size: 0.75rem;
+    margin-top: 0.0625rem;
 }
 
 .app-notification-banner__action {
     align-items: center;
     background: var(--app-gradient-primary);
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 8px rgb(236 96 20 / 0.2);
+    border-radius: var(--app-density-radius);
+    box-shadow: 0 2px 6px rgb(236 96 20 / 0.18);
     color: var(--app-primary-text);
     display: inline-flex;
     flex-shrink: 0;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     font-weight: 600;
     justify-content: center;
-    padding: 0.625rem 1rem;
+    padding: 0.4375rem 0.75rem;
     transition: background 0.2s ease;
 }
 
@@ -2816,21 +2832,21 @@ html.dark .theme-toggle__moon {
 .attendance-scan-tabs {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    gap: 0.375rem;
+    margin-bottom: 1rem;
 }
 
 .scan-method-tab {
     background-color: var(--app-surface);
-    border: 2px solid var(--app-border);
-    border-radius: 0.625rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-density-radius-lg);
     color: var(--app-text-muted);
     cursor: pointer;
     font-family: inherit;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     font-weight: 600;
     line-height: 1.3;
-    padding: 0.5rem 1rem;
+    padding: 0.375rem 0.75rem;
     transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -2851,7 +2867,7 @@ html.dark .theme-toggle__moon {
 .attendance-scan-grid {
     align-items: start;
     display: grid;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 @media (min-width: 1280px) {
@@ -2861,7 +2877,7 @@ html.dark .theme-toggle__moon {
 }
 
 .attendance-scan-panel {
-    padding: 1.25rem;
+    padding: 0.875rem;
 }
 
 .attendance-scan-panel--nested {
@@ -2872,18 +2888,18 @@ html.dark .theme-toggle__moon {
 
 .attendance-scan-panel__title {
     color: var(--app-text);
-    font-size: 1.0625rem;
+    font-size: 0.875rem;
     font-weight: 800;
     line-height: 1.3;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .attendance-scan-panel__lead {
     color: var(--app-text-muted);
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    line-height: 1.45;
-    margin-bottom: 1rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
 }
 
 .attendance-scan-camera {
@@ -3406,16 +3422,16 @@ html.dark .theme-toggle__moon {
 /* Header halaman */
 .easy-read .page-title {
     color: var(--app-text);
-    font-size: 1.5rem;
+    font-size: 1.125rem;
     font-weight: 800;
     line-height: 1.25;
 }
 
 .easy-read .page-subtitle {
     color: var(--app-text-muted);
-    font-size: 1rem;
+    font-size: 0.8125rem;
     font-weight: 600;
-    margin-top: 0.25rem;
+    margin-top: 0.125rem;
 }
 
 .page-subtitle--main {
@@ -3425,10 +3441,10 @@ html.dark .theme-toggle__moon {
 /* Link aksi di tabel */
 .easy-read .link-action {
     color: var(--app-link);
-    font-size: 1rem;
+    font-size: 0.8125rem;
     font-weight: 700;
     text-decoration: underline;
-    text-underline-offset: 3px;
+    text-underline-offset: 2px;
 }
 
 .easy-read .link-action:hover {
@@ -3590,31 +3606,31 @@ html.dark .table-actions {
 /* Pagination */
 .easy-read nav[role="navigation"] a,
 .easy-read nav[role="navigation"] span {
-    font-size: 1rem !important;
+    font-size: 0.8125rem !important;
     font-weight: 600 !important;
-    min-height: 2.5rem !important;
-    min-width: 2.5rem !important;
+    min-height: 2rem !important;
+    min-width: 2rem !important;
 }
 
 .table-readable {
     border-collapse: collapse;
     min-width: 100%;
     width: max-content;
-    font-size: 1rem;
-    line-height: 1.45;
+    font-size: 0.8125rem;
+    line-height: 1.4;
 }
 
 .table-readable th,
 .table-readable td {
     border: 1px solid var(--app-table-border);
-    padding: 0.625rem 0.75rem;
+    padding: 0.4375rem 0.625rem;
     vertical-align: middle;
 }
 
 .table-readable thead th {
     background: var(--app-gradient-table-head);
     color: var(--app-table-head-text);
-    font-size: 0.875rem;
+    font-size: 0.6875rem;
     font-weight: 800;
     letter-spacing: 0.03em;
     text-transform: uppercase;
@@ -3631,31 +3647,31 @@ html.dark .table-actions {
 
 .table-readable .cell-primary {
     color: var(--app-text);
-    font-size: 1.0625rem;
+    font-size: 0.875rem;
     font-weight: 800;
 }
 
 .table-readable .cell-secondary {
     color: var(--app-text-muted);
-    font-size: 0.9375rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    margin-top: 0.125rem;
+    margin-top: 0.0625rem;
 }
 
 .table-readable .cell-time {
     color: var(--app-text);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 1.0625rem;
+    font-size: 0.875rem;
     font-weight: 700;
 }
 
 .table-readable .badge-readable {
     border: 1px solid currentColor;
-    border-radius: 0.375rem;
+    border-radius: 0.3125rem;
     display: inline-flex;
-    font-size: 0.875rem;
+    font-size: 0.6875rem;
     font-weight: 700;
-    padding: 0.25rem 0.625rem;
+    padding: 0.125rem 0.4375rem;
 }
 
 .activity-log-badge {
@@ -4400,7 +4416,7 @@ body {
     }
 
     .easy-read .page-title {
-        font-size: 1.25rem;
+        font-size: 1rem;
     }
 
     .easy-read .page-subtitle {
@@ -4498,12 +4514,12 @@ body {
 
 @media (max-width: 639px) {
     .easy-read main {
-        padding-left: 0.75rem;
-        padding-right: 0.75rem;
+        padding-left: 0.625rem;
+        padding-right: 0.625rem;
     }
 
     .easy-read .filter-bar {
-        padding: 0.75rem;
+        padding: 0.625rem;
     }
 
     .easy-read .filter-bar form.grid {
@@ -4519,27 +4535,27 @@ body {
     .filter-bar form > .flex .btn-secondary,
     .filter-bar form .flex.flex-col .btn-primary,
     .filter-bar form .flex.flex-col .btn-secondary {
-        min-height: 2.875rem;
+        min-height: var(--app-density-control-h);
         width: 100%;
     }
 
     .easy-read .btn-primary,
     .easy-read .btn-secondary {
-        padding-left: 0.875rem;
-        padding-right: 0.875rem;
+        padding-left: 0.625rem;
+        padding-right: 0.625rem;
     }
 
     .easy-read input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]),
     .easy-read select,
     .easy-read textarea {
-        font-size: 1rem;
-        min-height: 2.625rem;
-        padding: 0.5rem 0.625rem;
+        font-size: var(--app-density-control-font);
+        min-height: 2rem;
+        padding: 0.375rem 0.5rem;
     }
 
     .easy-read .form-label {
-        font-size: 0.875rem;
-        margin-bottom: 0.25rem;
+        font-size: 0.75rem;
+        margin-bottom: 0.1875rem;
     }
 }
 
@@ -4789,14 +4805,14 @@ html.dark .mobile-nav-overlay__backdrop {
 
 .dashboard-section-title {
     color: var(--app-text);
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: 800;
     line-height: 1.3;
 }
 
 .dashboard-section-subtitle {
     color: var(--app-text-muted);
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     font-weight: 600;
 }
 
@@ -6577,6 +6593,90 @@ html.dark .payroll-deduction-back:hover {
     .table-readable tbody td[data-label] .payroll-item-actions__btn {
         justify-content: center;
         width: 100%;
+    }
+}
+
+/* ============================================================
+   UI KOMPAK — penyesuaian tambahan (dashboard, kartu, spacing)
+   ============================================================ */
+.app-card {
+    border-radius: var(--app-density-radius-lg);
+}
+
+.easy-read .app-card {
+    padding: 0.875rem !important;
+}
+
+.easy-read .dashboard-welcome {
+    margin-bottom: 1.25rem !important;
+    padding: 1rem !important;
+}
+
+@media (min-width: 640px) {
+    .easy-read .dashboard-welcome {
+        padding: 1.125rem !important;
+    }
+}
+
+.easy-read .dashboard-welcome h2 {
+    font-size: 1.125rem !important;
+    line-height: 1.3;
+}
+
+@media (min-width: 640px) {
+    .easy-read .dashboard-welcome h2 {
+        font-size: 1.25rem !important;
+    }
+}
+
+.easy-read .dashboard-welcome .text-2xl {
+    font-size: 1.125rem !important;
+    line-height: 1.3;
+}
+
+.easy-read .dashboard-stat-compact {
+    padding: 0.625rem 0.75rem !important;
+}
+
+.easy-read .dashboard-stat-compact .text-2xl {
+    font-size: 1rem !important;
+}
+
+.easy-read h2.text-lg {
+    font-size: 0.9375rem !important;
+}
+
+.easy-read .mb-8 {
+    margin-bottom: 1.25rem !important;
+}
+
+.easy-read .mb-6 {
+    margin-bottom: 1rem !important;
+}
+
+.easy-read .gap-6 {
+    gap: 1rem !important;
+}
+
+.easy-read .p-6 {
+    padding: 0.875rem !important;
+}
+
+.easy-read .p-5 {
+    padding: 0.75rem !important;
+}
+
+.easy-read .p-8 {
+    padding: 1rem !important;
+}
+
+@media (min-width: 640px) {
+    .easy-read .sm\:p-6 {
+        padding: 0.875rem !important;
+    }
+
+    .easy-read .sm\:p-8 {
+        padding: 1.125rem !important;
     }
 }
 

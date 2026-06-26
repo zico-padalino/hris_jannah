@@ -31,7 +31,7 @@
         ])
     @endif
 
-    <div class="mb-8 overflow-hidden rounded-2xl bg-gradient-to-br from-campfire-1 via-campfire-2 to-campfire-3 p-6 text-white shadow-xl shadow-campfire-1/25 sm:p-8">
+    <div class="dashboard-welcome mb-8 overflow-hidden rounded-2xl bg-gradient-to-br from-campfire-1 via-campfire-2 to-campfire-3 p-6 text-white shadow-xl shadow-campfire-1/25 sm:p-8">
         <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div>
                 <p class="text-sm font-medium text-campfire-4">{{ $greeting }},</p>
@@ -41,15 +41,15 @@
                 </p>
             </div>
             <div class="grid grid-cols-1 gap-3 min-[380px]:grid-cols-3 sm:gap-4">
-                <div class="rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
+                <div class="dashboard-stat-compact rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
                     <p class="text-2xl font-bold">{{ $stats['attendances_today'] }}</p>
                     <p class="mt-0.5 text-sm font-semibold text-campfire-4">Absensi hari ini</p>
                 </div>
-                <div class="rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
+                <div class="dashboard-stat-compact rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
                     <p class="text-2xl font-bold text-campfire-4">{{ $stats['on_time_today'] }}</p>
                     <p class="mt-0.5 text-sm font-semibold text-campfire-4">Tepat waktu</p>
                 </div>
-                <div class="rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
+                <div class="dashboard-stat-compact rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
                     <p class="text-2xl font-bold text-white">{{ $stats['late_today'] }}</p>
                     <p class="mt-0.5 text-sm font-semibold text-campfire-4">Terlambat</p>
                 </div>

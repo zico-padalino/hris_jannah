@@ -28,7 +28,7 @@
     ])>
         @auth
             <aside @class([
-                'app-sidebar hidden w-72 shrink-0 text-white lg:flex lg:h-screen lg:flex-col lg:overflow-hidden',
+                'app-sidebar hidden shrink-0 text-white lg:flex lg:h-screen lg:flex-col lg:overflow-hidden',
                 'border-l-2' => $sidebar->isRight(),
                 'border-r-2' => ! $sidebar->isRight(),
             ])>
@@ -39,10 +39,10 @@
                         'logoClass' => 'sidebar-brand__logo shrink-0',
                     ])
                 </div>
-                <nav class="sidebar-nav-scroll flex-1 space-y-0.5 overflow-y-auto p-4" aria-label="Menu utama">
+                <nav class="sidebar-nav-scroll flex-1 space-y-0.5 overflow-y-auto p-3" aria-label="Menu utama">
                     @include('partials.sidebar-nav', ['mobile' => false])
                 </nav>
-                <div class="sidebar-footer shrink-0 border-t-2 p-4" style="border-color: var(--app-sidebar-border)">
+                <div class="sidebar-footer shrink-0 border-t-2 p-3" style="border-color: var(--app-sidebar-border)">
                     <p class="sidebar-footer__text text-center text-xs font-semibold" style="color: var(--app-sidebar-text-muted)">
                         {{ __('app.copyright', ['year' => 2026]) }}
                     </p>
@@ -54,7 +54,7 @@
             @include('partials.mobile-nav')
 
             @auth
-                <header class="app-header app-topbar sticky top-0 z-40 shrink-0 border-b-2 px-3 py-2.5 sm:px-4 sm:py-3 lg:px-8 lg:py-0">
+                <header class="app-header app-topbar sticky top-0 z-40 shrink-0 border-b-2 px-2.5 py-2 sm:px-3 sm:py-2 lg:px-6 lg:py-0">
                     <div class="app-header__inner">
                         <button
                             type="button"
@@ -95,10 +95,10 @@
                 </header>
             @endauth
 
-            <main class="flex-1 min-h-0 min-w-0 overflow-y-auto px-3 py-4 sm:px-4 sm:py-6 lg:px-8">
+            <main class="flex-1 min-h-0 min-w-0 overflow-y-auto px-2.5 py-3 sm:px-3 sm:py-4 lg:px-6">
                 @include('partials.alerts')
                 @hasSection('subtitle')
-                    <p class="page-subtitle page-subtitle--main mb-4">@yield('subtitle')</p>
+                    <p class="page-subtitle page-subtitle--main mb-3">@yield('subtitle')</p>
                 @endif
                 @yield('content')
             </main>
