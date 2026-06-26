@@ -54,21 +54,37 @@ class LeaveBadgeService
 
     public function pendingOwnCount(User $user): int
     {
+        return $this->pendingOwnBreakdown($user)['total'];
+    }
+
+    /**
+     * @return array{cuti: int, izin: int, lembur: int, total: int}
+     */
+    public function pendingOwnBreakdown(User $user): array
+    {
+        $empty = ['cuti' => 0, 'izin' => 0, 'lembur' => 0, 'total' => 0];
+
         $employee = $user->employee;
 
         if ($employee === null) {
-            return 0;
+            return $empty;
         }
 
         if (! $user->hasPermission(Permission::LeaveRequest)
             && ! $user->hasPermission(Permission::LeaveViewOwn)) {
-            return 0;
+            return $empty;
         }
 
-        return LeaveRequest::query()
+        $baseQuery = LeaveRequest::query()
             ->where('employee_id', $employee->id)
-            ->where('status', LeaveStatus::Pending)
-            ->count();
+            ->where('status', LeaveStatus::Pending);
+
+        return [
+            'cuti' => (clone $baseQuery)->whereIn('type', LeaveType::forApprovalCategory('cuti'))->count(),
+            'izin' => (clone $baseQuery)->whereIn('type', LeaveType::forApprovalCategory('izin'))->count(),
+            'lembur' => (clone $baseQuery)->whereIn('type', LeaveType::forApprovalCategory('lembur'))->count(),
+            'total' => (clone $baseQuery)->count(),
+        ];
     }
 
     public function unreadOwnStatusCount(User $user): int
@@ -101,6 +117,53 @@ class LeaveBadgeService
             'rejected' => (clone $query)->where('status', LeaveStatus::Rejected)->count(),
             'total' => (clone $query)->count(),
         ];
+    }
+
+    /**
+     * @return array{
+     *     cuti: array{approved: int, rejected: int, total: int},
+     *     izin: array{approved: int, rejected: int, total: int},
+     *     lembur: array{approved: int, rejected: int, total: int},
+     *     total: int
+     * }
+     */
+    public function unreadOwnStatusModuleBreakdown(User $user): array
+    {
+        $emptyModule = ['approved' => 0, 'rejected' => 0, 'total' => 0];
+        $empty = [
+            'cuti' => $emptyModule,
+            'izin' => $emptyModule,
+            'lembur' => $emptyModule,
+            'total' => 0,
+        ];
+
+        $employee = $user->employee;
+
+        if ($employee === null) {
+            return $empty;
+        }
+
+        if (! $user->hasPermission(Permission::LeaveRequest)
+            && ! $user->hasPermission(Permission::LeaveViewOwn)) {
+            return $empty;
+        }
+
+        $result = $empty;
+
+        foreach (['cuti', 'izin', 'lembur'] as $category) {
+            $query = $this->unreadOwnStatusQuery($employee->id)
+                ->whereIn('type', LeaveType::forApprovalCategory($category));
+
+            $result[$category] = [
+                'approved' => (clone $query)->where('status', LeaveStatus::Approved)->count(),
+                'rejected' => (clone $query)->where('status', LeaveStatus::Rejected)->count(),
+                'total' => (clone $query)->count(),
+            ];
+        }
+
+        $result['total'] = $result['cuti']['total'] + $result['izin']['total'] + $result['lembur']['total'];
+
+        return $result;
     }
 
     /** @return Collection<int, LeaveRequest> */
@@ -159,6 +222,28 @@ class LeaveBadgeService
         }
 
         $this->unreadOwnStatusQuery($employee->id)
+            ->update(['employee_status_read_at' => now()]);
+    }
+
+    public function markOwnStatusesReadForCategory(User $user, string $category): void
+    {
+        if (! in_array($category, ['cuti', 'izin', 'lembur'], true)) {
+            return;
+        }
+
+        $employee = $user->employee;
+
+        if ($employee === null) {
+            return;
+        }
+
+        if (! $user->hasPermission(Permission::LeaveRequest)
+            && ! $user->hasPermission(Permission::LeaveViewOwn)) {
+            return;
+        }
+
+        $this->unreadOwnStatusQuery($employee->id)
+            ->whereIn('type', LeaveType::forApprovalCategory($category))
             ->update(['employee_status_read_at' => now()]);
     }
 

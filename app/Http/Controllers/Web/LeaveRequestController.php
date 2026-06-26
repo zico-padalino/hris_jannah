@@ -39,6 +39,8 @@ class LeaveRequestController extends WebController
 
             if ($request->string('ack')->toString() === 'all') {
                 $badgeService->markAllOwnStatusesRead($user);
+            } elseif (in_array($request->string('ack')->toString(), ['cuti', 'izin', 'lembur'], true)) {
+                $badgeService->markOwnStatusesReadForCategory($user, $request->string('ack')->toString());
             } else {
                 $badgeService->markOwnStatusRead($user, $request->integer('ack'));
             }
