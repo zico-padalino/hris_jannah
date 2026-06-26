@@ -15,6 +15,11 @@
             } catch (e) {}
         })();
     </script>
+    <script>
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('head')
 </head>
@@ -96,7 +101,7 @@
                 </header>
             @endauth
 
-            <main class="flex-1 min-h-0 min-w-0 overflow-y-auto px-2.5 py-3 sm:px-3 sm:py-4 lg:px-6">
+            <main id="app-main" class="app-main flex-1 min-h-0 min-w-0 overflow-y-auto px-2.5 py-3 sm:px-3 sm:py-4 lg:px-6">
                 @include('partials.alerts')
                 @hasSection('subtitle')
                     <p class="page-subtitle page-subtitle--main mb-3">@yield('subtitle')</p>

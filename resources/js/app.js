@@ -485,6 +485,38 @@ function initPasswordFields() {
     });
 }
 
+function initScrollToTopOnLoad() {
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+
+    function resetPageScroll() {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+
+        const main = document.getElementById('app-main');
+
+        if (main) {
+            main.scrollTop = 0;
+        }
+    }
+
+    resetPageScroll();
+
+    window.addEventListener('pageshow', () => {
+        resetPageScroll();
+    });
+
+    window.addEventListener('load', () => {
+        resetPageScroll();
+    });
+
+    document.addEventListener('DOMContentLoaded', resetPageScroll);
+}
+
+initScrollToTopOnLoad();
+
 document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
     initReadableTables();
