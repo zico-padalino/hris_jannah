@@ -6,13 +6,13 @@
     $toleranceValue = old('late_tolerance_minutes', $shift?->late_tolerance_minutes ?? 15);
 @endphp
 
-<div class="space-y-6">
-    <section class="rounded-xl border border-slate-200 bg-slate-50/80 p-4">
-        <h3 class="mb-3 text-sm font-semibold text-slate-800">Informasi Jadwal</h3>
+<div class="shift-form space-y-5">
+    <section class="shift-form__section">
+        <h3 class="shift-form__title">Informasi Jadwal</h3>
         <div class="grid gap-4 sm:grid-cols-2">
-            <label class="block text-sm sm:col-span-2">
-                <span class="mb-1.5 block font-medium text-slate-700">Cabang</span>
-                <select name="branch_id" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200">
+            <label class="shift-form__field sm:col-span-2">
+                <span class="shift-form__label">Cabang</span>
+                <select name="branch_id" class="w-full">
                     <option value="">Semua Cabang (default)</option>
                     @foreach($branches as $branch)
                         <option value="{{ $branch->id }}" @selected(old('branch_id', $shift?->branch_id) == $branch->id)>
@@ -22,61 +22,56 @@
                 </select>
             </label>
 
-            <label class="block text-sm">
-                <span class="mb-1.5 block font-medium text-slate-700">Kode Jadwal</span>
-                <input name="code" value="{{ old('code', $shift?->code) }}" placeholder="PAGI" required class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 uppercase focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200">
+            <label class="shift-form__field">
+                <span class="shift-form__label">Kode Jadwal</span>
+                <input name="code" value="{{ old('code', $shift?->code) }}" placeholder="PAGI" required class="w-full uppercase">
             </label>
 
-            <label class="block text-sm">
-                <span class="mb-1.5 block font-medium text-slate-700">Nama Jadwal</span>
-                <input name="name" value="{{ old('name', $shift?->name) }}" placeholder="Shift Pagi RS" required class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200">
+            <label class="shift-form__field">
+                <span class="shift-form__label">Nama Jadwal</span>
+                <input name="name" value="{{ old('name', $shift?->name) }}" placeholder="Shift Pagi RS" required class="w-full">
             </label>
         </div>
     </section>
 
-    <section class="rounded-xl border border-teal-200 bg-gradient-to-br from-teal-50 to-white p-4">
-        <div class="mb-4 flex items-center justify-between gap-3">
-            <h3 class="text-sm font-semibold text-teal-900">Jam Kerja</h3>
-            <p id="shift-duration-preview" class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-teal-700 shadow-sm">
-                Durasi: —
-            </p>
+    <section class="shift-form__section shift-form__section--highlight">
+        <div class="shift-form__section-head">
+            <h3 class="shift-form__title">Jam Kerja</h3>
+            <p id="shift-duration-preview" class="shift-form__duration-badge">Durasi: —</p>
         </div>
 
         <div class="grid gap-4 sm:grid-cols-2">
-            <label class="block text-sm">
-                <span class="mb-1.5 block font-medium text-slate-700">Jam Masuk</span>
-                <input id="shift-start-time" name="start_time" type="time" value="{{ $startValue }}" required class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-lg font-semibold tabular-nums focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200">
+            <label class="shift-form__field">
+                <span class="shift-form__label">Jam Masuk</span>
+                <input id="shift-start-time" name="start_time" type="time" value="{{ $startValue }}" required class="shift-form__time-input w-full">
             </label>
 
-            <label class="block text-sm">
-                <span class="mb-1.5 block font-medium text-slate-700">Jam Pulang</span>
-                <input id="shift-end-time" name="end_time" type="time" value="{{ $endValue }}" required class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-lg font-semibold tabular-nums focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200">
+            <label class="shift-form__field">
+                <span class="shift-form__label">Jam Pulang</span>
+                <input id="shift-end-time" name="end_time" type="time" value="{{ $endValue }}" required class="shift-form__time-input w-full">
             </label>
         </div>
 
-        <div class="mt-4 flex flex-wrap gap-2">
-            <button type="button" data-shift-preset="07:00,15:00" class="shift-time-preset rounded-lg border border-teal-200 bg-white px-3 py-1.5 text-xs font-medium text-teal-800 hover:bg-teal-100">Pagi (07:00–15:00)</button>
-            <button type="button" data-shift-preset="08:00,16:00" class="shift-time-preset rounded-lg border border-teal-200 bg-white px-3 py-1.5 text-xs font-medium text-teal-800 hover:bg-teal-100">Siang (08:00–16:00)</button>
-            <button type="button" data-shift-preset="14:00,22:00" class="shift-time-preset rounded-lg border border-teal-200 bg-white px-3 py-1.5 text-xs font-medium text-teal-800 hover:bg-teal-100">Malam (14:00–22:00)</button>
+        <div class="shift-form__presets">
+            <button type="button" data-shift-preset="07:00,15:00" class="shift-form__preset">Pagi (07:00–15:00)</button>
+            <button type="button" data-shift-preset="08:00,16:00" class="shift-form__preset">Siang (08:00–16:00)</button>
+            <button type="button" data-shift-preset="14:00,22:00" class="shift-form__preset">Malam (14:00–22:00)</button>
         </div>
     </section>
 
-    <section class="rounded-lg border border-slate-200 bg-white p-3">
-        <div class="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <h3 class="text-sm font-semibold text-slate-800">Hari Kerja</h3>
-            <div class="flex flex-wrap gap-1.5">
-                <button type="button" data-shift-days="1,2,3,4,5" class="shift-day-preset rounded-md border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700 hover:border-teal-300 hover:bg-teal-50">Sen–Jum</button>
-                <button type="button" data-shift-days="1,2,3,4,5,6" class="shift-day-preset rounded-md border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700 hover:border-teal-300 hover:bg-teal-50">Sen–Sab</button>
-                <button type="button" data-shift-days="1,2,3,4,5,6,7" class="shift-day-preset rounded-md border border-slate-200 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700 hover:border-teal-300 hover:bg-teal-50">Setiap Hari</button>
+    <section class="shift-form__section">
+        <div class="shift-form__section-head">
+            <h3 class="shift-form__title">Hari Kerja</h3>
+            <div class="shift-form__presets shift-form__presets--inline">
+                <button type="button" data-shift-days="1,2,3,4,5" class="shift-form__preset shift-form__preset--compact">Sen–Jum</button>
+                <button type="button" data-shift-days="1,2,3,4,5,6" class="shift-form__preset shift-form__preset--compact">Sen–Sab</button>
+                <button type="button" data-shift-days="1,2,3,4,5,6,7" class="shift-form__preset shift-form__preset--compact">Setiap Hari</button>
             </div>
         </div>
 
-        <div class="grid grid-cols-4 gap-2 sm:grid-cols-7">
+        <div class="shift-form__days">
             @foreach(\App\Models\Shift::DAY_LABELS as $dayValue => $dayLabel)
-                <label
-                    title="{{ $dayLabel }}"
-                    class="flex cursor-pointer items-center justify-center rounded-lg border-2 border-slate-300 bg-slate-50 py-2.5 text-xs font-bold text-slate-600 transition hover:border-teal-400 has-[:checked]:border-teal-700 has-[:checked]:bg-teal-600 has-[:checked]:text-white has-[:checked]:shadow-sm"
-                >
+                <label class="shift-form__day" title="{{ $dayLabel }}">
                     <input
                         type="checkbox"
                         name="work_days[]"
@@ -88,31 +83,32 @@
                 </label>
             @endforeach
         </div>
-        <p id="shift-days-preview" class="mt-2.5 text-[11px] text-slate-500">Pilih minimal 1 hari kerja.</p>
+        <p id="shift-days-preview" class="shift-form__hint">Pilih minimal 1 hari kerja.</p>
     </section>
 
-    <section class="rounded-lg border border-slate-200 bg-white p-3">
-        <h3 class="mb-3 text-sm font-semibold text-slate-800">Toleransi & Status</h3>
+    <section class="shift-form__section">
+        <h3 class="shift-form__title">Toleransi & Status</h3>
 
-        <div class="text-sm">
-            <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
-                <span class="text-xs font-medium text-slate-700">Toleransi Keterlambatan</span>
-                <span id="shift-tolerance-value" class="rounded-md bg-amber-50 px-2 py-0.5 text-xs font-bold text-amber-800">{{ $toleranceValue }} mnt</span>
+        <div class="shift-form__tolerance">
+            <div class="shift-form__tolerance-head">
+                <span class="shift-form__label">Toleransi Keterlambatan</span>
+                <span id="shift-tolerance-value" class="shift-form__tolerance-value">{{ $toleranceValue }} mnt</span>
             </div>
-            <input id="shift-tolerance" name="late_tolerance_minutes" type="range" min="0" max="60" step="5" value="{{ $toleranceValue }}" class="mt-2 h-1.5 w-full max-w-xs cursor-pointer accent-teal-600">
-            <div class="mt-2 flex flex-wrap gap-1.5">
+            <input id="shift-tolerance" name="late_tolerance_minutes" type="range" min="0" max="60" step="5" value="{{ $toleranceValue }}" class="shift-form__range">
+            <div class="shift-form__presets shift-form__presets--inline">
                 @foreach([0, 5, 10, 15, 30] as $preset)
-                    <button type="button" data-shift-tolerance="{{ $preset }}" class="shift-tolerance-preset rounded-md border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600 hover:border-amber-300 hover:bg-amber-50">{{ $preset }} mnt</button>
+                    <button type="button" data-shift-tolerance="{{ $preset }}" class="shift-form__preset shift-form__preset--compact">{{ $preset }} mnt</button>
                 @endforeach
             </div>
         </div>
 
-        <label class="mt-3 flex cursor-pointer items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
-            <div>
-                <span class="block text-xs font-medium text-slate-800">Jadwal Aktif</span>
-                <span class="text-[11px] text-slate-500">Nonaktifkan jika tidak dipakai</span>
-            </div>
-            <input type="checkbox" name="is_active" value="1" @checked(old('is_active', $shift?->is_active ?? true)) class="h-4 w-4 rounded border-slate-300 text-teal-700 focus:ring-teal-600">
+        <label class="shift-form__toggle">
+            <input type="checkbox" name="is_active" value="1" @checked(old('is_active', $shift?->is_active ?? true))>
+            <span class="shift-form__toggle-box" aria-hidden="true"></span>
+            <span>
+                <span class="shift-form__toggle-title">Jadwal Aktif</span>
+                <span class="shift-form__toggle-desc">Nonaktifkan jika tidak dipakai</span>
+            </span>
         </label>
     </section>
 </div>
@@ -155,8 +151,7 @@
         daysPreview.textContent = selected === 0
             ? 'Pilih minimal 1 hari kerja.'
             : `${selected} hari kerja dipilih per minggu.`;
-        daysPreview.classList.toggle('text-red-600', selected === 0);
-        daysPreview.classList.toggle('text-slate-500', selected > 0);
+        daysPreview.classList.toggle('shift-form__hint--error', selected === 0);
     }
 
     function updateTolerancePreview() {
@@ -168,7 +163,7 @@
     toleranceInput?.addEventListener('input', updateTolerancePreview);
     dayCheckboxes().forEach((input) => input.addEventListener('change', updateDaysPreview));
 
-    document.querySelectorAll('.shift-time-preset').forEach((button) => {
+    document.querySelectorAll('[data-shift-preset]').forEach((button) => {
         button.addEventListener('click', () => {
             const [start, end] = button.dataset.shiftPreset.split(',');
             startInput.value = start;
@@ -177,7 +172,7 @@
         });
     });
 
-    document.querySelectorAll('.shift-day-preset').forEach((button) => {
+    document.querySelectorAll('[data-shift-days]').forEach((button) => {
         button.addEventListener('click', () => {
             const days = button.dataset.shiftDays.split(',').map(Number);
             dayCheckboxes().forEach((input) => {
@@ -187,7 +182,7 @@
         });
     });
 
-    document.querySelectorAll('.shift-tolerance-preset').forEach((button) => {
+    document.querySelectorAll('[data-shift-tolerance]').forEach((button) => {
         button.addEventListener('click', () => {
             toleranceInput.value = button.dataset.shiftTolerance;
             updateTolerancePreview();
