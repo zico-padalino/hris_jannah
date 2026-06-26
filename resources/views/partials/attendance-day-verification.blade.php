@@ -6,14 +6,15 @@
 @if($source === \App\Enums\AttendanceSource::Leave)
     <span @class(['text-slate-500', 'empty-dash' => $large, 'text-xs' => ! $large])>—</span>
 @elseif($source === \App\Enums\AttendanceSource::Face)
-    <div class="flex items-center gap-2">
-        @if(! $large)
-            <div class="shrink-0 scale-90 origin-left">
-                @include('partials.attendance-photo', ['attendance' => $attendance])
-            </div>
+    <div @class(['attendance-day-verification', 'attendance-day-verification--large' => $large, 'attendance-day-verification--compact' => ! $large])>
+        @if($attendance->hasPhoto())
+            @include('partials.attendance-photo', [
+                'attendance' => $attendance,
+                'size' => $large ? 'lg' : 'sm',
+            ])
         @endif
         @if($attendance->face_match_score || $attendance->distance_meters)
-            <div @class(['leading-tight text-slate-700', 'text-sm font-semibold' => $large, 'text-[11px] text-slate-600' => ! $large])>
+            <div class="attendance-day-verification__meta">
                 @if($attendance->face_match_score)
                     <p>Skor {{ number_format($attendance->face_match_score * 100, 1) }}%</p>
                 @endif
@@ -21,8 +22,8 @@
                     <p>Jarak {{ $attendance->distance_meters }} m</p>
                 @endif
             </div>
-        @elseif($large)
-            <span class="text-sm font-semibold text-slate-600">Wajah</span>
+        @elseif($large && ! $attendance->hasPhoto())
+            <span class="attendance-day-verification__fallback">Wajah</span>
         @endif
     </div>
 @elseif($source === \App\Enums\AttendanceSource::Fingerprint)

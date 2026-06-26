@@ -204,7 +204,5 @@
         @if($attendances->hasPages())
             <div class="mt-4">{{ $attendances->links() }}</div>
         @endif
-
-        @include('partials.attendance-photo-modal')
     </div>
 @endsection

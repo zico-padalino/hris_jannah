@@ -112,6 +112,7 @@
     </div>
 
     @stack('modals')
+    @include('partials.attendance-photo-modal')
     @stack('scripts')
 </body>
 </html>

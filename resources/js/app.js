@@ -437,6 +437,90 @@ function initLeaveProofModal() {
     });
 }
 
+function initAttendancePhotoModal() {
+    const modal = document.getElementById('attendance-photo-modal');
+
+    if (!modal) {
+        return;
+    }
+
+    const image = document.getElementById('attendance-photo-image');
+    const download = document.getElementById('attendance-photo-download');
+    const title = document.getElementById('attendance-photo-title');
+    const meta = document.getElementById('attendance-photo-meta');
+
+    function show(el) {
+        el.classList.remove('hidden');
+    }
+
+    function hide(el) {
+        el.classList.add('hidden');
+    }
+
+    function close() {
+        modal.classList.add('hidden');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('overflow-hidden');
+
+        if (image) {
+            image.removeAttribute('src');
+            hide(image);
+        }
+    }
+
+    function open(trigger) {
+        const url = trigger.dataset.photoUrl;
+
+        if (!url) {
+            return;
+        }
+
+        if (title) {
+            title.textContent = trigger.dataset.photoTitle || title.textContent;
+        }
+
+        if (meta) {
+            meta.textContent = trigger.dataset.photoMeta || '';
+        }
+
+        if (download) {
+            download.href = url;
+        }
+
+        if (image) {
+            image.src = url;
+            image.alt = trigger.dataset.photoTitle || image.alt;
+            show(image);
+        }
+
+        modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('overflow-hidden');
+    }
+
+    document.addEventListener('click', (event) => {
+        const trigger = event.target.closest('[data-attendance-photo-trigger]');
+
+        if (trigger) {
+            event.preventDefault();
+            open(trigger);
+
+            return;
+        }
+
+        if (event.target.closest('[data-attendance-photo-close]')) {
+            event.preventDefault();
+            close();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+            close();
+        }
+    });
+}
+
 function initPasswordFields() {
     document.querySelectorAll('[data-password-toggle]').forEach((button) => {
         const field = button.closest('.password-field');
@@ -503,5 +587,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initUserAccountMenus();
     initMobileNav();
     initLeaveProofModal();
+    initAttendancePhotoModal();
     initPasswordFields();
 });

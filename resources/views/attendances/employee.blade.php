@@ -34,5 +34,4 @@
 
     <div class="mt-4">{{ $attendances->links() }}</div>
 
-    @include('partials.attendance-photo-modal')
 @endsection
