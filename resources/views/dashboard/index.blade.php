@@ -13,8 +13,6 @@
         };
     @endphp
 
-    @include('partials.dashboard-approver-notifications')
-
     @include('partials.dashboard-payroll-signature-notifications')
 
     @include('partials.dashboard-face-enrollment-notification')

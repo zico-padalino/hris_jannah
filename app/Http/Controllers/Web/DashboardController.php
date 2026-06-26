@@ -49,10 +49,6 @@ class DashboardController extends WebController
         $payrollBadgeService = app(PayrollSlipBadgeService::class);
         $pendingLeaveApprovalCount = $badgeService->pendingApprovalCount($user);
         $pendingOwnLeaveCount = $badgeService->pendingOwnCount($user);
-        $approverNotifications = [
-            'breakdown' => $badgeService->pendingApprovalBreakdown($user),
-            'recent' => $badgeService->recentPendingApprovals($user),
-        ];
         $payrollSignatureNotifications = [
             'count' => $payrollBadgeService->pendingApprovalCount($user),
             'recent' => $payrollBadgeService->recentPendingApprovals($user),
@@ -73,7 +69,6 @@ class DashboardController extends WebController
             'stats',
             'pendingLeaveApprovalCount',
             'pendingOwnLeaveCount',
-            'approverNotifications',
             'payrollSignatureNotifications',
             'pendingPayrollSignatureCount',
             'attendanceChart',
