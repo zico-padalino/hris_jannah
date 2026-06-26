@@ -26,6 +26,7 @@ return [
         'chart_employees' => 'Jumlah pegawai',
         'chart_total' => 'Total',
         'present' => 'Masuk',
+        'permission' => 'Izin',
         'absent' => 'Tidak masuk',
         'approval_title' => 'Cuti, Izin & Lembur',
         'approval_pending' => ':count pengajuan menunggu persetujuan',

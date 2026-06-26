@@ -313,7 +313,7 @@ function initDashboardCharts() {
     const seriesLabels = {
         masuk: chartLabels.present ?? 'Present',
         telat: chartLabels.late ?? 'Late',
-        izin: chartLabels.permission ?? 'Permission',
+        izin: chartLabels.permission ?? 'Izin',
         ga_masuk: chartLabels.absent ?? 'Absent',
     };
 
