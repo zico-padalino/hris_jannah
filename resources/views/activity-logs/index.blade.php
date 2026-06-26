@@ -59,7 +59,7 @@
         </div>
     </form>
 
-    <div class="panel-table overflow-x-auto">
+    <div class="panel-table activity-log-table overflow-x-auto">
         <table class="table-readable min-w-full">
             <thead>
                 <tr>
@@ -81,25 +81,25 @@
                         <td class="whitespace-nowrap font-semibold">#{{ $log->id }}</td>
                         <td class="whitespace-nowrap">
                             <p class="font-semibold">{{ $log->created_at?->format('d/m/Y') }}</p>
-                            <p class="text-sm app-muted-text">{{ $log->created_at?->format('H:i:s') }}</p>
+                            <p class="activity-log-table__meta">{{ $log->created_at?->format('H:i:s') }}</p>
                         </td>
                         <td>
                             <p class="font-semibold">{{ $log->user_name ?? __('pages.activity_logs.unknown_user') }}</p>
                             @if($log->user_email)
-                                <p class="text-sm app-muted-text">{{ $log->user_email }}</p>
+                                <p class="activity-log-table__meta">{{ $log->user_email }}</p>
                             @endif
                         </td>
                         <td>{{ $log->user_role ? __('enums.user_role.'.$log->user_role) : '—' }}</td>
                         <td>{{ $log->branch?->name ?? '—' }}</td>
                         <td>
-                            <span class="badge-readable {{ $log->action->badgeClass() }}">
+                            <span class="{{ $log->action->badgeClass() }}">
                                 {{ $log->action->label() }}
                             </span>
                         </td>
-                        <td>{{ $log->module ?? '—' }}</td>
+                        <td class="activity-log-table__module">{{ $log->module ?? '—' }}</td>
                         <td>{{ $log->subjectDisplay() }}</td>
-                        <td class="min-w-[12rem]">{{ $log->description ?? '—' }}</td>
-                        <td class="whitespace-nowrap text-sm app-muted-text">{{ $log->ip_address ?? '—' }}</td>
+                        <td class="activity-log-table__desc">{{ $log->description ?? '—' }}</td>
+                        <td class="activity-log-table__ip whitespace-nowrap">{{ $log->ip_address ?? '—' }}</td>
                     </tr>
                 @empty
                     <tr>

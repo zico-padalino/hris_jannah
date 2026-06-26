@@ -2655,6 +2655,74 @@ html.dark .table-actions {
     padding: 0.25rem 0.625rem;
 }
 
+.activity-log-badge {
+    border-radius: 9999px;
+    display: inline-flex;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+    padding: 0.1875rem 0.5rem;
+    white-space: nowrap;
+}
+
+.activity-log-badge--login {
+    background-color: var(--app-primary-soft);
+    box-shadow: 0 0 0 1px var(--app-notification-border);
+    color: var(--app-primary-soft-text);
+}
+
+.activity-log-badge--logout {
+    background-color: var(--app-surface-muted);
+    box-shadow: 0 0 0 1px var(--app-border);
+    color: var(--app-text-muted);
+}
+
+.activity-log-badge--login_failed,
+.activity-log-badge--delete {
+    background-color: var(--app-alert-error-bg);
+    box-shadow: 0 0 0 1px var(--app-alert-error-border);
+    color: var(--app-alert-error-text);
+}
+
+.activity-log-badge--create {
+    background: linear-gradient(135deg, var(--app-notification-bg) 0%, var(--app-notification-bg-end) 100%);
+    box-shadow: 0 0 0 1px var(--app-notification-border);
+    color: var(--app-notification-title);
+}
+
+.activity-log-badge--update {
+    background-color: var(--app-alert-warning-bg);
+    box-shadow: 0 0 0 1px var(--app-alert-warning-border);
+    color: var(--app-alert-warning-text);
+}
+
+.activity-log-table .activity-log-table__desc {
+    color: var(--app-text);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    max-width: 18rem;
+}
+
+.activity-log-table .activity-log-table__meta {
+    color: var(--app-text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.activity-log-table .activity-log-table__ip {
+    color: var(--app-text-muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.activity-log-table .activity-log-table__module {
+    color: var(--app-text-muted);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
 .table-readable .deduction-amount {
     background-color: #fef2f2;
     border: 2px solid #ef4444;
