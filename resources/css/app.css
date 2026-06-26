@@ -3777,6 +3777,18 @@ html.dark .dashboard-pending-card__hint {
     font-weight: var(--app-weight-medium) !important;
 }
 
+.dashboard-welcome__greeting,
+.dashboard-welcome__name,
+.dashboard-welcome__summary,
+.dashboard-stat-compact__value,
+.dashboard-stat-compact__label {
+    color: #ffffff !important;
+}
+
+.dashboard-welcome {
+    color: #ffffff;
+}
+
 /* Header halaman */
 .easy-read .page-title {
     color: var(--app-text);

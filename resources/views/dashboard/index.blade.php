@@ -32,24 +32,24 @@
     <div class="dashboard-welcome mb-8 overflow-hidden rounded-2xl bg-gradient-to-br from-campfire-1 via-campfire-2 to-campfire-3 p-6 text-white shadow-xl shadow-campfire-1/25 sm:p-8">
         <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div>
-                <p class="text-sm font-medium text-campfire-4">{{ $greeting }},</p>
-                <h2 class="mt-1 text-2xl font-bold sm:text-3xl">{{ auth()->user()->name }}</h2>
-                <p class="mt-2 max-w-xl text-sm text-campfire-4/90">
+                <p class="dashboard-welcome__greeting text-sm font-medium">{{ $greeting }},</p>
+                <h2 class="dashboard-welcome__name mt-1 text-2xl font-bold sm:text-3xl">{{ auth()->user()->name }}</h2>
+                <p class="dashboard-welcome__summary mt-2 max-w-xl text-sm">
                     {{ __('pages.dashboard.summary', ['role' => auth()->user()->role->label()]) }}
                 </p>
             </div>
             <div class="grid grid-cols-1 gap-3 min-[380px]:grid-cols-3 sm:gap-4">
                 <div class="dashboard-stat-compact rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
-                    <p class="text-2xl font-bold">{{ $stats['attendances_today'] }}</p>
-                    <p class="mt-0.5 text-sm font-semibold text-campfire-4">Absensi hari ini</p>
+                    <p class="dashboard-stat-compact__value text-2xl font-bold">{{ $stats['attendances_today'] }}</p>
+                    <p class="dashboard-stat-compact__label mt-0.5 text-sm font-semibold">Absensi hari ini</p>
                 </div>
                 <div class="dashboard-stat-compact rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
-                    <p class="text-2xl font-bold text-campfire-4">{{ $stats['on_time_today'] }}</p>
-                    <p class="mt-0.5 text-sm font-semibold text-campfire-4">Tepat waktu</p>
+                    <p class="dashboard-stat-compact__value text-2xl font-bold">{{ $stats['on_time_today'] }}</p>
+                    <p class="dashboard-stat-compact__label mt-0.5 text-sm font-semibold">Tepat waktu</p>
                 </div>
                 <div class="dashboard-stat-compact rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
-                    <p class="text-2xl font-bold text-white">{{ $stats['late_today'] }}</p>
-                    <p class="mt-0.5 text-sm font-semibold text-campfire-4">Terlambat</p>
+                    <p class="dashboard-stat-compact__value text-2xl font-bold">{{ $stats['late_today'] }}</p>
+                    <p class="dashboard-stat-compact__label mt-0.5 text-sm font-semibold">Terlambat</p>
                 </div>
             </div>
         </div>
