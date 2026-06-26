@@ -197,7 +197,7 @@ html.dark {
     --app-chip-checked-border: #F88F23;
     --app-gradient-primary: linear-gradient(135deg, #9a3412 0%, #EC6014 45%, #F88F23 78%, #FBB931 100%);
     --app-gradient-primary-hover: linear-gradient(135deg, #7c2d12 0%, #c8510f 40%, #F88F23 100%);
-    --app-gradient-sidebar: linear-gradient(185deg, #3d1a08 0%, #7c2d12 35%, #EC6014 68%, #F88F23 100%);
+    --app-gradient-sidebar: linear-gradient(185deg, #552a12 0%, #7c2d12 32%, #EC6014 66%, #F88F23 100%);
     --app-gradient-surface: linear-gradient(180deg, #120c06 0%, #1a1208 50%, #24180c 100%);
     --app-gradient-table-head: linear-gradient(90deg, #3d1a08 0%, #9a3412 35%, #EC6014 70%, #F88F23 100%);
     --app-gradient-nav-active: linear-gradient(135deg, rgb(255 255 255 / 0.08) 0%, rgb(0 0 0 / 0.22) 100%);
