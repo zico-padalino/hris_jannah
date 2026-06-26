@@ -7401,14 +7401,34 @@ html.dark .payroll-deduction-back:hover {
     padding-bottom: 1rem;
 }
 
+.attendance-location-page > .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+}
+
+.attendance-location-panel {
+    min-width: 0;
+}
+
+@media (max-width: 639px) {
+    .attendance-location-panel {
+        padding: 1rem !important;
+    }
+
+    .attendance-location-page > .btn-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
 .attendance-location-panel__header {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--app-border);
 }
 
 .attendance-location-panel__title {
-    font-size: 1.125rem;
+    font-size: 1.0625rem;
     font-weight: var(--app-weight-bold);
     color: var(--app-text);
     line-height: 1.35;
@@ -7421,23 +7441,96 @@ html.dark .payroll-deduction-back:hover {
     color: var(--app-text-muted);
 }
 
+.attendance-location-panel__desc strong {
+    color: var(--app-text);
+    font-weight: var(--app-weight-semibold);
+}
+
 .attendance-location-form__grid {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.25rem;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+        "map"
+        "fields"
+        "actions";
 }
 
 @media (min-width: 1024px) {
     .attendance-location-form__grid {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+        grid-template-areas:
+            "fields map"
+            "actions map";
         align-items: start;
         gap: 1.75rem;
     }
 }
 
 .attendance-location-form__fields {
+    grid-area: fields;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1rem;
+    min-width: 0;
+}
+
+.attendance-location-form__map {
+    grid-area: map;
+    min-width: 0;
+}
+
+.attendance-location-form__actions {
+    grid-area: actions;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+    padding-top: 0.25rem;
+}
+
+@media (max-width: 639px) {
+    .attendance-location-form__actions {
+        position: sticky;
+        bottom: 0.75rem;
+        z-index: 20;
+        margin-top: 0.25rem;
+        padding: 0.75rem;
+        border: 1px solid var(--app-border-strong);
+        border-radius: var(--app-density-radius-lg);
+        background: color-mix(in srgb, var(--app-surface) 92%, transparent);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 8px 24px var(--app-shadow);
+    }
+
+    .attendance-location-form__actions .btn-primary,
+    .attendance-location-form__actions .btn-secondary {
+        flex: 1 1 calc(50% - 0.3125rem);
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+.attendance-location-form input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]) {
+    display: block;
+    width: 100%;
+    margin-top: 0.375rem;
+    background-color: var(--app-input-bg);
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-density-radius);
+    color: var(--app-input-text);
+    font-size: var(--app-density-control-font);
+    min-height: var(--app-density-control-h);
+    padding: 0.4375rem 0.625rem;
+}
+
+.attendance-location-form input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"])::placeholder {
+    color: color-mix(in srgb, var(--app-text-muted) 72%, transparent);
+}
+
+.attendance-location-form input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):focus {
+    border-color: var(--app-primary);
+    box-shadow: 0 0 0 3px var(--app-focus-ring);
+    outline: none;
 }
 
 .attendance-location-form__group {
@@ -7503,7 +7596,7 @@ html.dark .payroll-deduction-back:hover {
 
 .attendance-location-form__toggle:hover {
     border-color: var(--app-primary);
-    background: #fffdf8;
+    background: var(--app-surface-muted);
 }
 
 .attendance-location-form__toggle input {
@@ -7519,7 +7612,7 @@ html.dark .payroll-deduction-back:hover {
     margin-top: 0.125rem;
     border: 1.5px solid var(--app-border-strong);
     border-radius: 0.25rem;
-    background: var(--app-surface);
+    background: var(--app-input-bg);
     transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
@@ -7547,13 +7640,6 @@ html.dark .payroll-deduction-back:hover {
     color: var(--app-text-muted);
 }
 
-.attendance-location-form__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.625rem;
-    padding-top: 0.25rem;
-}
-
 .attendance-location-map-panel {
     display: flex;
     flex-direction: column;
@@ -7561,8 +7647,8 @@ html.dark .payroll-deduction-back:hover {
     padding: 1rem;
     border: 1px solid var(--app-border-strong);
     border-radius: var(--app-density-radius-lg);
-    background: linear-gradient(180deg, #fffdf8 0%, var(--app-surface) 100%);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8);
+    background: var(--app-gradient-surface);
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--app-surface) 80%, white);
 }
 
 .attendance-location-map-panel__header {
@@ -7588,6 +7674,7 @@ html.dark .payroll-deduction-back:hover {
     flex-direction: column;
     gap: 0.75rem;
     min-height: 0;
+    min-width: 0;
 }
 
 .attendance-location-map-toolbar {
@@ -7597,8 +7684,12 @@ html.dark .payroll-deduction-back:hover {
 
 @media (min-width: 640px) {
     .attendance-location-map-toolbar {
-        grid-template-columns: 1fr auto auto;
+        grid-template-columns: minmax(0, 1fr) auto;
         align-items: stretch;
+    }
+
+    .attendance-location-map-toolbar:has(.attendance-location-map-toolbar__btn--gps) {
+        grid-template-columns: minmax(0, 1fr) auto auto;
     }
 }
 
@@ -7607,12 +7698,22 @@ html.dark .payroll-deduction-back:hover {
     display: flex;
     align-items: center;
     min-width: 0;
+    grid-column: 1 / -1;
+}
+
+@media (min-width: 640px) {
+    .attendance-location-map-search {
+        grid-column: auto;
+    }
 }
 
 .attendance-location-map-search__icon {
     position: absolute;
-    left: 0.75rem;
+    left: 0.875rem;
+    z-index: 1;
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 1rem;
     height: 1rem;
     color: var(--app-text-muted);
@@ -7624,18 +7725,22 @@ html.dark .payroll-deduction-back:hover {
     height: 100%;
 }
 
-.attendance-location-map-search__input {
+.easy-read .attendance-location-map-search__input {
     width: 100%;
     min-height: var(--app-density-control-h);
-    padding: 0.4375rem 0.75rem 0.4375rem 2.25rem;
+    padding: 0.4375rem 0.75rem 0.4375rem 2.625rem !important;
     border: 1px solid var(--app-border-strong);
     border-radius: var(--app-density-radius);
-    background: var(--app-input-bg, var(--app-surface));
-    color: var(--app-input-text, var(--app-text));
+    background: var(--app-input-bg);
+    color: var(--app-input-text);
     font-size: var(--app-density-control-font);
 }
 
-.attendance-location-map-search__input:focus {
+.easy-read .attendance-location-map-search__input::placeholder {
+    color: color-mix(in srgb, var(--app-text-muted) 72%, transparent);
+}
+
+.easy-read .attendance-location-map-search__input:focus {
     border-color: var(--app-primary);
     box-shadow: 0 0 0 3px var(--app-focus-ring);
     outline: none;
@@ -7651,6 +7756,10 @@ html.dark .payroll-deduction-back:hover {
 }
 
 @media (max-width: 639px) {
+    .attendance-location-map-toolbar__btn {
+        width: 100%;
+    }
+
     .attendance-location-map-toolbar__btn--gps {
         grid-column: 1 / -1;
     }
@@ -7661,19 +7770,55 @@ html.dark .payroll-deduction-back:hover {
     border: 1px solid var(--app-border-strong);
     border-radius: var(--app-density-radius-lg);
     background: var(--app-surface-muted);
-    box-shadow: 0 1px 3px rgb(154 66 16 / 0.06);
+    box-shadow: 0 1px 3px var(--app-shadow);
 }
 
 .attendance-location-map {
-    height: 20rem;
+    height: 16.5rem;
     width: 100%;
     z-index: 0;
+}
+
+@media (min-width: 480px) {
+    .attendance-location-map {
+        height: 18.5rem;
+    }
 }
 
 @media (min-width: 1024px) {
     .attendance-location-map {
         height: 24rem;
     }
+}
+
+.attendance-location-marker {
+    background: transparent;
+    border: none;
+}
+
+.attendance-location-marker__pin {
+    position: relative;
+    display: block;
+    width: 1.375rem;
+    height: 1.375rem;
+    margin: 0 auto;
+    border: 3px solid #fff;
+    border-radius: 9999px 9999px 9999px 0;
+    background: linear-gradient(135deg, #EC6014 0%, #F88F23 100%);
+    box-shadow: 0 4px 12px rgb(236 96 20 / 0.45);
+    transform: rotate(-45deg);
+}
+
+.attendance-location-marker__pin::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 9999px;
+    background: #fff;
+    transform: translate(-50%, -50%);
 }
 
 .attendance-location-map-legend {
@@ -7699,18 +7844,18 @@ html.dark .payroll-deduction-back:hover {
 }
 
 .attendance-location-map-legend__dot--active {
-    background: rgb(248 143 35 / 0.55);
+    background: color-mix(in srgb, var(--app-primary) 55%, transparent);
     border: 2px solid var(--app-primary);
 }
 
 .attendance-location-map-legend__dot--buffer {
     background: transparent;
-    border: 2px dashed #9a4210;
+    border: 2px dashed var(--app-primary-soft-text);
 }
 
 .attendance-location-map-legend__dot--existing {
-    background: rgb(251 185 49 / 0.45);
-    border: 2px dashed #c8510f;
+    background: color-mix(in srgb, var(--app-campfire-3) 45%, transparent);
+    border: 2px dashed var(--app-primary-hover);
 }
 
 .attendance-location-map-hint {
@@ -7721,15 +7866,48 @@ html.dark .payroll-deduction-back:hover {
 
 .attendance-location-map .leaflet-control-attribution {
     font-size: 10px;
+    background: color-mix(in srgb, var(--app-surface) 88%, transparent);
+    color: var(--app-text-muted);
+}
+
+.attendance-location-map .leaflet-control-attribution a {
+    color: var(--app-link);
 }
 
 .attendance-location-map .leaflet-control-zoom a {
     border-color: var(--app-border-strong) !important;
+    background: var(--app-surface) !important;
     color: var(--app-primary-soft-text) !important;
 }
 
 .attendance-location-map .leaflet-control-zoom a:hover {
     background: var(--app-primary-soft) !important;
     color: var(--app-primary) !important;
+}
+
+html.dark .attendance-location-map-panel {
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05);
+}
+
+html.dark .attendance-location-map-frame {
+    background: #1a1208;
+}
+
+html.dark .attendance-location-map .leaflet-control-attribution {
+    background: rgb(26 18 8 / 0.9);
+    color: #fff8eb;
+}
+
+html.dark .attendance-location-map .leaflet-control-attribution a {
+    color: #FBB931;
+}
+
+html.dark .attendance-location-map .leaflet-control-zoom a {
+    background: var(--app-surface-muted) !important;
+    color: #fff8eb !important;
+}
+
+html.dark .attendance-location-form__toggle input:checked + .attendance-location-form__toggle-box {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23422006'%3E%3Cpath d='M12.207 4.793a1 1 0 0 1 0 1.414l-5 5a1 1 0 0 1-1.414 0l-2.5-2.5a1 1 0 1 1 1.414-1.414L6.5 9.086l4.293-4.293a1 1 0 0 1 1.414 0z'/%3E%3C/svg%3E");
 }
 

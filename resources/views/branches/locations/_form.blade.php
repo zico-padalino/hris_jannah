@@ -79,11 +79,6 @@
                     </span>
                 </label>
             </fieldset>
-
-            <div class="attendance-location-form__actions">
-                <button type="submit" class="btn-primary">Simpan Lokasi</button>
-                <a href="{{ route('branches.show', $branch) }}" class="btn-secondary">Batal</a>
-            </div>
         </div>
 
         <div class="attendance-location-form__map">
@@ -98,6 +93,11 @@
                 'existingLocations' => $branch->locations ?? [],
                 'bufferMeters' => $locationBuffer,
             ])
+        </div>
+
+        <div class="attendance-location-form__actions">
+            <button type="submit" class="btn-primary">Simpan Lokasi</button>
+            <a href="{{ route('branches.show', $branch) }}" class="btn-secondary">Batal</a>
         </div>
     </div>
 </form>

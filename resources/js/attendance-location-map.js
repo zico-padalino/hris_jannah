@@ -1,20 +1,28 @@
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-const defaultMarkerIcon = L.icon({
-    iconUrl: markerIcon,
-    iconRetinaUrl: markerIcon2x,
-    shadowUrl: markerShadow,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
+const campfireMarkerIcon = L.divIcon({
+    className: 'attendance-location-marker',
+    html: '<span class="attendance-location-marker__pin" aria-hidden="true"></span>',
+    iconSize: [30, 38],
+    iconAnchor: [15, 38],
+    popupAnchor: [0, -34],
 });
 
-L.Marker.prototype.options.icon = defaultMarkerIcon;
+const TILE_CONFIG = {
+    light: {
+        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    },
+    dark: {
+        url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    },
+};
+
+function isDarkTheme() {
+    return document.documentElement.classList.contains('dark');
+}
 
 const DEFAULT_CENTER = [-6.914744, 107.60981];
 const DEFAULT_ZOOM = 15;
@@ -69,14 +77,32 @@ export function initAttendanceLocationMap(root) {
     const initialLng = parseNumber(root.dataset.initialLng ?? lngInput?.value, DEFAULT_CENTER[1]);
     const initialRadius = parseNumber(root.dataset.initialRadius ?? radiusInput?.value, 100);
 
-    const map = L.map(mapElement).setView([initialLat, initialLng], DEFAULT_ZOOM);
+    const map = L.map(mapElement, { zoomControl: true }).setView([initialLat, initialLng], DEFAULT_ZOOM);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        maxZoom: 19,
+    let tileLayer = null;
+
+    function applyMapTheme() {
+        const theme = isDarkTheme() ? 'dark' : 'light';
+        const config = TILE_CONFIG[theme];
+
+        if (tileLayer) {
+            map.removeLayer(tileLayer);
+        }
+
+        tileLayer = L.tileLayer(config.url, {
+            attribution: config.attribution,
+            maxZoom: 19,
+        }).addTo(map);
+
+        mapElement.classList.toggle('attendance-location-map--dark', theme === 'dark');
+    }
+
+    applyMapTheme();
+
+    const marker = L.marker([initialLat, initialLng], {
+        draggable: true,
+        icon: campfireMarkerIcon,
     }).addTo(map);
-
-    const marker = L.marker([initialLat, initialLng], { draggable: true }).addTo(map);
     const radiusCircle = L.circle([initialLat, initialLng], {
         radius: initialRadius,
         color: '#EC6014',
@@ -264,6 +290,16 @@ export function initAttendanceLocationMap(root) {
     updateBufferRing();
     fitMapToFeatures(map, [radiusCircle, marker, ...existingLayers]);
 
+    const themeObserver = new MutationObserver(() => {
+        applyMapTheme();
+        window.setTimeout(() => map.invalidateSize(), 100);
+    });
+
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class'],
+    });
+
     window.setTimeout(() => map.invalidateSize(), 150);
 
     return {
@@ -278,6 +314,10 @@ export function initAttendanceLocationMap(root) {
         },
         invalidateSize() {
             map.invalidateSize();
+        },
+        destroy() {
+            themeObserver.disconnect();
+            map.remove();
         },
     };
 }
