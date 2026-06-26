@@ -24,7 +24,10 @@
     </div>
 
     <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 class="mb-4 text-lg font-semibold">Lokasi Absensi ({{ $branch->locations->count() }})</h2>
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <h2 class="text-lg font-semibold">Lokasi Absensi ({{ $branch->locations->count() }})</h2>
+            <a href="{{ route('branch-locations.create', $branch) }}" class="btn-primary">+ Tambah Lokasi</a>
+        </div>
         <div class="space-y-4">
             @forelse($branch->locations as $location)
                 <form method="POST" action="{{ route('branch-locations.update', $location) }}" class="rounded-lg border border-slate-200 p-4">

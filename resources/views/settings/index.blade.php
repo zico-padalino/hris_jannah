@@ -82,9 +82,15 @@
                 </label>
                 <label class="block text-sm">
                     {{ __('pages.settings.location_buffer') }}
-                    <input name="location_buffer_meters" type="number" value="{{ $settings['location_buffer_meters'] }}" class="mt-1 w-full rounded-lg border px-3 py-2">
+                    <input name="location_buffer_meters" id="location_buffer_meters" type="number" value="{{ $settings['location_buffer_meters'] }}" class="mt-1 w-full rounded-lg border px-3 py-2">
                 </label>
             </div>
+            <p class="mt-3 text-xs text-slate-500">
+                {{ __('pages.settings.attendance_map_hint') }}
+                @perm('branches.manage')
+                    <a href="{{ route('branches.index') }}" class="font-semibold text-teal-700 hover:underline">{{ __('nav.branches') }}</a>
+                @endperm
+            </p>
             <p class="mt-3 text-xs text-slate-500">
                 {{ __('pages.settings.payroll_deduction_moved') }}
                 @perm('payroll.manage')

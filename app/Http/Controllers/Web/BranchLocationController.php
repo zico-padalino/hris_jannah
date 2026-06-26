@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Models\Branch;
 use App\Models\BranchLocation;
+use App\Models\SystemSetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,13 @@ class BranchLocationController extends WebController
     {
         $this->authorizeBranchAccess($request, $branch->id);
 
-        return view('branches.locations.create', compact('branch'));
+        $branch->load('locations');
+        $locationBuffer = (int) SystemSetting::getValue(
+            'location_buffer_meters',
+            config('attendance.location_buffer_meters')
+        );
+
+        return view('branches.locations.create', compact('branch', 'locationBuffer'));
     }
 
     public function store(Request $request, Branch $branch): RedirectResponse
