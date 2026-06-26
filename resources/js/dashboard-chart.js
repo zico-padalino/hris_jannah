@@ -98,7 +98,75 @@ function applyDoughnutGradients(chart) {
     });
 }
 
+function getCanvasPointerPosition(chart, nativeEvent) {
+    const rect = chart.canvas.getBoundingClientRect();
+    const clientX = nativeEvent.touches?.[0]?.clientX ?? nativeEvent.clientX;
+    const clientY = nativeEvent.touches?.[0]?.clientY ?? nativeEvent.clientY;
+
+    return {
+        x: clientX - rect.left,
+        y: clientY - rect.top,
+    };
+}
+
+function showWeeklyTooltipAt(chart, nativeEvent) {
+    const position = getCanvasPointerPosition(chart, nativeEvent);
+    const elements = chart.getElementsAtEventForMode(
+        { x: position.x, y: position.y, native: nativeEvent },
+        'index',
+        { intersect: false },
+        false
+    );
+
+    if (elements.length === 0) {
+        hideWeeklyTooltip(chart);
+
+        return;
+    }
+
+    chart.setActiveElements(elements);
+    chart.tooltip.setActiveElements(elements, position);
+    chart.update('none');
+}
+
+function hideWeeklyTooltip(chart) {
+    chart.setActiveElements([]);
+    chart.tooltip.setActiveElements([]);
+    chart.update('none');
+}
+
+function detachPressHoldTooltip(canvas) {
+    canvas?._pressHoldAbort?.abort();
+    canvas._pressHoldAbort = null;
+}
+
+function attachPressHoldTooltip(chart, canvas) {
+    detachPressHoldTooltip(canvas);
+
+    const abort = new AbortController();
+    const { signal } = abort;
+
+    canvas._pressHoldAbort = abort;
+
+    const onPress = (event) => {
+        event.preventDefault();
+        showWeeklyTooltipAt(chart, event);
+    };
+
+    const onRelease = () => {
+        hideWeeklyTooltip(chart);
+    };
+
+    canvas.addEventListener('mousedown', onPress, { signal });
+    canvas.addEventListener('touchstart', onPress, { passive: false, signal });
+    canvas.addEventListener('mouseup', onRelease, { signal });
+    canvas.addEventListener('mouseleave', onRelease, { signal });
+    canvas.addEventListener('touchend', onRelease, { signal });
+    canvas.addEventListener('touchcancel', onRelease, { signal });
+}
+
 function destroyDashboardCharts() {
+    detachPressHoldTooltip(document.getElementById('attendance-weekly-chart'));
     weeklyChart?.destroy();
     todayChart?.destroy();
     weeklyChart = null;
@@ -299,6 +367,10 @@ function initDashboardCharts() {
             },
             options: {
                 ...baseOptions(true, chartLabels),
+                events: [],
+                hover: {
+                    enabled: false,
+                },
                 plugins: {
                     ...baseOptions(true, chartLabels).plugins,
                     legend: {
@@ -315,6 +387,8 @@ function initDashboardCharts() {
                 },
             ],
         });
+
+        attachPressHoldTooltip(weeklyChart, weeklyCanvas);
     }
 
     const todayCanvas = document.getElementById('attendance-today-chart');
