@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use App\Models\Attendance;
 use App\Models\Branch;
 use App\Models\Employee;
+use App\Models\EmployeeFace;
+use App\Models\SystemSetting;
 use App\Services\AttendanceDayGroupService;
 use App\Services\AttendanceMethodSettingsService;
 use App\Services\AttendanceService;
@@ -79,6 +81,36 @@ class AttendanceController extends WebController
                 ->get(['id', 'name', 'employee_number', 'branch_id']);
         }
 
+        $facesForJs = collect();
+        $faceMatchThreshold = (float) SystemSetting::getValue(
+            'face_match_threshold',
+            config('attendance.face_match_threshold', 0.6),
+        );
+
+        if ($methods['photo'] ?? false) {
+            $facesForJs = EmployeeFace::query()
+                ->with(['employee:id,name,branch_id'])
+                ->whereHas('employee', function ($query) use ($branchIds, $user, $isEmployeeAccount) {
+                    $query->where('is_active', true);
+
+                    if ($branchIds !== null) {
+                        $query->whereIn('branch_id', $branchIds);
+                    }
+
+                    if ($isEmployeeAccount && $user->employee) {
+                        $query->where('id', $user->employee->id);
+                    }
+                })
+                ->get(['id', 'employee_id', 'face_descriptor'])
+                ->map(fn (EmployeeFace $face) => [
+                    'employee_id' => $face->employee_id,
+                    'branch_id' => $face->employee->branch_id,
+                    'employee_name' => $face->employee->name,
+                    'descriptor' => $face->face_descriptor,
+                ])
+                ->values();
+        }
+
         return view('attendances.scan', compact(
             'branches',
             'branchesForJs',
@@ -86,6 +118,8 @@ class AttendanceController extends WebController
             'methods',
             'isEmployeeAccount',
             'employeesForGps',
+            'facesForJs',
+            'faceMatchThreshold',
         ));
     }
 

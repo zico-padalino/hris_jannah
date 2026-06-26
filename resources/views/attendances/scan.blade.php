@@ -64,16 +64,12 @@
             @if($photoEnabled)
                 <div id="panel-photo" class="panel attendance-scan-panel {{ $defaultMethod === 'gps' ? 'hidden' : '' }}">
                     <h2 class="attendance-scan-panel__title">Kamera Wajah</h2>
-                    <div class="attendance-scan-camera">
+                    <div id="face-camera-wrap" class="attendance-scan-camera">
                         <video id="face-video" autoplay muted playsinline class="attendance-scan-camera__video"></video>
                         <canvas id="face-canvas" class="hidden"></canvas>
+                        @include('partials.face-id-guide')
                     </div>
                     <p id="face-status" class="attendance-scan-status">Memuat model face recognition...</p>
-                    <div class="attendance-scan-actions">
-                        <button type="button" id="btn-capture-face" disabled class="btn-primary">
-                            Scan Wajah & Absen
-                        </button>
-                    </div>
                 </div>
             @endif
 
@@ -101,7 +97,7 @@
                         <input type="file" name="photo" id="photo-input" class="hidden">
 
                         <div class="attendance-scan-info">
-                            <strong>Absensi otomatis:</strong> tap/scan pertama hari ini = <strong>Masuk</strong>, berikutnya = <strong>Pulang</strong>, bergantian seterusnya.
+                            <strong>Absensi otomatis:</strong> ikuti panduan animasi (tengah → kiri → kanan → tengah). Jika wajah cocok, absensi langsung diproses.
                         </div>
 
                         @if($gpsEnabled && ! $isEmployeeAccount)
@@ -249,6 +245,12 @@
             document.getElementById('employee-select-wrap')?.classList.toggle('hidden', method !== 'gps');
             document.getElementById('btn-submit-gps')?.classList.toggle('hidden', method !== 'gps');
 
+            if (method === 'photo') {
+                window.dispatchEvent(new CustomEvent('face-scanner:resume'));
+            } else {
+                window.dispatchEvent(new CustomEvent('face-scanner:pause'));
+            }
+
             const employeeSelect = document.getElementById('employee-select');
             if (employeeSelect) {
                 employeeSelect.required = method === 'gps';
@@ -263,25 +265,25 @@
             window.faceScannerConfig = {
                 videoId: 'face-video',
                 canvasId: 'face-canvas',
+                cameraId: 'face-camera-wrap',
                 statusId: 'face-status',
-                captureButtonId: 'btn-capture-face',
                 descriptorInputId: 'face-descriptor',
                 photoInputId: 'photo-input',
                 formId: 'attendance-form',
                 methodInputId: 'attendance-method',
                 methodValue: 'photo',
+                branchSelectId: 'branch-select',
+                latitudeInputId: 'latitude',
+                longitudeInputId: 'longitude',
+                defaultBranchId: defaultBranchId,
+                knownFaces: @json($facesForJs ?? []),
+                matchThreshold: @json($faceMatchThreshold ?? 0.6),
+                stableFramesRequired: 2,
+                scanIntervalMs: 450,
+                autoScan: true,
+                poseGuide: 'attendance',
+                startPaused: {{ $defaultMethod === 'gps' ? 'true' : 'false' }},
             };
         }
-
-        document.getElementById('attendance-form')?.addEventListener('submit', (event) => {
-            const method = document.getElementById('attendance-method')?.value;
-            if (method === 'gps') {
-                return;
-            }
-            if (!document.getElementById('face-descriptor')?.value) {
-                event.preventDefault();
-                alert('Scan wajah terlebih dahulu.');
-            }
-        });
     </script>
 @endpush

@@ -7,16 +7,12 @@
     <div class="attendance-enroll-grid">
         <div class="panel attendance-scan-panel">
             <h2 class="attendance-scan-panel__title">Scan Wajah Pegawai</h2>
-            <div class="attendance-scan-camera">
+            <div id="face-camera-wrap" class="attendance-scan-camera">
                 <video id="face-video" autoplay muted playsinline class="attendance-scan-camera__video"></video>
                 <canvas id="face-canvas" class="hidden"></canvas>
+                @include('partials.face-id-guide')
             </div>
             <p id="face-status" class="attendance-scan-status">Memuat model face recognition...</p>
-            <div class="attendance-scan-actions">
-                <button type="button" id="btn-capture-face" disabled class="btn-primary">
-                    Capture & Daftarkan Wajah
-                </button>
-            </div>
         </div>
 
         <div class="panel attendance-scan-panel">
@@ -44,7 +40,7 @@
                     <input type="checkbox" name="is_primary" value="1" checked class="rounded border-slate-300">
                     Jadikan wajah utama
                 </label>
-                <p class="attendance-enroll-note">Tekan tombol capture setelah wajah terdeteksi di kamera.</p>
+                <p class="attendance-enroll-note">Ikuti animasi panduan: hadap tengah, putar kiri, kanan, lalu angkat sedikit — wajah akan terdaftar otomatis.</p>
             </form>
         </div>
     </div>
@@ -60,11 +56,17 @@
         window.faceScannerConfig = {
             videoId: 'face-video',
             canvasId: 'face-canvas',
+            cameraId: 'face-camera-wrap',
             statusId: 'face-status',
-            captureButtonId: 'btn-capture-face',
             descriptorInputId: 'face-descriptor',
             photoInputId: 'photo-input',
             formId: 'enroll-form',
+            knownFaces: [],
+            stableFramesRequired: 2,
+            scanIntervalMs: 450,
+            requireGps: false,
+            autoScan: true,
+            poseGuide: 'enroll',
         };
     </script>
 @endpush
