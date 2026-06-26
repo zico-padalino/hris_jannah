@@ -60,4 +60,6 @@ return [
     'notifications_leave_pending' => ':count request(s) awaiting approval',
     'notifications_unread' => ':count unread',
     'copyright' => '© RS JANNAH :year',
+    'show_password' => 'Show password',
+    'hide_password' => 'Hide password',
 ];

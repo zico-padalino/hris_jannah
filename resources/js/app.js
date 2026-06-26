@@ -441,6 +441,29 @@ function initLeaveProofModal() {
     });
 }
 
+function initPasswordFields() {
+    document.querySelectorAll('[data-password-toggle]').forEach((button) => {
+        const field = button.closest('.password-field');
+        const input = field?.querySelector('input');
+
+        if (!input) {
+            return;
+        }
+
+        const showLabel = button.dataset.showLabel || 'Show password';
+        const hideLabel = button.dataset.hideLabel || 'Hide password';
+
+        button.addEventListener('click', () => {
+            const isVisible = input.type === 'text';
+
+            input.type = isVisible ? 'password' : 'text';
+            button.setAttribute('aria-pressed', isVisible ? 'false' : 'true');
+            button.setAttribute('aria-label', isVisible ? showLabel : hideLabel);
+            field.classList.toggle('password-field--visible', !isVisible);
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
     initReadableTables();
@@ -451,4 +474,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initUserAccountMenus();
     initMobileNav();
     initLeaveProofModal();
+    initPasswordFields();
 });

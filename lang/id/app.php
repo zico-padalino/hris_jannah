@@ -60,4 +60,6 @@ return [
     'notifications_leave_pending' => ':count pengajuan menunggu persetujuan',
     'notifications_unread' => ':count belum dibaca',
     'copyright' => '© RS JANNAH :year',
+    'show_password' => 'Tampilkan kata sandi',
+    'hide_password' => 'Sembunyikan kata sandi',
 ];

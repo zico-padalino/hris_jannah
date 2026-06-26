@@ -122,14 +122,16 @@
                         <span class="w-full">
                             <span class="block text-sm font-semibold text-slate-900">{{ __('pages.settings.user_password_mode_custom') }}</span>
                             <span class="mt-0.5 block text-xs text-slate-500">{{ __('pages.settings.user_password_mode_custom_hint') }}</span>
-                            <input
-                                type="text"
-                                name="user_default_password_custom"
-                                value="{{ old('user_default_password_custom', $settings['user_default_password']['custom']) }}"
-                                maxlength="64"
-                                placeholder="{{ __('pages.settings.user_password_custom_placeholder') }}"
-                                class="mt-3 w-full max-w-sm rounded-lg border px-3 py-2 text-sm"
-                            >
+                            <div class="mt-3 max-w-sm">
+                            @include('partials.password-field', [
+                                'name' => 'user_default_password_custom',
+                                'value' => old('user_default_password_custom', $settings['user_default_password']['custom']),
+                                'maxlength' => 64,
+                                'placeholder' => __('pages.settings.user_password_custom_placeholder'),
+                                'autocomplete' => 'new-password',
+                                'inputClass' => 'w-full rounded-lg border px-3 py-2 text-sm',
+                            ])
+                            </div>
                         </span>
                     </label>
                 </div>

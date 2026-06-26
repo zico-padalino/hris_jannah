@@ -79,12 +79,19 @@
                 <div class="grid gap-4 sm:grid-cols-2">
                     <label class="block min-w-0">
                         <span class="form-label">{{ __('pages.profile.password') }}</span>
-                        <input type="password" name="password" autocomplete="new-password" class="w-full" placeholder="{{ __('pages.profile.password_placeholder') }}">
+                        @include('partials.password-field', [
+                            'name' => 'password',
+                            'autocomplete' => 'new-password',
+                            'placeholder' => __('pages.profile.password_placeholder'),
+                        ])
                     </label>
 
                     <label class="block min-w-0">
                         <span class="form-label">{{ __('pages.profile.password_confirm') }}</span>
-                        <input type="password" name="password_confirmation" autocomplete="new-password" class="w-full">
+                        @include('partials.password-field', [
+                            'name' => 'password_confirmation',
+                            'autocomplete' => 'new-password',
+                        ])
                     </label>
                 </div>
             </section>

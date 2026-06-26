@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ __('app.login') }} — {{ $appBranding->name() }}</title>
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="login-page easy-read min-h-screen antialiased">
     <div class="login-page__backdrop" aria-hidden="true">
@@ -14,8 +14,6 @@
 
     <div class="login-page__shell">
         <div class="login-card">
-            <div class="login-card__accent" aria-hidden="true"></div>
-
             <div class="login-card__toolbar">
                 @include('partials.language-switcher')
             </div>
@@ -50,15 +48,14 @@
                     </div>
                     <div class="login-form__field">
                         <label for="password" class="form-label">{{ __('auth.password') }}</label>
-                        <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            required
-                            autocomplete="current-password"
-                            class="login-form__input w-full"
-                            placeholder="••••••••"
-                        >
+                        @include('partials.password-field', [
+                            'id' => 'password',
+                            'name' => 'password',
+                            'required' => true,
+                            'autocomplete' => 'current-password',
+                            'placeholder' => '••••••••',
+                            'inputClass' => 'login-form__input w-full',
+                        ])
                     </div>
                     <label class="login-form__remember">
                         <input type="checkbox" name="remember">

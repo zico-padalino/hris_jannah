@@ -2,7 +2,12 @@
 <div class="space-y-4">
 <input name="name" value="{{ old('name', optional($user)->name) }}" placeholder="Nama" required class="w-full rounded-lg border px-3 py-2">
 <input name="email" type="email" value="{{ old('email', optional($user)->email) }}" placeholder="Email" required class="w-full rounded-lg border px-3 py-2">
-<input name="password" type="password" placeholder="{{ $user ? __('pages.users.password_edit_placeholder') : __('pages.users.password_create_placeholder') }}" class="w-full rounded-lg border px-3 py-2">
+@include('partials.password-field', [
+    'name' => 'password',
+    'placeholder' => $user ? __('pages.users.password_edit_placeholder') : __('pages.users.password_create_placeholder'),
+    'autocomplete' => 'new-password',
+    'inputClass' => 'w-full rounded-lg border px-3 py-2',
+])
 <select name="role" required class="w-full rounded-lg border px-3 py-2">
 @foreach(['super_admin'=>'Super Admin','hr'=>'HRD','branch_admin'=>'Admin Cabang','employee'=>'Pegawai'] as $val=>$label)
 <option value="{{ $val }}" @selected(old('role', optional($user)->role?->value ?? '')===$val)>{{ $label }}</option>

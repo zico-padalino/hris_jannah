@@ -1329,11 +1329,6 @@ html.dark body.mobile-nav-open .app-header {
     width: 100%;
 }
 
-.login-card__accent {
-    background: var(--app-gradient-primary);
-    height: 0.3125rem;
-}
-
 .login-card__toolbar {
     display: flex;
     justify-content: flex-end;
@@ -1921,6 +1916,70 @@ html.dark .theme-toggle__moon {
     border-color: var(--app-primary);
     box-shadow: 0 0 0 3px var(--app-focus-ring);
     outline: none;
+}
+
+.password-field {
+    position: relative;
+    width: 100%;
+}
+
+.password-field__input {
+    padding-right: 2.5rem !important;
+}
+
+.password-field__toggle {
+    align-items: center;
+    background: transparent;
+    border: none;
+    border-radius: var(--app-density-radius);
+    color: var(--app-text-muted);
+    cursor: pointer;
+    display: inline-flex;
+    height: 1.75rem;
+    justify-content: center;
+    padding: 0;
+    position: absolute;
+    right: 0.4375rem;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: background-color 0.15s ease, color 0.15s ease;
+    width: 1.75rem;
+}
+
+.password-field__toggle:hover {
+    background-color: var(--app-surface-muted);
+    color: var(--app-primary);
+}
+
+.password-field__toggle:focus-visible {
+    box-shadow: 0 0 0 2px var(--app-focus-ring);
+    outline: none;
+}
+
+.password-field__icon {
+    height: 1.125rem;
+    width: 1.125rem;
+}
+
+.password-field__icon--hide {
+    display: none;
+}
+
+.password-field--visible .password-field__icon--show {
+    display: none;
+}
+
+.password-field--visible .password-field__icon--hide {
+    display: block;
+}
+
+.login-page .password-field__toggle {
+    color: #64748b;
+}
+
+.login-page .password-field__toggle:hover {
+    background-color: #fff8eb;
+    color: #c8510f;
 }
 
 .easy-read input[type="date"],
