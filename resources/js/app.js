@@ -39,6 +39,15 @@ function initReadableTables() {
     });
 }
 
+function collapseMobileSidebarGroups() {
+    document.querySelectorAll('.sidebar-group--mobile').forEach((group) => {
+        const toggle = group.querySelector('.sidebar-group__toggle');
+
+        group.classList.add('sidebar-group--collapsed');
+        toggle?.setAttribute('aria-expanded', 'false');
+    });
+}
+
 function initSidebarGroups() {
     const storageKey = 'sidebar_collapsed_groups';
     let collapsed = {};
@@ -51,6 +60,7 @@ function initSidebarGroups() {
         const groupId = group.dataset.sidebarGroup;
         const toggle = group.querySelector('.sidebar-group__toggle');
         const items = group.querySelector('.sidebar-group__items');
+        const isMobileGroup = group.classList.contains('sidebar-group--mobile');
 
         if (!toggle || !items || !groupId) {
             return;
@@ -62,13 +72,23 @@ function initSidebarGroups() {
             group.classList.toggle('sidebar-group--collapsed', isCollapsed);
             toggle.setAttribute('aria-expanded', String(!isCollapsed));
 
-            if (persist) {
+            if (persist && !isMobileGroup) {
                 collapsed[groupId] = isCollapsed;
 
                 try {
                     localStorage.setItem(storageKey, JSON.stringify(collapsed));
                 } catch (e) {}
             }
+        }
+
+        if (isMobileGroup) {
+            setCollapsed(true);
+
+            toggle.addEventListener('click', () => {
+                setCollapsed(!group.classList.contains('sidebar-group--collapsed'));
+            });
+
+            return;
         }
 
         setCollapsed(collapsed[groupId] === true && !hasActive);
@@ -320,6 +340,7 @@ function initMobileNav() {
         toggle?.setAttribute('aria-expanded', 'false');
         toggle?.setAttribute('aria-label', toggle.dataset.openLabel || toggle.getAttribute('aria-label') || '');
         document.body.classList.remove('overflow-hidden');
+        collapseMobileSidebarGroups();
     }
 
     syncMobileHeaderOffset();

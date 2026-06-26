@@ -6,13 +6,13 @@
 @endphp
 
 <div
-    class="sidebar-group {{ $mobile ? 'sidebar-group--mobile' : '' }}"
+    class="sidebar-group {{ $mobile ? 'sidebar-group--mobile sidebar-group--collapsed' : '' }}"
     data-sidebar-group="{{ $group['id'] }}"
 >
     <button
         type="button"
         class="sidebar-group__toggle"
-        aria-expanded="true"
+        aria-expanded="{{ $mobile ? 'false' : 'true' }}"
         aria-controls="sidebar-group-items-{{ $group['id'] }}"
     >
         <span class="sidebar-group__label">{{ $group['label'] }}</span>
