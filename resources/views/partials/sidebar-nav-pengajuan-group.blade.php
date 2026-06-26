@@ -7,6 +7,11 @@
         'izin' => SidebarNavItem::SectionLeaveIzin,
         'lembur' => SidebarNavItem::SectionLeaveLembur,
     ];
+    $approvalItems = [
+        'cuti' => SidebarNavItem::LeaveCutiApproval,
+        'izin' => SidebarNavItem::LeaveIzinApproval,
+        'lembur' => SidebarNavItem::LeaveLemburApproval,
+    ];
     $canSeeAnyApproval = collect(SidebarNavItem::leaveApprovalItems())
         ->contains(fn (SidebarNavItem $item) => $sidebar->visible($user, $item));
     $showGroupBadge = $canSeeAnyApproval && $canApprove && ($pendingTotal ?? 0) > 0;
@@ -25,7 +30,12 @@
         <span class="sidebar-group__label">{{ $group['label'] }}</span>
         <span class="sidebar-group__meta">
             @if($showGroupBadge)
-                @include('partials.count-badge', ['count' => $pendingTotal, 'variant' => 'dot', 'pulse' => true])
+                @include('partials.count-badge', [
+                    'count' => $pendingTotal,
+                    'variant' => 'sidebar-module',
+                    'label' => __('app.new'),
+                    'pulse' => true,
+                ])
             @endif
             <svg class="sidebar-group__chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -59,21 +69,35 @@
                 });
 
                 $subId = $group['id'].'-'.$category;
+                $categoryCount = (int) ($breakdown[$category] ?? 0);
+                $approvalItem = $approvalItems[$category];
+                $showModuleBadge = $canApprove
+                    && $categoryCount > 0
+                    && $sidebar->visible($user, $approvalItem);
+                $subgroupCollapsed = $mobile && ! $showModuleBadge;
             @endphp
 
             @if($subItems !== [])
                 <div
-                    class="sidebar-group sidebar-subgroup sidebar-subgroup--module {{ $mobile ? 'sidebar-group--mobile sidebar-group--collapsed' : '' }}"
+                    class="sidebar-group sidebar-subgroup sidebar-subgroup--module {{ $mobile ? 'sidebar-group--mobile' : '' }} {{ $subgroupCollapsed ? 'sidebar-group--collapsed' : '' }}"
                     data-sidebar-group="{{ $subId }}"
                 >
                     <button
                         type="button"
                         class="sidebar-group__toggle sidebar-subgroup__toggle"
-                        aria-expanded="{{ $mobile ? 'false' : 'true' }}"
+                        aria-expanded="{{ $subgroupCollapsed ? 'false' : 'true' }}"
                         aria-controls="sidebar-group-items-{{ $subId }}"
                     >
                         <span class="sidebar-group__label">{{ __($section->navLabelKey()) }}</span>
                         <span class="sidebar-group__meta">
+                            @if($showModuleBadge)
+                                @include('partials.count-badge', [
+                                    'count' => $categoryCount,
+                                    'variant' => 'sidebar-module',
+                                    'label' => __('app.new'),
+                                    'pulse' => true,
+                                ])
+                            @endif
                             <svg class="sidebar-group__chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                             </svg>

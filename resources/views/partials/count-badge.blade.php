@@ -27,6 +27,16 @@
                 <span class="font-semibold">{{ $label }}</span>
             @endif
         </span>
+    @elseif($variant === 'sidebar-module')
+        <span @class([
+            'app-count-badge app-count-badge--sidebar-module',
+            'leave-badge-pulse' => $pulse,
+        ]) title="{{ $label ?? $display.' '.__('app.notifications_title_plain') }}">
+            {{ $display }}
+            @if($label)
+                <span class="app-count-badge__label">{{ $label }}</span>
+            @endif
+        </span>
     @elseif($variant === 'pill')
         <span @class([
             'app-count-badge app-count-badge--pill',
