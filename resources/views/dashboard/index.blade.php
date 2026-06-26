@@ -39,15 +39,15 @@
                 </p>
             </div>
             <div class="grid grid-cols-1 gap-3 min-[380px]:grid-cols-3 sm:gap-4">
-                <div class="rounded-xl bg-white/10 px-4 py-3 text-center backdrop-blur-sm ring-1 ring-white/20">
+                <div class="rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
                     <p class="text-2xl font-bold">{{ $stats['attendances_today'] }}</p>
                     <p class="mt-0.5 text-sm font-semibold text-campfire-4">Absensi hari ini</p>
                 </div>
-                <div class="rounded-xl bg-white/10 px-4 py-3 text-center backdrop-blur-sm ring-1 ring-white/20">
+                <div class="rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
                     <p class="text-2xl font-bold text-campfire-4">{{ $stats['on_time_today'] }}</p>
                     <p class="mt-0.5 text-sm font-semibold text-campfire-4">Tepat waktu</p>
                 </div>
-                <div class="rounded-xl bg-white/10 px-4 py-3 text-center backdrop-blur-sm ring-1 ring-white/20">
+                <div class="rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
                     <p class="text-2xl font-bold text-white">{{ $stats['late_today'] }}</p>
                     <p class="mt-0.5 text-sm font-semibold text-campfire-4">Terlambat</p>
                 </div>
