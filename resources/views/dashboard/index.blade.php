@@ -17,6 +17,8 @@
 
     @include('partials.dashboard-payroll-signature-notifications')
 
+    @include('partials.dashboard-face-enrollment-notification')
+
     @include('partials.dashboard-announcements', ['announcements' => $announcements])
 
     @if(auth()->user()->employee && $pendingOwnLeaveCount > 0)

@@ -7,6 +7,7 @@ use App\Enums\AttendanceStatus;
 use App\Models\Attendance;
 use App\Models\Branch;
 use App\Models\Employee;
+use App\Models\EmployeeFace;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -190,5 +191,27 @@ class AttendanceService
             'is_primary' => $isPrimary,
             'enrolled_at' => now(),
         ]);
+    }
+
+    public function deleteFace(EmployeeFace $face): void
+    {
+        DB::transaction(function () use ($face) {
+            $employee = Employee::query()->findOrFail($face->employee_id);
+            $wasPrimary = $face->is_primary;
+
+            if (filled($face->photo_path)) {
+                Storage::disk('public')->delete($face->photo_path);
+            }
+
+            $face->delete();
+
+            if ($wasPrimary) {
+                $nextPrimary = $employee->faces()->orderByDesc('enrolled_at')->first();
+
+                if ($nextPrimary !== null) {
+                    $nextPrimary->update(['is_primary' => true]);
+                }
+            }
+        });
     }
 }

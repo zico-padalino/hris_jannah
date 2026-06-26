@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->name('api.')->group(function () {
 
         Route::get('/employees/{employee}/faces', [FaceEnrollmentController::class, 'index'])->name('employees.faces.index');
         Route::post('/employees/{employee}/faces', [FaceEnrollmentController::class, 'store'])->name('employees.faces.store');
+        Route::delete('/employees/{employee}/faces/{face}', [FaceEnrollmentController::class, 'destroy'])->name('employees.faces.destroy');
 
         Route::get('/attendances', [AttendanceController::class, 'index'])->name('attendances.index');
         Route::get('/employees/{employee}/attendances', [AttendanceController::class, 'employeeHistory'])->name('employees.attendances');

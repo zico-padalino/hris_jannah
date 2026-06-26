@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Models\EmployeeFace;
 use App\Services\AttendanceMethodSettingsService;
 use App\Services\AttendanceService;
 use App\Services\ProfileFaceService;
@@ -127,6 +128,27 @@ class ProfileController extends WebController
         return redirect()
             ->route('profile.edit')
             ->with('success', __('pages.profile.face_enrolled'))
+            ->withFragment('face-enrollment');
+    }
+
+    public function destroyFace(Request $request, EmployeeFace $face): RedirectResponse
+    {
+        $user = $request->user();
+        $employee = $user->employee;
+
+        if ($employee === null || $face->employee_id !== $employee->id) {
+            abort(403);
+        }
+
+        if (! $this->attendanceMethods->photoEnabled()) {
+            return back()->with('error', __('pages.profile.face_method_disabled'));
+        }
+
+        $this->attendanceService->deleteFace($face);
+
+        return redirect()
+            ->route('profile.edit')
+            ->with('success', __('pages.profile.face_deleted'))
             ->withFragment('face-enrollment');
     }
 

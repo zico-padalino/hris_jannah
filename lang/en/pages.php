@@ -46,6 +46,9 @@ return [
         'leave_alert_message' => 'There are :count request(s) awaiting your approval.',
         'process_now' => 'Process Now',
         'announcements_title' => 'Announcements',
+        'face_enrollment_title' => 'Register Face Scan',
+        'face_enrollment_message' => 'Your face is not registered yet. Complete Face ID in your profile for photo attendance.',
+        'face_enrollment_action' => 'Register Now',
     ],
     'attendance_history' => [
         'title' => 'Attendance History',
@@ -385,6 +388,11 @@ return [
         'face_invalid' => 'Invalid face data. Please repeat the scan guide.',
         'face_method_disabled' => 'Photo/face attendance is currently disabled.',
         'face_rescan_hint' => 'Scan again below to update your primary face.',
+        'face_primary' => 'Primary face',
+        'face_backup' => 'Backup',
+        'face_delete' => 'Delete',
+        'face_delete_confirm' => 'Delete this face record? You will need to register again for face scan attendance.',
+        'face_deleted' => 'Face record deleted successfully.',
     ],
     'activity_logs' => [
         'title' => 'Activity Log',

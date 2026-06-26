@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Face\EnrollFaceRequest;
 use App\Models\Employee;
+use App\Models\EmployeeFace;
 use App\Services\AttendanceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -38,6 +39,21 @@ class FaceEnrollmentController extends Controller
 
         return response()->json([
             'data' => $employee->faces()->latest()->get(),
+        ]);
+    }
+
+    public function destroy(Request $request, Employee $employee, EmployeeFace $face): JsonResponse
+    {
+        $this->authorizeBranchAccess($request, $employee->branch_id);
+
+        if ($face->employee_id !== $employee->id) {
+            abort(404);
+        }
+
+        $this->attendanceService->deleteFace($face);
+
+        return response()->json([
+            'message' => 'Data wajah berhasil dihapus.',
         ]);
     }
 

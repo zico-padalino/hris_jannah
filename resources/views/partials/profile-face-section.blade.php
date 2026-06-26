@@ -31,12 +31,32 @@
         @if(($faceCount ?? 0) > 0)
             <div class="profile-face-section__registered mb-4">
                 <p class="profile-face-section__registered-label">{{ __('pages.profile.face_registered_count', ['count' => $faceCount]) }}</p>
-                @php
-                    $primaryFace = $employee->faces->firstWhere('is_primary', true) ?? $employee->faces->first();
-                @endphp
-                @if($primaryFace?->hasPhoto())
-                    <img src="{{ $primaryFace->photo_url }}" alt="" class="profile-face-section__preview">
-                @endif
+                <div class="profile-face-section__list">
+                    @foreach($employee->faces->sortByDesc('enrolled_at') as $face)
+                        <article class="profile-face-section__item">
+                            @if($face->hasPhoto())
+                                <img src="{{ $face->photo_url }}" alt="" class="profile-face-section__preview">
+                            @endif
+                            <div class="profile-face-section__item-meta">
+                                <p class="profile-face-section__item-date">{{ $face->enrolled_at->format('d/m/Y · H:i') }}</p>
+                                @if($face->is_primary)
+                                    <span class="app-status-pending app-status-pending--compact">{{ __('pages.profile.face_primary') }}</span>
+                                @else
+                                    <span class="app-muted-text text-[0.6875rem] font-bold">{{ __('pages.profile.face_backup') }}</span>
+                                @endif
+                            </div>
+                            <form
+                                method="POST"
+                                action="{{ route('profile.face.destroy', $face) }}"
+                                onsubmit="return confirm(@js(__('pages.profile.face_delete_confirm')))"
+                            >
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="employee-face-card__delete">{{ __('pages.profile.face_delete') }}</button>
+                            </form>
+                        </article>
+                    @endforeach
+                </div>
             </div>
             <p class="profile-face-section__rescan app-muted-text mb-3">{{ __('pages.profile.face_rescan_hint') }}</p>
         @endif

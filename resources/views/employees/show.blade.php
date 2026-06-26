@@ -121,6 +121,17 @@
                         @else
                             <span class="app-muted-text text-[0.6875rem] font-bold">Cadangan</span>
                         @endif
+                        @perm('faces.enroll')
+                            <form
+                                method="POST"
+                                action="{{ route('faces.destroy', [$employee, $face]) }}"
+                                onsubmit="return confirm('Hapus data wajah ini? Pegawai perlu mendaftarkan ulang untuk absensi scan wajah.')"
+                            >
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="employee-face-card__delete">Hapus</button>
+                            </form>
+                        @endperm
                     </article>
                 @empty
                     <div class="employee-face-empty">

@@ -45,6 +45,9 @@ return [
         'leave_alert_message' => 'Terdapat :count pengajuan menunggu persetujuan Anda.',
         'process_now' => 'Proses Sekarang',
         'announcements_title' => 'Pengumuman',
+        'face_enrollment_title' => 'Daftar Scan Wajah',
+        'face_enrollment_message' => 'Wajah Anda belum didaftarkan. Lengkapi Face ID di profil untuk absensi scan foto.',
+        'face_enrollment_action' => 'Daftar Sekarang',
     ],
     'attendance_history' => [
         'title' => 'Riwayat Absensi',
@@ -384,6 +387,11 @@ return [
         'face_invalid' => 'Data wajah tidak valid. Silakan ulangi panduan scan.',
         'face_method_disabled' => 'Metode absensi foto/wajah sedang dinonaktifkan.',
         'face_rescan_hint' => 'Pindai ulang di bawah untuk memperbarui wajah utama.',
+        'face_primary' => 'Wajah utama',
+        'face_backup' => 'Cadangan',
+        'face_delete' => 'Hapus',
+        'face_delete_confirm' => 'Hapus data wajah ini? Anda perlu mendaftarkan ulang untuk absensi scan wajah.',
+        'face_deleted' => 'Data wajah berhasil dihapus.',
     ],
     'activity_logs' => [
         'title' => 'Log Aktivitas',

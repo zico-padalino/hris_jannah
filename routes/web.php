@@ -49,6 +49,7 @@ Route::middleware('guest')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::post('/profile/face', [ProfileController::class, 'storeFace'])->name('profile.face.store');
+        Route::delete('/profile/faces/{face}', [ProfileController::class, 'destroyFace'])->name('profile.face.destroy');
         Route::get('/profile/photo', [ProfileController::class, 'photo'])->name('profile.photo');
 
     Route::middleware('permission:dashboard.view')->group(function () {
@@ -127,6 +128,7 @@ Route::middleware('guest')->group(function () {
     Route::middleware('permission:faces.enroll')->group(function () {
         Route::get('/employees/{employee}/faces/enroll', [FaceEnrollmentController::class, 'create'])->name('faces.enroll');
         Route::post('/employees/{employee}/faces', [FaceEnrollmentController::class, 'store'])->name('faces.store');
+        Route::delete('/employees/{employee}/faces/{face}', [FaceEnrollmentController::class, 'destroy'])->name('faces.destroy');
     });
 
     Route::middleware('permission:shifts.manage')->group(function () {

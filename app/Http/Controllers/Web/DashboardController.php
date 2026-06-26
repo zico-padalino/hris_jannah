@@ -10,6 +10,7 @@ use App\Services\AnnouncementService;
 use App\Services\DashboardAttendanceChartService;
 use App\Services\LeaveBadgeService;
 use App\Services\PayrollSlipBadgeService;
+use App\Services\ProfileFaceService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -66,6 +67,7 @@ class DashboardController extends WebController
         $showAttendanceChart = $user->role->value !== 'employee';
 
         $announcements = app(AnnouncementService::class)->forDashboard($user);
+        $needsFaceEnrollment = app(ProfileFaceService::class)->needsEnrollment($user);
 
         return view('dashboard.index', compact(
             'stats',
@@ -77,6 +79,7 @@ class DashboardController extends WebController
             'attendanceChart',
             'showAttendanceChart',
             'announcements',
+            'needsFaceEnrollment',
         ));
     }
 }
