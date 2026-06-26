@@ -3939,6 +3939,36 @@ html.dark .dashboard-pending-card__hint {
     color: #ffffff;
 }
 
+.dashboard-stat-compact {
+    padding: 0.75rem 1rem;
+}
+
+.dashboard-stat-compact__value {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.dashboard-stat-compact__label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.35;
+    white-space: nowrap;
+}
+
+@media (max-width: 419px) {
+    .dashboard-stat-compact__label {
+        font-size: 0.75rem;
+        letter-spacing: -0.01em;
+    }
+}
+
+@media (min-width: 640px) {
+    .dashboard-stat-compact__value {
+        font-size: 2.375rem;
+    }
+}
+
 /* Header halaman */
 .easy-read .page-title {
     color: var(--app-text);
@@ -7315,16 +7345,17 @@ html.dark .payroll-deduction-back:hover {
 }
 
 .easy-read .dashboard-welcome .text-2xl {
-    font-size: 1.125rem !important;
+    font-size: 1.25rem !important;
     line-height: 1.3;
 }
 
 .easy-read .dashboard-stat-compact {
-    padding: 0.625rem 0.75rem !important;
+    padding: 0.75rem 0.875rem !important;
 }
 
-.easy-read .dashboard-stat-compact .text-2xl {
-    font-size: 1rem !important;
+.easy-read .dashboard-stat-compact__value {
+    font-size: 1.625rem !important;
+    line-height: 1.15;
 }
 
 .easy-read h2.text-lg {

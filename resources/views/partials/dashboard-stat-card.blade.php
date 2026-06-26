@@ -34,7 +34,7 @@
     <div class="flex items-start justify-between gap-3">
         <div class="min-w-0">
             <p class="dashboard-stat-card__label text-base font-bold">{{ $label }}</p>
-            <p class="dashboard-stat-card__value mt-2 text-3xl font-extrabold tracking-tight">{{ $value }}</p>
+            <p class="dashboard-stat-card__value mt-2 text-4xl font-extrabold tracking-tight">{{ $value }}</p>
             @if($hint)
                 <p class="dashboard-stat-card__hint mt-1.5 text-sm font-semibold">{{ $hint }}</p>
             @endif

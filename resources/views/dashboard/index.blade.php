@@ -40,15 +40,15 @@
             </div>
             <div class="grid grid-cols-1 gap-3 min-[380px]:grid-cols-3 sm:gap-4">
                 <div class="dashboard-stat-compact rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
-                    <p class="dashboard-stat-compact__value text-2xl font-bold">{{ $stats['attendances_today'] }}</p>
+                    <p class="dashboard-stat-compact__value font-bold">{{ $stats['attendances_today'] }}</p>
                     <p class="dashboard-stat-compact__label mt-0.5 text-sm font-semibold">Absensi hari ini</p>
                 </div>
                 <div class="dashboard-stat-compact rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
-                    <p class="dashboard-stat-compact__value text-2xl font-bold">{{ $stats['on_time_today'] }}</p>
+                    <p class="dashboard-stat-compact__value font-bold">{{ $stats['on_time_today'] }}</p>
                     <p class="dashboard-stat-compact__label mt-0.5 text-sm font-semibold">Tepat waktu</p>
                 </div>
                 <div class="dashboard-stat-compact rounded-xl border border-white/25 bg-black/10 px-4 py-3 text-center">
-                    <p class="dashboard-stat-compact__value text-2xl font-bold">{{ $stats['late_today'] }}</p>
+                    <p class="dashboard-stat-compact__value font-bold">{{ $stats['late_today'] }}</p>
                     <p class="dashboard-stat-compact__label mt-0.5 text-sm font-semibold">Terlambat</p>
                 </div>
             </div>
