@@ -15,7 +15,7 @@
             <p>
                 <strong>{{ __('attendance.web_disabled_lead') }}</strong>
                 {{ __('attendance.web_disabled_body') }}
-                <a href="{{ route('settings.index') }}" class="font-medium text-teal-800 underline dark:text-teal-300">{{ __('pages.settings.title') }}</a>.
+                <a href="{{ route('settings.index') }}" class="attendance-scan-tips__link">{{ __('pages.settings.title') }}</a>.
             </p>
             @if($methods['fingerprint'] ?? false)
                 <p class="mt-3">
@@ -38,62 +38,76 @@
         </div>
 
         @if($photoEnabled && $gpsEnabled)
-            <div class="mb-6 flex flex-wrap gap-2">
-                <button type="button" data-scan-method="photo" class="scan-method-tab rounded-lg border-2 border-teal-600 bg-teal-50 px-4 py-2 text-sm font-semibold text-teal-900">
+            <div class="attendance-scan-tabs" role="tablist" aria-label="Metode absensi">
+                <button
+                    type="button"
+                    role="tab"
+                    data-scan-method="photo"
+                    class="scan-method-tab {{ $defaultMethod === 'photo' ? 'scan-method-tab--active' : '' }}"
+                    aria-selected="{{ $defaultMethod === 'photo' ? 'true' : 'false' }}"
+                >
                     Scan Foto & Wajah
                 </button>
-                <button type="button" data-scan-method="gps" class="scan-method-tab rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                <button
+                    type="button"
+                    role="tab"
+                    data-scan-method="gps"
+                    class="scan-method-tab {{ $defaultMethod === 'gps' ? 'scan-method-tab--active' : '' }}"
+                    aria-selected="{{ $defaultMethod === 'gps' ? 'true' : 'false' }}"
+                >
                     GPS Lokasi (Cadangan)
                 </button>
             </div>
         @endif
 
-        <div class="grid gap-6 xl:grid-cols-2">
+        <div class="attendance-scan-grid">
             @if($photoEnabled)
-                <div id="panel-photo" class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm {{ $defaultMethod === 'gps' ? 'hidden' : '' }}">
-                    <h2 class="mb-4 text-lg font-semibold">Kamera Wajah</h2>
-                    <div class="relative overflow-hidden rounded-xl bg-slate-900">
-                        <video id="face-video" autoplay muted playsinline class="h-72 w-full object-cover"></video>
+                <div id="panel-photo" class="panel attendance-scan-panel {{ $defaultMethod === 'gps' ? 'hidden' : '' }}">
+                    <h2 class="attendance-scan-panel__title">Kamera Wajah</h2>
+                    <div class="attendance-scan-camera">
+                        <video id="face-video" autoplay muted playsinline class="attendance-scan-camera__video"></video>
                         <canvas id="face-canvas" class="hidden"></canvas>
                     </div>
-                    <p id="face-status" class="mt-3 text-sm text-slate-500">Memuat model face recognition...</p>
-                    <button type="button" id="btn-capture-face" disabled class="mt-4 w-full rounded-lg bg-teal-700 px-4 py-3 text-sm font-medium text-white hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-50">
-                        Scan Wajah & Absen
-                    </button>
+                    <p id="face-status" class="attendance-scan-status">Memuat model face recognition...</p>
+                    <div class="attendance-scan-actions">
+                        <button type="button" id="btn-capture-face" disabled class="btn-primary">
+                            Scan Wajah & Absen
+                        </button>
+                    </div>
                 </div>
             @endif
 
-            <div id="panel-gps-info" class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm {{ $defaultMethod === 'photo' ? 'hidden xl:col-span-1' : ($photoEnabled ? '' : 'xl:col-span-2') }}">
+            <div id="panel-gps-info" class="panel attendance-scan-panel {{ $defaultMethod === 'photo' ? 'hidden xl:col-span-1' : ($photoEnabled ? '' : 'xl:col-span-2') }}">
                 @if($gpsEnabled && $defaultMethod === 'gps' && ! $photoEnabled)
-                    <h2 class="mb-4 text-lg font-semibold">Absensi GPS Lokasi</h2>
-                    <p class="mb-4 text-sm text-slate-600">
+                    <h2 class="attendance-scan-panel__title">Absensi GPS Lokasi</h2>
+                    <p class="attendance-scan-panel__lead">
                         Mode cadangan tanpa verifikasi wajah. Pastikan Anda berada dalam radius lokasi cabang yang diizinkan.
                     </p>
                 @elseif($gpsEnabled)
-                    <div id="gps-only-heading" class="mb-4 {{ $defaultMethod === 'photo' ? 'hidden' : '' }}">
-                        <h2 class="text-lg font-semibold">Absensi GPS Lokasi</h2>
-                        <p class="mt-1 text-sm text-slate-600">Gunakan saat mesin fingerprint rusak — cukup latitude & longitude.</p>
+                    <div id="gps-only-heading" class="{{ $defaultMethod === 'photo' ? 'hidden' : '' }}">
+                        <h2 class="attendance-scan-panel__title">Absensi GPS Lokasi</h2>
+                        <p class="attendance-scan-panel__lead">Gunakan saat mesin fingerprint rusak — cukup latitude & longitude.</p>
                     </div>
                 @endif
 
-                <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm {{ $photoEnabled && $defaultMethod !== 'gps' ? 'border-0 p-0 shadow-none' : '' }}">
-                    <h2 class="mb-4 text-lg font-semibold {{ $gpsEnabled && $photoEnabled ? 'hidden' : '' }}" id="form-title-default">Form Absensi</h2>
-                    <h2 class="mb-4 hidden text-lg font-semibold" id="form-title-photo">Form Absensi</h2>
+                <div class="attendance-scan-panel attendance-scan-panel--nested">
+                    <h2 class="attendance-scan-panel__title {{ $gpsEnabled && $photoEnabled ? 'hidden' : '' }}" id="form-title-default">Form Absensi</h2>
+                    <h2 class="attendance-scan-panel__title hidden" id="form-title-photo">Form Absensi</h2>
 
-                    <form id="attendance-form" method="POST" action="{{ route('attendance.scan.store') }}" enctype="multipart/form-data" class="space-y-4">
+                    <form id="attendance-form" method="POST" action="{{ route('attendance.scan.store') }}" enctype="multipart/form-data" class="attendance-scan-form">
                         @csrf
                         <input type="hidden" name="method" id="attendance-method" value="{{ $defaultMethod }}">
                         <input type="hidden" name="face_descriptor" id="face-descriptor">
                         <input type="file" name="photo" id="photo-input" class="hidden">
 
-                        <div class="rounded-lg border border-teal-200 bg-teal-50 px-3 py-2 text-sm text-teal-900">
+                        <div class="attendance-scan-info">
                             <strong>Absensi otomatis:</strong> tap/scan pertama hari ini = <strong>Masuk</strong>, berikutnya = <strong>Pulang</strong>, bergantian seterusnya.
                         </div>
 
                         @if($gpsEnabled && ! $isEmployeeAccount)
                             <div id="employee-select-wrap" class="{{ $defaultMethod === 'photo' ? 'hidden' : '' }}">
-                                <label class="mb-1 block text-sm font-medium">Pegawai</label>
-                                <select name="employee_id" id="employee-select" class="w-full rounded-lg border border-slate-300 px-3 py-2">
+                                <label class="form-label">Pegawai</label>
+                                <select name="employee_id" id="employee-select" class="w-full">
                                     <option value="">— Pilih pegawai —</option>
                                     @foreach($employeesForGps as $emp)
                                         <option value="{{ $emp->id }}">{{ $emp->name }} ({{ $emp->employee_number }})</option>
@@ -104,8 +118,8 @@
 
                         @if($branches->count() > 1)
                             <div>
-                                <label class="mb-1 block text-sm font-medium">Cabang</label>
-                                <select name="branch_id" id="branch-select" class="w-full rounded-lg border border-slate-300 px-3 py-2">
+                                <label class="form-label">Cabang</label>
+                                <select name="branch_id" id="branch-select" class="w-full">
                                     @foreach($branches as $branch)
                                         <option value="{{ $branch->id }}">{{ $branch->name }}</option>
                                     @endforeach
@@ -113,32 +127,32 @@
                             </div>
                         @elseif($branches->count() === 1)
                             <input type="hidden" name="branch_id" value="{{ $branches->first()->id }}">
-                            <p class="rounded-lg bg-slate-50 px-3 py-2 text-sm">Cabang: <strong>{{ $branches->first()->name }}</strong></p>
+                            <p class="attendance-scan-branch-pill">Cabang: <strong>{{ $branches->first()->name }}</strong></p>
                         @endif
 
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="attendance-scan-coords">
                             <div>
-                                <label class="mb-1 block text-sm font-medium">Latitude</label>
-                                <input name="latitude" id="latitude" step="any" required readonly class="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm">
+                                <label class="form-label">Latitude</label>
+                                <input name="latitude" id="latitude" step="any" required readonly class="w-full">
                             </div>
                             <div>
-                                <label class="mb-1 block text-sm font-medium">Longitude</label>
-                                <input name="longitude" id="longitude" step="any" required readonly class="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2 text-sm">
+                                <label class="form-label">Longitude</label>
+                                <input name="longitude" id="longitude" step="any" required readonly class="w-full">
                             </div>
                         </div>
 
-                        <button type="button" id="btn-get-location" class="w-full rounded-lg border border-teal-300 bg-teal-50 px-4 py-2 text-sm text-teal-800 hover:bg-teal-100">
+                        <button type="button" id="btn-get-location" class="btn-secondary">
                             Ambil Lokasi GPS
                         </button>
 
-                        <div id="location-info" class="rounded-lg bg-slate-50 p-3 text-xs text-slate-600">
+                        <div id="location-info" class="attendance-scan-location-box">
                             Lokasi belum diambil. Izinkan akses GPS browser.
                         </div>
 
-                        <div id="branch-locations" class="space-y-2 text-xs text-slate-600"></div>
+                        <div id="branch-locations" class="attendance-scan-locations"></div>
 
                         @if($gpsEnabled)
-                            <button type="submit" id="btn-submit-gps" class="w-full rounded-lg bg-amber-600 px-4 py-3 text-sm font-medium text-white hover:bg-amber-700 {{ $defaultMethod === 'photo' ? 'hidden' : '' }}">
+                            <button type="submit" id="btn-submit-gps" class="btn-primary {{ $defaultMethod === 'photo' ? 'hidden' : '' }}">
                                 Absen dengan GPS Lokasi
                             </button>
                         @endif
@@ -147,7 +161,7 @@
             </div>
         </div>
 
-        <div class="app-notice mt-6">
+        <div class="app-notice attendance-scan-tips">
             <strong>Tips:</strong>
             @if($photoEnabled)
                 Untuk absensi foto, daftarkan wajah pegawai di menu Pegawai → Daftarkan Wajah.
@@ -182,27 +196,34 @@
             const branchId = select ? select.value : defaultBranchId;
             const branch = branches.find(b => String(b.id) === String(branchId));
             if (!branch || !container) return;
-            container.innerHTML = '<p class="font-medium text-slate-700">Lokasi absensi yang diizinkan:</p>' +
+            container.innerHTML = '<p class="attendance-scan-locations__label">Lokasi absensi yang diizinkan:</p>' +
                 (branch.locations.length
-                    ? branch.locations.map(l => `<div class="rounded border border-slate-200 p-2">${l.name} — radius ${l.radius_meters}m (${l.latitude}, ${l.longitude})</div>`).join('')
-                    : '<p>Tidak ada lokasi aktif.</p>');
+                    ? branch.locations.map(l => `<div class="attendance-scan-location-item">${l.name} — radius ${l.radius_meters}m (${l.latitude}, ${l.longitude})</div>`).join('')
+                    : '<p class="attendance-scan-location-item">Tidak ada lokasi aktif.</p>');
         }
 
         document.getElementById('branch-select')?.addEventListener('change', renderLocations);
         renderLocations();
 
+        function setLocationInfo(message, success = false) {
+            const box = document.getElementById('location-info');
+            if (!box) return;
+            box.textContent = message;
+            box.classList.toggle('attendance-scan-location-box--success', success);
+        }
+
         function fetchLocation() {
             if (!window.isSecureContext) {
-                document.getElementById('location-info').textContent = 'GPS memerlukan HTTPS. Lihat petunjuk di atas.';
+                setLocationInfo('GPS memerlukan HTTPS. Lihat petunjuk di atas.');
                 return;
             }
             if (!navigator.geolocation) return;
             navigator.geolocation.getCurrentPosition((pos) => {
                 document.getElementById('latitude').value = pos.coords.latitude.toFixed(7);
                 document.getElementById('longitude').value = pos.coords.longitude.toFixed(7);
-                document.getElementById('location-info').textContent = `Lokasi: ${pos.coords.latitude.toFixed(7)}, ${pos.coords.longitude.toFixed(7)} (akurasi ~${Math.round(pos.coords.accuracy)}m)`;
+                setLocationInfo(`Lokasi: ${pos.coords.latitude.toFixed(7)}, ${pos.coords.longitude.toFixed(7)} (akurasi ~${Math.round(pos.coords.accuracy)}m)`, true);
             }, () => {
-                document.getElementById('location-info').textContent = 'Gagal mengambil lokasi. Izinkan akses GPS.';
+                setLocationInfo('Gagal mengambil lokasi. Izinkan akses GPS.');
             }, { enableHighAccuracy: true });
         }
 
@@ -219,16 +240,8 @@
 
             document.querySelectorAll('.scan-method-tab').forEach((btn) => {
                 const active = btn.dataset.scanMethod === method;
-                btn.classList.toggle('border-2', active);
-                btn.classList.toggle('border-teal-600', active);
-                btn.classList.toggle('bg-teal-50', active);
-                btn.classList.toggle('font-semibold', active);
-                btn.classList.toggle('text-teal-900', active);
-                btn.classList.toggle('border', !active);
-                btn.classList.toggle('border-slate-300', !active);
-                btn.classList.toggle('bg-white', !active);
-                btn.classList.toggle('font-medium', !active);
-                btn.classList.toggle('text-slate-700', !active);
+                btn.classList.toggle('scan-method-tab--active', active);
+                btn.setAttribute('aria-selected', active ? 'true' : 'false');
             });
 
             document.getElementById('panel-photo')?.classList.toggle('hidden', method !== 'photo');

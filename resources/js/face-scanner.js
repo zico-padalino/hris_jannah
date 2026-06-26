@@ -96,9 +96,12 @@ async function initFaceScanner(config) {
     try {
         await loadModels(statusEl);
         await startCamera(video, statusEl);
+        statusEl.textContent = 'Kamera aktif. Posisikan wajah di tengah frame.';
+        statusEl.classList.add('attendance-scan-status--ready');
         captureBtn.disabled = false;
     } catch (error) {
         statusEl.textContent = 'Gagal memuat kamera/model: ' + error.message;
+        statusEl.classList.add('attendance-scan-status--error');
         return;
     }
 
@@ -114,6 +117,8 @@ async function initFaceScanner(config) {
 
             if (!detection) {
                 statusEl.textContent = 'Wajah tidak terdeteksi. Coba lagi dengan pencahayaan lebih baik.';
+                statusEl.classList.remove('attendance-scan-status--ready');
+                statusEl.classList.add('attendance-scan-status--error');
                 captureBtn.disabled = false;
                 return;
             }
@@ -134,9 +139,12 @@ async function initFaceScanner(config) {
             }
 
             statusEl.textContent = 'Wajah berhasil di-scan. Mengirim data...';
+            statusEl.classList.remove('attendance-scan-status--error');
+            statusEl.classList.add('attendance-scan-status--ready');
             form.submit();
         } catch (error) {
             statusEl.textContent = 'Error: ' + error.message;
+            statusEl.classList.add('attendance-scan-status--error');
             captureBtn.disabled = false;
         }
     });
