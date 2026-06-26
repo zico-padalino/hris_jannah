@@ -13,7 +13,7 @@
 @endphp
 
 <div
-    class="sidebar-group {{ $mobile ? 'sidebar-group--mobile sidebar-group--collapsed' : '' }}"
+    class="sidebar-group sidebar-group--pengajuan {{ $mobile ? 'sidebar-group--mobile sidebar-group--collapsed' : '' }}"
     data-sidebar-group="{{ $group['id'] }}"
 >
     <button
@@ -63,7 +63,7 @@
 
             @if($subItems !== [])
                 <div
-                    class="sidebar-group sidebar-subgroup {{ $mobile ? 'sidebar-group--mobile sidebar-group--collapsed' : '' }}"
+                    class="sidebar-group sidebar-subgroup sidebar-subgroup--module {{ $mobile ? 'sidebar-group--mobile sidebar-group--collapsed' : '' }}"
                     data-sidebar-group="{{ $subId }}"
                 >
                     <button
