@@ -20,8 +20,6 @@
 </head>
 <body class="easy-read app-body min-h-screen antialiased lg:h-screen lg:overflow-hidden">
     @php
-        use App\Enums\SidebarNavItem;
-
         $sidebar = $sidebar ?? app(\App\Services\SidebarService::class);
     @endphp
     <div @class([
@@ -82,22 +80,7 @@
                         </div>
 
                         <div class="app-header__actions">
-                            @if($sidebar->visible(auth()->user(), SidebarNavItem::LeaveApproval) && $pendingLeaveApprovalCount > 0)
-                                <a
-                                    href="{{ route('leave-approvals.index', ['status' => 'pending']) }}"
-                                    class="leave-badge-pulse app-header__leave-badge app-header__leave-badge--desktop inline-flex shrink-0 items-center px-3 py-1.5 text-sm"
-                                >
-                                    {{ __('app.new_requests', ['count' => $pendingLeaveApprovalCount]) }}
-                                </a>
-                            @endif
-                            @if($sidebar->visible(auth()->user(), SidebarNavItem::Payroll) && auth()->user()->hasPermission(\App\Enums\Permission::PayrollManage) && ($pendingPayrollSignatureCount ?? 0) > 0)
-                                <a
-                                    href="{{ route('payrolls.index') }}"
-                                    class="leave-badge-pulse app-header__leave-badge app-header__leave-badge--desktop inline-flex shrink-0 items-center px-3 py-1.5 text-sm"
-                                >
-                                    {{ __('pages.dashboard.signature_approval_pending', ['count' => $pendingPayrollSignatureCount]) }}
-                                </a>
-                            @endif
+                            @include('partials.header-notifications')
                             <div class="app-header__user-cluster">
                                 @include('partials.user-account-menu')
                             </div>
@@ -108,22 +91,6 @@
                         <div class="app-header__clock app-header__clock--mobile">
                             @include('partials.header-live-clock')
                         </div>
-                        @if($sidebar->visible(auth()->user(), SidebarNavItem::LeaveApproval) && $pendingLeaveApprovalCount > 0)
-                            <a
-                                href="{{ route('leave-approvals.index', ['status' => 'pending']) }}"
-                                class="leave-badge-pulse app-header__leave-badge app-header__leave-badge--mobile inline-flex shrink-0 items-center px-2.5 py-1 text-xs"
-                            >
-                                {{ __('app.new_requests', ['count' => $pendingLeaveApprovalCount]) }}
-                            </a>
-                        @endif
-                        @if($sidebar->visible(auth()->user(), SidebarNavItem::Payroll) && auth()->user()->hasPermission(\App\Enums\Permission::PayrollManage) && ($pendingPayrollSignatureCount ?? 0) > 0)
-                            <a
-                                href="{{ route('payrolls.index') }}"
-                                class="leave-badge-pulse app-header__leave-badge app-header__leave-badge--mobile inline-flex shrink-0 items-center px-2.5 py-1 text-xs"
-                            >
-                                {{ __('pages.dashboard.signature_approval_pending', ['count' => $pendingPayrollSignatureCount]) }}
-                            </a>
-                        @endif
                     </div>
                 </header>
             @endauth

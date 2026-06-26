@@ -55,5 +55,9 @@ return [
     'close_menu' => 'Tutup menu',
     'menu' => 'Menu',
     'new_requests' => ':count pengajuan baru',
+    'notifications_title' => 'Notifikasi, :count belum dibaca',
+    'notifications_title_plain' => 'Notifikasi',
+    'notifications_leave_pending' => ':count pengajuan menunggu persetujuan',
+    'notifications_unread' => ':count belum dibaca',
     'copyright' => '© RS JANNAH :year',
 ];

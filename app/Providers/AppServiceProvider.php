@@ -60,7 +60,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('appBranding', app(AppBrandingService::class));
         });
 
-        View::composer(['layouts.app', 'partials.sidebar-nav', 'partials.mobile-nav'], function ($view) {
+        View::composer(['layouts.app', 'partials.sidebar-nav', 'partials.mobile-nav', 'partials.header-notifications'], function ($view) {
             $user = auth()->user();
             $sidebarService = app(SidebarService::class);
 

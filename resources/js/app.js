@@ -164,6 +164,77 @@ function initLiveClock() {
     window.setInterval(tick, 1000);
 }
 
+function closeAllHeaderNotifications() {
+    document.querySelectorAll('[data-header-notifications].header-notifications--open').forEach((menu) => {
+        menu.classList.remove('header-notifications--open');
+        menu.querySelector('[data-header-notifications-trigger]')?.setAttribute('aria-expanded', 'false');
+        const panel = menu.querySelector('[data-header-notifications-panel]');
+
+        if (panel) {
+            panel.hidden = true;
+        }
+    });
+}
+
+function closeAllUserAccountMenus() {
+    document.querySelectorAll('[data-user-account-menu].user-account-menu--open').forEach((menu) => {
+        menu.classList.remove('user-account-menu--open');
+        menu.querySelector('[data-user-account-menu-trigger]')?.setAttribute('aria-expanded', 'false');
+        const panel = menu.querySelector('[data-user-account-menu-panel]');
+
+        if (panel) {
+            panel.hidden = true;
+        }
+    });
+}
+
+function initHeaderNotifications() {
+    document.querySelectorAll('[data-header-notifications]').forEach((menu) => {
+        const trigger = menu.querySelector('[data-header-notifications-trigger]');
+        const panel = menu.querySelector('[data-header-notifications-panel]');
+
+        if (!trigger || !panel) {
+            return;
+        }
+
+        function close() {
+            menu.classList.remove('header-notifications--open');
+            trigger.setAttribute('aria-expanded', 'false');
+            panel.hidden = true;
+        }
+
+        function open() {
+            closeAllHeaderNotifications();
+            closeAllUserAccountMenus();
+            menu.classList.add('header-notifications--open');
+            trigger.setAttribute('aria-expanded', 'true');
+            panel.hidden = false;
+        }
+
+        trigger.addEventListener('click', (event) => {
+            event.stopPropagation();
+
+            if (menu.classList.contains('header-notifications--open')) {
+                close();
+            } else {
+                open();
+            }
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!menu.contains(event.target)) {
+                close();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                close();
+            }
+        });
+    });
+}
+
 function initUserAccountMenus() {
     document.querySelectorAll('[data-user-account-menu]').forEach((menu) => {
         const trigger = menu.querySelector('[data-user-account-menu-trigger]');
@@ -180,19 +251,8 @@ function initUserAccountMenus() {
         }
 
         function open() {
-            document.querySelectorAll('[data-user-account-menu].user-account-menu--open').forEach((other) => {
-                if (other === menu) {
-                    return;
-                }
-
-                other.classList.remove('user-account-menu--open');
-                other.querySelector('[data-user-account-menu-trigger]')?.setAttribute('aria-expanded', 'false');
-                const otherPanel = other.querySelector('[data-user-account-menu-panel]');
-
-                if (otherPanel) {
-                    otherPanel.hidden = true;
-                }
-            });
+            closeAllUserAccountMenus();
+            closeAllHeaderNotifications();
 
             menu.classList.add('user-account-menu--open');
             trigger.setAttribute('aria-expanded', 'true');
@@ -371,6 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSidebarGroups();
     initRupiahInputs();
     initLiveClock();
+    initHeaderNotifications();
     initUserAccountMenus();
     initMobileNav();
     initLeaveProofModal();

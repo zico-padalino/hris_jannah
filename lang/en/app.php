@@ -55,5 +55,9 @@ return [
     'close_menu' => 'Close menu',
     'menu' => 'Menu',
     'new_requests' => ':count new requests',
+    'notifications_title' => 'Notifications, :count unread',
+    'notifications_title_plain' => 'Notifications',
+    'notifications_leave_pending' => ':count request(s) awaiting approval',
+    'notifications_unread' => ':count unread',
     'copyright' => '© RS JANNAH :year',
 ];
