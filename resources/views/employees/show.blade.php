@@ -4,28 +4,72 @@
 @section('subtitle', $employee->employee_number)
 
 @section('content')
-    <div class="mb-6 flex flex-wrap gap-3">
-        <a href="{{ route('employees.edit', $employee) }}" class="rounded-lg border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50">Edit</a>
-        <a href="{{ route('faces.enroll', $employee) }}" class="rounded-lg bg-teal-700 px-4 py-2 text-sm font-medium text-white hover:bg-teal-800">Daftarkan Wajah</a>
-        <a href="{{ route('employees.attendances', $employee) }}" class="rounded-lg border border-slate-300 px-4 py-2 text-sm hover:bg-slate-50">Riwayat Absensi</a>
+    <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+        <a href="{{ route('employees.index') }}" class="payroll-deduction-back shrink-0">
+            <span class="payroll-deduction-back__icon" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.25">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+            </span>
+            <span>Kembali</span>
+        </a>
+        <div class="flex flex-wrap gap-2">
+            <a href="{{ route('employees.edit', $employee) }}" class="btn-secondary">Edit</a>
+            <a href="{{ route('faces.enroll', $employee) }}" class="btn-primary">Daftarkan Wajah</a>
+            <a href="{{ route('employees.attendances', $employee) }}" class="btn-secondary">Riwayat Absensi</a>
+        </div>
     </div>
 
-    <div class="grid gap-6 lg:grid-cols-2">
-        <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 class="mb-4 text-lg font-semibold">Data Pegawai</h2>
-            <dl class="space-y-3 text-sm">
-                <div><dt class="text-slate-500">Cabang</dt><dd>{{ $employee->branch->name }}</dd></div>
-                <div><dt class="text-slate-500">Departemen</dt><dd>{{ $employee->department->name ?? '-' }}</dd></div>
-                <div><dt class="text-slate-500">Jabatan</dt><dd>{{ $employee->position->name ?? '-' }}</dd></div>
-                <div><dt class="text-slate-500">Shift Kerja</dt><dd>{{ $employee->shiftLabel() }}</dd></div>
-                <div><dt class="text-slate-500">Status</dt><dd>{{ ucfirst($employee->employment_status) }}</dd></div>
-                <div><dt class="text-slate-500">Gaji Pokok</dt><dd>Rp {{ number_format($employee->base_salary, 0, ',', '.') }}</dd></div>
-                <div><dt class="text-slate-500">Email / Telepon</dt><dd>{{ $employee->email ?? '-' }} / {{ $employee->phone ?? '-' }}</dd></div>
-                <div><dt class="text-slate-500">Alamat</dt><dd class="whitespace-pre-line">{{ $employee->address ?: '-' }}</dd></div>
-                <div><dt class="text-slate-500">Tanggal Bergabung</dt><dd>{{ $employee->join_date?->format('d/m/Y') ?? '-' }}</dd></div>
+    <div class="employee-detail-grid">
+        <section class="panel employee-detail-panel">
+            <h2 class="employee-detail-panel__title">Data Pegawai</h2>
+            <div class="employee-info-grid">
+                <div class="employee-info-tile">
+                    <p class="employee-info-tile__label">Cabang</p>
+                    <p class="employee-info-tile__value">{{ $employee->branch->name }}</p>
+                </div>
+                <div class="employee-info-tile">
+                    <p class="employee-info-tile__label">Departemen</p>
+                    <p class="employee-info-tile__value">{{ $employee->department->name ?? '—' }}</p>
+                </div>
+                <div class="employee-info-tile">
+                    <p class="employee-info-tile__label">Jabatan</p>
+                    <p class="employee-info-tile__value">{{ $employee->position->name ?? '—' }}</p>
+                </div>
+                <div class="employee-info-tile">
+                    <p class="employee-info-tile__label">Shift Kerja</p>
+                    <p class="employee-info-tile__value">{{ $employee->shiftLabel() }}</p>
+                </div>
+                <div class="employee-info-tile">
+                    <p class="employee-info-tile__label">Status</p>
+                    <p class="employee-info-tile__value">{{ ucfirst($employee->employment_status) }}</p>
+                </div>
+                <div class="employee-info-tile">
+                    <p class="employee-info-tile__label">Gaji Pokok</p>
+                    <p class="employee-info-tile__value">Rp {{ number_format($employee->base_salary, 0, ',', '.') }}</p>
+                </div>
+                <div class="employee-info-tile">
+                    <p class="employee-info-tile__label">Bergabung</p>
+                    <p class="employee-info-tile__value">{{ $employee->join_date?->format('d/m/Y') ?? '—' }}</p>
+                </div>
+                <div class="employee-info-tile">
+                    <p class="employee-info-tile__label">PIN Fingerprint</p>
+                    <p class="employee-info-tile__value">{{ $employee->fingerprint_pin ?? 'Belum diatur' }}</p>
+                </div>
+                <div class="employee-info-tile employee-info-tile--wide">
+                    <p class="employee-info-tile__label">Email / Telepon</p>
+                    <p class="employee-info-tile__value">{{ $employee->email ?? '—' }} · {{ $employee->phone ?? '—' }}</p>
+                </div>
+                @if($employee->address)
+                    <div class="employee-info-tile employee-info-tile--wide">
+                        <p class="employee-info-tile__label">Alamat</p>
+                        <p class="employee-info-tile__value whitespace-pre-line">{{ $employee->address }}</p>
+                    </div>
+                @endif
                 @if($employee->employment_status === 'contract' || $employee->contract_start_date || $employee->contract_end_date)
-                    <div><dt class="text-slate-500">Periode Kontrak</dt>
-                        <dd>
+                    <div class="employee-info-tile employee-info-tile--wide">
+                        <p class="employee-info-tile__label">Periode Kontrak</p>
+                        <p class="employee-info-tile__value">
                             @if($employee->contract_start_date || $employee->contract_end_date)
                                 {{ $employee->contract_start_date?->format('d/m/Y') ?? '—' }}
                                 s/d
@@ -33,73 +77,95 @@
                                 @if($employee->contract_end_date)
                                     @php($daysLeft = now()->startOfDay()->diffInDays($employee->contract_end_date, false))
                                     <span @class([
-                                        'ml-2 rounded-full px-2 py-0.5 text-xs font-semibold',
+                                        'ml-1 inline-flex rounded-full px-2 py-0.5 text-[0.6875rem] font-bold',
                                         'bg-red-100 text-red-800' => $daysLeft < 0,
-                                        'bg-amber-100 text-amber-800' => $daysLeft >= 0 && $daysLeft <= 30,
-                                        'bg-emerald-100 text-emerald-800' => $daysLeft > 30,
-                                    ])>
+                                        'app-status-pending' => $daysLeft >= 0 && $daysLeft <= 30,
+                                    ]) @if($daysLeft > 30) style="background-color: var(--app-primary-soft); color: var(--app-primary-soft-text);" @endif>
                                         @if($daysLeft < 0)
-                                            Berakhir {{ abs($daysLeft) }} hari lalu
+                                            Berakhir {{ abs($daysLeft) }} h lalu
                                         @elseif($daysLeft === 0)
-                                            Berakhir hari ini
+                                            Hari ini
                                         @else
-                                            {{ $daysLeft }} hari lagi
+                                            {{ $daysLeft }} h lagi
                                         @endif
                                     </span>
                                 @endif
                             @else
-                                -
+                                —
                             @endif
-                        </dd>
+                        </p>
                     </div>
                 @endif
-                <div><dt class="text-slate-500">PIN Fingerprint</dt><dd>{{ $employee->fingerprint_pin ?? 'Belum diatur' }}</dd></div>
-            </dl>
-        </div>
+            </div>
+        </section>
 
-        <div class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 class="mb-4 text-lg font-semibold">Wajah Terdaftar ({{ $employee->faces->count() }})</h2>
-            @forelse($employee->faces as $face)
-                <div class="mb-3 flex items-center gap-3 rounded-lg border border-slate-100 p-3 text-sm">
-                    @if($face->hasPhoto())
-                        <img src="{{ $face->photo_url }}" alt="Wajah terdaftar" class="h-14 w-14 rounded-lg object-cover">
-                    @endif
-                    <div>
-                        <p>Terdaftar: {{ $face->enrolled_at->format('d/m/Y H:i') }}</p>
-                        <p>{{ $face->is_primary ? 'Wajah utama' : 'Wajah cadangan' }}</p>
+        <section class="panel employee-detail-panel">
+            <h2 class="employee-detail-panel__title">Wajah Terdaftar ({{ $employee->faces->count() }})</h2>
+            <div class="employee-face-panel">
+                @forelse($employee->faces as $face)
+                    <article class="employee-face-card">
+                        @if($face->hasPhoto())
+                            <img
+                                src="{{ $face->photo_url }}"
+                                alt="Wajah {{ $employee->name }}"
+                                class="employee-face-card__avatar"
+                            >
+                        @else
+                            <span class="employee-face-card__avatar employee-face-card__avatar--placeholder" aria-hidden="true">
+                                {{ strtoupper(mb_substr($employee->name, 0, 1)) }}
+                            </span>
+                        @endif
+                        <p class="employee-face-card__meta">{{ $face->enrolled_at->format('d/m/Y · H:i') }}</p>
+                        @if($face->is_primary)
+                            <span class="app-status-pending text-[0.6875rem]">Wajah utama</span>
+                        @else
+                            <span class="app-muted-text text-[0.6875rem] font-bold">Cadangan</span>
+                        @endif
+                    </article>
+                @empty
+                    <div class="employee-face-empty">
+                        <span class="employee-face-empty__icon" aria-hidden="true">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                            </svg>
+                        </span>
+                        <p class="employee-face-empty__text">Belum ada wajah terdaftar.</p>
+                        <a href="{{ route('faces.enroll', $employee) }}" class="btn-primary w-full text-center text-sm !min-h-10 !py-2">
+                            Daftarkan Sekarang
+                        </a>
                     </div>
-                </div>
-            @empty
-                <p class="text-sm text-slate-500">Belum ada wajah terdaftar. Daftarkan wajah sebelum absensi.</p>
-            @endforelse
-        </div>
+                @endforelse
+            </div>
+        </section>
     </div>
 
-    <div class="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 class="mb-4 text-lg font-semibold">Absensi Terakhir</h2>
-        <div class="overflow-x-auto">
-            <table class="table-readable min-w-full">
-                <thead class="border-b text-left text-slate-500">
-                    <tr>
-                        <th class="py-2 pr-4">Waktu</th>
-                        <th class="py-2 pr-4">Tipe</th>
-                        <th class="py-2 pr-4">Lokasi</th>
-                        <th class="py-2">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($employee->attendances as $attendance)
-                        <tr class="border-b border-slate-100">
-                            <td class="py-3 pr-4">{{ $attendance->attended_at->format('d/m/Y H:i') }}</td>
-                            <td class="py-3 pr-4">{{ $attendance->type->label() }}</td>
-                            <td class="py-3 pr-4">{{ $attendance->branchLocation->name ?? '-' }}</td>
-                            <td class="py-3">@include('partials.attendance-status-badge', ['attendance' => $attendance])</td>
-                        </tr>
-                    @empty
-                        <tr><td colspan="4" class="py-4 text-center text-slate-500">Belum ada absensi.</td></tr>
-                    @endforelse
-                </tbody>
-            </table>
+    <section class="panel-table mt-4">
+        <div class="border-b-2 px-4 py-3 sm:px-5" style="border-color: var(--app-border);">
+            <h2 class="employee-detail-panel__title !mb-0">Absensi Terakhir</h2>
         </div>
-    </div>
+        <table class="table-readable min-w-full">
+            <thead>
+                <tr>
+                    <th>Waktu</th>
+                    <th>Tipe</th>
+                    <th>Lokasi</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($employee->attendances as $attendance)
+                    <tr>
+                        <td>{{ $attendance->attended_at->format('d/m/Y H:i') }}</td>
+                        <td>{{ $attendance->type->label() }}</td>
+                        <td>{{ $attendance->branchLocation->name ?? '—' }}</td>
+                        <td>@include('partials.attendance-status-badge', ['attendance' => $attendance])</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4" class="py-6 text-center text-sm font-semibold app-muted-text">Belum ada absensi.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </section>
 @endsection

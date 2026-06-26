@@ -27,7 +27,7 @@ class EmployeeController extends WebController
         $branchIds = $this->manageableBranchIds($request);
 
         $employees = Employee::query()
-            ->with(['branch', 'department', 'position', 'faces'])
+            ->with(['branch', 'department', 'position', 'faces', 'user'])
             ->when($branchIds !== null, fn ($q) => $q->whereIn('branch_id', $branchIds))
             ->when($request->filled('branch_id'), fn ($q) => $q->where('branch_id', $request->integer('branch_id')))
             ->when($request->filled('search'), function ($q) use ($request) {
@@ -169,6 +169,25 @@ class EmployeeController extends WebController
         });
 
         return redirect()->route('employees.index')->with('success', 'Pegawai dan akun pengguna berhasil dihapus.');
+    }
+
+    public function storeAccount(Request $request, Employee $employee): RedirectResponse
+    {
+        $this->authorizeBranchAccess($request, $employee->branch_id);
+
+        if ($employee->user_id !== null) {
+            return redirect()
+                ->route('employees.index')
+                ->with('warning', 'Pegawai ini sudah memiliki akun login.');
+        }
+
+        DB::transaction(function () use ($employee) {
+            $this->employeeUserSyncService->syncFromEmployee($employee->fresh());
+        });
+
+        return redirect()
+            ->route('employees.index')
+            ->with('success', 'Akun login pegawai berhasil dibuat.');
     }
 
     /** @return array<string, mixed> */

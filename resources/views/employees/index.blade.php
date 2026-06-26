@@ -56,6 +56,8 @@
                                 'edit' => route('employees.edit', $employee),
                                 'delete' => route('employees.destroy', $employee),
                                 'deleteConfirm' => 'Hapus pegawai '.$employee->name.'?',
+                                'accountCreate' => $employee->user_id ? null : route('employees.account.store', $employee),
+                                'accountCreateConfirm' => 'Buat akun login untuk '.$employee->name.'?',
                             ])
                         </td>
                     </tr>

@@ -119,6 +119,7 @@ Route::middleware('guest')->group(function () {
 
     Route::middleware('permission:employees.manage')->group(function () {
         Route::resource('employees', EmployeeController::class);
+        Route::post('/employees/{employee}/account', [EmployeeController::class, 'storeAccount'])->name('employees.account.store');
         Route::get('/employees/{employee}/attendances', [AttendanceController::class, 'employeeHistory'])->name('employees.attendances');
     });
 
