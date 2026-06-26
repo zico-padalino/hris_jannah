@@ -5187,6 +5187,76 @@ html.dark .dashboard-notif-chip--overtime {
     padding: 1rem 0.75rem 0.5rem;
 }
 
+.dashboard-chart-legend {
+    align-items: center;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.375rem 0.5rem;
+    justify-content: center;
+    list-style: none;
+    margin: 0.375rem 0 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 0.25rem 0.25rem;
+    scrollbar-width: none;
+}
+
+.dashboard-chart-legend::-webkit-scrollbar {
+    display: none;
+}
+
+.dashboard-chart-legend__item {
+    align-items: center;
+    color: var(--app-text-muted);
+    display: inline-flex;
+    flex-shrink: 0;
+    font-size: 0.625rem;
+    font-weight: 600;
+    gap: 0.25rem;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.dashboard-chart-legend__dot {
+    border-radius: 9999px;
+    flex-shrink: 0;
+    height: 0.5rem;
+    width: 0.5rem;
+}
+
+.dashboard-chart-legend__item--present .dashboard-chart-legend__dot {
+    background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
+}
+
+.dashboard-chart-legend__item--late .dashboard-chart-legend__dot {
+    background: linear-gradient(180deg, #FBB931 0%, #EC6014 100%);
+}
+
+.dashboard-chart-legend__item--permission .dashboard-chart-legend__dot {
+    background: linear-gradient(180deg, #38bdf8 0%, #0ea5e9 100%);
+}
+
+.dashboard-chart-legend__item--absent .dashboard-chart-legend__dot {
+    background: linear-gradient(180deg, #cbd5e1 0%, #94a3b8 100%);
+}
+
+@media (min-width: 640px) {
+    .dashboard-chart-legend {
+        flex-wrap: wrap;
+        gap: 0.5rem 1.25rem;
+        overflow-x: visible;
+    }
+
+    .dashboard-chart-legend__item {
+        font-size: 0.8125rem;
+    }
+
+    .dashboard-chart-legend__dot {
+        height: 0.5625rem;
+        width: 0.5625rem;
+    }
+}
+
 .dashboard-chart-canvas--donut {
     padding: 0.75rem;
 }

@@ -26,6 +26,24 @@
                 <div class="dashboard-chart-canvas relative h-72 w-full sm:h-80">
                     <canvas id="attendance-weekly-chart" aria-label="{{ __('pages.dashboard.chart_title') }}"></canvas>
                 </div>
+                <ul class="dashboard-chart-legend" aria-hidden="true">
+                    <li class="dashboard-chart-legend__item dashboard-chart-legend__item--present">
+                        <span class="dashboard-chart-legend__dot"></span>
+                        {{ __('pages.dashboard.present') }}
+                    </li>
+                    <li class="dashboard-chart-legend__item dashboard-chart-legend__item--late">
+                        <span class="dashboard-chart-legend__dot"></span>
+                        {{ __('pages.dashboard.late') }}
+                    </li>
+                    <li class="dashboard-chart-legend__item dashboard-chart-legend__item--permission">
+                        <span class="dashboard-chart-legend__dot"></span>
+                        {{ __('pages.dashboard.permission') }}
+                    </li>
+                    <li class="dashboard-chart-legend__item dashboard-chart-legend__item--absent">
+                        <span class="dashboard-chart-legend__dot"></span>
+                        {{ __('pages.dashboard.absent') }}
+                    </li>
+                </ul>
             </div>
 
             <div class="flex flex-col gap-4">

@@ -297,7 +297,15 @@ function initDashboardCharts() {
                     },
                 ],
             },
-            options: baseOptions(true, chartLabels),
+            options: {
+                ...baseOptions(true, chartLabels),
+                plugins: {
+                    ...baseOptions(true, chartLabels).plugins,
+                    legend: {
+                        display: false,
+                    },
+                },
+            },
             plugins: [
                 {
                     id: 'weeklyBarGradients',
