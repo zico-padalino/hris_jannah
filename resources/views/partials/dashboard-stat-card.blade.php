@@ -9,14 +9,14 @@
 
 @php
     $tones = [
-        'teal' => ['bg' => 'bg-teal-50 dark:bg-teal-950/40', 'icon' => 'bg-teal-100 text-teal-800 dark:bg-teal-900/60 dark:text-teal-200', 'value' => 'text-teal-900 dark:text-teal-300'],
-        'sky' => ['bg' => 'bg-sky-50 dark:bg-sky-950/40', 'icon' => 'bg-sky-100 text-sky-800 dark:bg-sky-900/60 dark:text-sky-200', 'value' => 'text-sky-900 dark:text-sky-300'],
-        'emerald' => ['bg' => 'bg-emerald-50 dark:bg-emerald-950/40', 'icon' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200', 'value' => 'text-emerald-900 dark:text-emerald-300'],
-        'campfire' => ['bg' => 'dashboard-stat-card--campfire', 'icon' => 'dashboard-stat-card__icon--campfire', 'value' => 'dashboard-stat-card__value--campfire'],
-        'orange' => ['bg' => 'bg-orange-50 dark:bg-orange-950/40', 'icon' => 'bg-orange-100 text-orange-800 dark:bg-orange-900/60 dark:text-orange-200', 'value' => 'text-orange-900 dark:text-orange-300'],
-        'red' => ['bg' => 'bg-red-50 dark:bg-red-950/40', 'icon' => 'bg-red-100 text-red-800 dark:bg-red-900/60 dark:text-red-200', 'value' => 'text-red-900 dark:text-red-300'],
-        'amber' => ['bg' => 'dashboard-stat-card--campfire', 'icon' => 'dashboard-stat-card__icon--campfire', 'value' => 'dashboard-stat-card__value--campfire'],
-        'violet' => ['bg' => 'bg-violet-50 dark:bg-violet-950/40', 'icon' => 'bg-violet-100 text-violet-800 dark:bg-violet-900/60 dark:text-violet-200', 'value' => 'text-violet-900 dark:text-violet-300'],
+        'teal' => ['bg' => 'bg-teal-50 dark:bg-teal-950/40', 'icon' => 'bg-teal-100 text-teal-800 dark:bg-teal-900/60 dark:text-teal-200'],
+        'sky' => ['bg' => 'bg-sky-50 dark:bg-sky-950/40', 'icon' => 'bg-sky-100 text-sky-800 dark:bg-sky-900/60 dark:text-sky-200'],
+        'emerald' => ['bg' => 'bg-emerald-50 dark:bg-emerald-950/40', 'icon' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200'],
+        'campfire' => ['bg' => 'dashboard-stat-card--campfire', 'icon' => 'dashboard-stat-card__icon--campfire'],
+        'orange' => ['bg' => 'bg-orange-50 dark:bg-orange-950/40', 'icon' => 'bg-orange-100 text-orange-800 dark:bg-orange-900/60 dark:text-orange-200'],
+        'red' => ['bg' => 'bg-red-50 dark:bg-red-950/40', 'icon' => 'bg-red-100 text-red-800 dark:bg-red-900/60 dark:text-red-200'],
+        'amber' => ['bg' => 'dashboard-stat-card--campfire', 'icon' => 'dashboard-stat-card__icon--campfire'],
+        'violet' => ['bg' => 'bg-violet-50 dark:bg-violet-950/40', 'icon' => 'bg-violet-100 text-violet-800 dark:bg-violet-900/60 dark:text-violet-200'],
     ];
     $palette = $tones[$tone] ?? $tones['teal'];
 @endphp
@@ -33,10 +33,10 @@
 >
     <div class="flex items-start justify-between gap-3">
         <div class="min-w-0">
-            <p class="text-base font-bold text-slate-700 dark:text-slate-200">{{ $label }}</p>
-            <p @class(['mt-2 text-3xl font-extrabold tracking-tight', $palette['value']])>{{ $value }}</p>
+            <p class="dashboard-stat-card__label text-base font-bold">{{ $label }}</p>
+            <p class="dashboard-stat-card__value mt-2 text-3xl font-extrabold tracking-tight">{{ $value }}</p>
             @if($hint)
-                <p class="mt-1.5 text-sm font-semibold text-slate-600 dark:text-slate-400">{{ $hint }}</p>
+                <p class="dashboard-stat-card__hint mt-1.5 text-sm font-semibold">{{ $hint }}</p>
             @endif
         </div>
         <div @class(['flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 border-current/20', $palette['icon']])>

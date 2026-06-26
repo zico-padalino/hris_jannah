@@ -110,10 +110,10 @@
                 @endif
                 <div class="flex items-start justify-between gap-3">
                     <div>
-                        <p @class(['text-sm font-medium dashboard-pending-card__label', 'text-slate-600 dark:text-slate-400' => $pendingLeaveApprovalCount === 0])>
+                        <p class="dashboard-pending-card__label text-sm font-medium">
                             Pengajuan Menunggu
                         </p>
-                        <p @class(['mt-2 text-3xl font-bold tracking-tight dashboard-pending-card__value', 'text-slate-400 dark:text-slate-500' => $pendingLeaveApprovalCount === 0])>
+                        <p class="dashboard-pending-card__value mt-2 text-3xl font-bold tracking-tight">
                             {{ $pendingLeaveApprovalCount }}
                         </p>
                         @if($pendingLeaveApprovalCount > 0)
@@ -121,7 +121,7 @@
                                 Perlu diproses
                             </span>
                         @else
-                            <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Tidak ada antrian</p>
+                            <p class="dashboard-pending-card__hint mt-2 text-xs">Tidak ada antrian</p>
                         @endif
                     </div>
                     <div class="dashboard-pending-card__icon-wrap flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
@@ -150,10 +150,10 @@
                 @endif
                 <div class="flex items-start justify-between gap-3">
                     <div>
-                        <p @class(['text-sm font-medium dashboard-pending-card__label', 'text-slate-600 dark:text-slate-400' => $pendingPayrollSignatureCount === 0])>
+                        <p class="dashboard-pending-card__label text-sm font-medium">
                             {{ __('pages.dashboard.signature_approval_title') }}
                         </p>
-                        <p @class(['mt-2 text-3xl font-bold tracking-tight dashboard-pending-card__value', 'text-slate-400 dark:text-slate-500' => $pendingPayrollSignatureCount === 0])>
+                        <p class="dashboard-pending-card__value mt-2 text-3xl font-bold tracking-tight">
                             {{ $pendingPayrollSignatureCount }}
                         </p>
                         @if($pendingPayrollSignatureCount > 0)
@@ -161,7 +161,7 @@
                                 {{ __('pages.dashboard.needs_processing') }}
                             </span>
                         @else
-                            <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">{{ __('pages.dashboard.signature_approval_clear') }}</p>
+                            <p class="dashboard-pending-card__hint mt-2 text-xs">{{ __('pages.dashboard.signature_approval_clear') }}</p>
                         @endif
                     </div>
                     <div class="dashboard-pending-card__icon-wrap flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">

@@ -2747,19 +2747,24 @@ html.dark .theme-toggle__moon {
     font-weight: 700;
 }
 
+/* Kartu statistik dashboard — teks seragam */
+.dashboard-stat-card__label,
+.dashboard-stat-card__value,
+.dashboard-pending-card__label,
+.dashboard-pending-card__value {
+    color: var(--app-text);
+}
+
+.dashboard-stat-card__hint,
+.dashboard-pending-card__hint {
+    color: var(--app-text-muted);
+}
+
 /* Kartu pending dashboard */
 .dashboard-pending-card--active {
     background: linear-gradient(to bottom right, var(--app-notification-bg), var(--app-notification-bg-end));
     border-color: var(--app-notification-border);
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--app-notification-ring) 60%, transparent);
-}
-
-.dashboard-pending-card--active .dashboard-pending-card__label {
-    color: var(--app-notification-text);
-}
-
-.dashboard-pending-card--active .dashboard-pending-card__value {
-    color: var(--app-notification-title);
 }
 
 .dashboard-pending-card--active .dashboard-pending-card__icon-wrap {
@@ -2781,10 +2786,6 @@ html.dark .theme-toggle__moon {
     background-color: var(--app-primary-soft);
     border-color: color-mix(in srgb, var(--app-notification-border) 30%, transparent);
     color: var(--app-primary-soft-text);
-}
-
-.dashboard-stat-card__value--campfire {
-    color: var(--app-notification-title);
 }
 
 /* Detail pegawai — ringkas */
