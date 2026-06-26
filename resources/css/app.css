@@ -51,6 +51,28 @@
     --app-alert-error-bg: #fef2f2;
     --app-alert-error-border: #ef4444;
     --app-alert-error-text: #b91c1c;
+    --app-alert-warning-bg: #fff8eb;
+    --app-alert-warning-border: #FBB931;
+    --app-alert-warning-text: #9a4210;
+    --app-alert-info-bg: #fffdf8;
+    --app-alert-info-border: #F88F23;
+    --app-alert-info-text: #7c2d12;
+    --app-notification-bg: #fff8eb;
+    --app-notification-bg-end: #ffe9c2;
+    --app-notification-border: #FBB931;
+    --app-notification-icon-bg: #EC6014;
+    --app-notification-title: #7c2d12;
+    --app-notification-text: #9a4210;
+    --app-notification-count-bg: #c8510f;
+    --app-notification-count-text: #ffffff;
+    --app-notification-ring: #FBB931;
+    --app-badge-bg: #EC6014;
+    --app-badge-ring: #FFE3B3;
+    --app-badge-pulse: rgb(236 96 20 / 0.7);
+    --app-header-notif-bg: #FFE3B3;
+    --app-header-notif-border: #EC6014;
+    --app-header-notif-text: #7c2d12;
+    --app-header-notif-hover: #fff3dc;
     --app-table-head-bg: #9a4210;
     --app-table-head-text: #fff8eb;
     --app-table-border: #d4c4a8;
@@ -106,6 +128,28 @@ html.dark {
     --app-alert-error-bg: #3f0d12;
     --app-alert-error-border: #f87171;
     --app-alert-error-text: #fecaca;
+    --app-alert-warning-bg: #3d2a14;
+    --app-alert-warning-border: #F88F23;
+    --app-alert-warning-text: #FFE3B3;
+    --app-alert-info-bg: #2d2012;
+    --app-alert-info-border: #EC6014;
+    --app-alert-info-text: #FFE3B3;
+    --app-notification-bg: #3d2a14;
+    --app-notification-bg-end: #2d2012;
+    --app-notification-border: #6b4d2a;
+    --app-notification-icon-bg: #EC6014;
+    --app-notification-title: #FFE3B3;
+    --app-notification-text: #FBB931;
+    --app-notification-count-bg: #c8510f;
+    --app-notification-count-text: #ffffff;
+    --app-notification-ring: #F88F23;
+    --app-badge-bg: #F88F23;
+    --app-badge-ring: #5c3d1a;
+    --app-badge-pulse: rgb(248 143 35 / 0.55);
+    --app-header-notif-bg: #5c3d1a;
+    --app-header-notif-border: #F88F23;
+    --app-header-notif-text: #FFE3B3;
+    --app-header-notif-hover: #3d2a14;
     --app-table-head-bg: #5c2a0a;
     --app-table-head-text: #FFE3B3;
     --app-table-border: #6b4d2a;
@@ -286,10 +330,20 @@ html.dark {
 }
 
 .app-header__leave-badge {
+    background-color: var(--app-header-notif-bg);
+    border: 2px solid var(--app-header-notif-border);
+    border-radius: 0.5rem;
+    color: var(--app-header-notif-text);
+    font-weight: 700;
     max-width: 11rem;
     overflow: hidden;
     text-overflow: ellipsis;
+    transition: background-color 0.15s ease;
     white-space: nowrap;
+}
+
+.app-header__leave-badge:hover {
+    background-color: var(--app-header-notif-hover);
 }
 
 .app-header__user-cluster {
@@ -1308,10 +1362,17 @@ html.dark .theme-toggle__moon {
 
 @keyframes badge-pulse {
     0%, 100% {
-        box-shadow: 0 0 0 0 rgb(245 158 11 / 0.7);
+        box-shadow: 0 0 0 0 var(--app-badge-pulse);
     }
     50% {
-        box-shadow: 0 0 0 6px rgb(245 158 11 / 0);
+        box-shadow: 0 0 0 6px transparent;
+    }
+}
+
+@keyframes notification-ping {
+    75%, 100% {
+        opacity: 0;
+        transform: scale(2);
     }
 }
 
@@ -1791,6 +1852,310 @@ html.dark .theme-toggle__moon {
     background-color: var(--app-alert-error-bg);
     border-color: var(--app-alert-error-border);
     color: var(--app-alert-error-text);
+}
+
+.easy-read .alert--warning {
+    background-color: var(--app-alert-warning-bg);
+    border-color: var(--app-alert-warning-border);
+    color: var(--app-alert-warning-text);
+}
+
+.easy-read .alert--info {
+    background-color: var(--app-alert-info-bg);
+    border-color: var(--app-alert-info-border);
+    color: var(--app-alert-info-text);
+}
+
+/* Kotak pemberitahuan / info */
+.app-notice {
+    background-color: var(--app-alert-warning-bg);
+    border: 2px solid var(--app-alert-warning-border);
+    border-radius: 0.75rem;
+    color: var(--app-alert-warning-text);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    padding: 1rem 1.25rem;
+}
+
+.app-notice--error {
+    background-color: var(--app-alert-error-bg);
+    border-color: var(--app-alert-error-border);
+    color: var(--app-alert-error-text);
+}
+
+/* Banner notifikasi */
+.app-notification-banner {
+    background: linear-gradient(to right, var(--app-notification-bg), var(--app-notification-bg-end));
+    border: 2px solid var(--app-notification-border);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px var(--app-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+}
+
+@media (min-width: 640px) {
+    .app-notification-banner {
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.app-notification-banner__body {
+    align-items: flex-start;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.app-notification-banner__icon {
+    align-items: center;
+    background-color: var(--app-notification-icon-bg);
+    border-radius: 9999px;
+    box-shadow: 0 4px 6px var(--app-shadow);
+    color: var(--app-primary-text);
+    display: flex;
+    flex-shrink: 0;
+    height: 2.5rem;
+    justify-content: center;
+    margin-top: 0.125rem;
+    position: relative;
+    width: 2.5rem;
+}
+
+.app-notification-banner__count {
+    align-items: center;
+    background-color: var(--app-notification-count-bg);
+    border-radius: 9999px;
+    color: var(--app-notification-count-text);
+    display: flex;
+    font-size: 0.625rem;
+    font-weight: 700;
+    justify-content: center;
+    min-width: 1.25rem;
+    padding: 0 0.25rem;
+    position: absolute;
+    right: -0.25rem;
+    top: -0.25rem;
+    box-shadow: 0 0 0 2px var(--app-surface);
+}
+
+.app-notification-banner__title {
+    color: var(--app-notification-title);
+    font-weight: 600;
+}
+
+.app-notification-banner__message {
+    color: var(--app-notification-text);
+    font-size: 0.875rem;
+    margin-top: 0.125rem;
+}
+
+.app-notification-banner__action {
+    align-items: center;
+    background: var(--app-gradient-primary);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgb(236 96 20 / 0.2);
+    color: var(--app-primary-text);
+    display: inline-flex;
+    flex-shrink: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    justify-content: center;
+    padding: 0.625rem 1rem;
+    transition: background 0.2s ease;
+}
+
+.app-notification-banner__action:hover {
+    background: var(--app-gradient-primary-hover);
+}
+
+/* Badge jumlah notifikasi */
+.app-count-badge {
+    align-items: center;
+    background-color: var(--app-badge-bg);
+    border-radius: 9999px;
+    color: var(--app-primary-text);
+    display: inline-flex;
+    font-weight: 700;
+    justify-content: center;
+}
+
+.app-count-badge--default {
+    box-shadow: 0 0 0 2px var(--app-badge-ring), 0 1px 2px var(--app-shadow);
+    font-size: 0.75rem;
+    line-height: 1;
+    min-width: 1.5rem;
+    padding: 0.125rem 0.5rem;
+}
+
+.app-count-badge--sidebar {
+    font-size: 0.6875rem;
+    gap: 0.25rem;
+    line-height: 1;
+    padding: 0.125rem 0.5rem;
+    box-shadow: 0 1px 2px var(--app-shadow);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--app-badge-ring) 50%, transparent);
+}
+
+.app-count-badge--pill {
+    font-size: 0.75rem;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    box-shadow: 0 4px 6px var(--app-shadow);
+}
+
+.app-count-badge--dot {
+    height: 0.75rem;
+    width: 0.75rem;
+    box-shadow: 0 0 0 2px var(--app-surface);
+}
+
+.app-count-badge__ping {
+    animation: notification-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+    background-color: var(--app-campfire-3);
+    border-radius: 9999px;
+    height: 100%;
+    opacity: 0.75;
+    position: absolute;
+    width: 100%;
+}
+
+.app-count-badge__dot-wrap {
+    display: inline-flex;
+    flex-shrink: 0;
+    height: 0.75rem;
+    position: relative;
+    width: 0.75rem;
+}
+
+/* Panel & status notifikasi */
+.app-notification-panel--active {
+    box-shadow: 0 0 0 2px var(--app-notification-ring);
+}
+
+.app-notification-icon {
+    align-items: center;
+    background-color: var(--app-notification-icon-bg);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px var(--app-shadow);
+    color: var(--app-primary-text);
+    display: flex;
+    flex-shrink: 0;
+    height: 2.75rem;
+    justify-content: center;
+    position: relative;
+    width: 2.75rem;
+}
+
+.app-notification-icon--idle {
+    background-color: var(--app-table-head-bg);
+}
+
+.app-status-pending {
+    background-color: var(--app-primary-soft);
+    border-radius: 0.375rem;
+    color: var(--app-primary-soft-text);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.625rem;
+    box-shadow: 0 0 0 1px var(--app-notification-border);
+}
+
+.app-notification-dot {
+    display: flex;
+    height: 0.625rem;
+    position: relative;
+    width: 0.625rem;
+}
+
+.app-notification-dot__ping {
+    animation: notification-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+    background-color: var(--app-campfire-3);
+    border-radius: 9999px;
+    height: 100%;
+    opacity: 0.75;
+    position: absolute;
+    width: 100%;
+}
+
+.app-notification-dot__core {
+    background-color: var(--app-primary);
+    border-radius: 9999px;
+    height: 0.625rem;
+    position: relative;
+    width: 0.625rem;
+}
+
+.app-pending-value {
+    align-items: center;
+    color: var(--app-primary);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.app-pending-chip {
+    background-color: var(--app-badge-bg);
+    border-radius: 9999px;
+    color: var(--app-primary-text);
+    display: inline-flex;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.125rem 0.625rem;
+}
+
+.nav-link-mobile--notified {
+    background-color: var(--app-alert-warning-bg);
+    border: 2px solid var(--app-alert-warning-border);
+    color: var(--app-alert-warning-text);
+}
+
+.nav-link-mobile--notified-active {
+    background-color: var(--app-primary-soft);
+    border: 2px solid var(--app-primary);
+    color: var(--app-primary-soft-text);
+}
+
+/* Kartu pending dashboard */
+.dashboard-pending-card--active {
+    background: linear-gradient(to bottom right, var(--app-notification-bg), var(--app-notification-bg-end));
+    border-color: var(--app-notification-border);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--app-notification-ring) 60%, transparent);
+}
+
+.dashboard-pending-card--active .dashboard-pending-card__label {
+    color: var(--app-notification-text);
+}
+
+.dashboard-pending-card--active .dashboard-pending-card__value {
+    color: var(--app-notification-title);
+}
+
+.dashboard-pending-card--active .dashboard-pending-card__icon-wrap {
+    background-color: var(--app-primary-soft);
+    color: var(--app-primary-soft-text);
+}
+
+.dashboard-pending-card--idle {
+    background-color: var(--app-surface-muted);
+    border-color: var(--app-border);
+}
+
+.dashboard-stat-card--campfire {
+    background: linear-gradient(to bottom right, var(--app-notification-bg), var(--app-notification-bg-end));
+    border-color: var(--app-notification-border);
+}
+
+.dashboard-stat-card__icon--campfire {
+    background-color: var(--app-primary-soft);
+    border-color: color-mix(in srgb, var(--app-notification-border) 30%, transparent);
+    color: var(--app-primary-soft-text);
+}
+
+.dashboard-stat-card__value--campfire {
+    color: var(--app-notification-title);
 }
 
 /* Header halaman */
@@ -3193,9 +3558,9 @@ html.dark .dashboard-mini-stat--absent {
     color: #cbd5e1;
 }
 
-html.dark .dashboard-pending-card {
-    background: rgb(120 53 15 / 0.35) !important;
-    border-color: #d97706 !important;
+html.dark .dashboard-pending-card--active {
+    background: linear-gradient(to bottom right, var(--app-notification-bg), var(--app-notification-bg-end)) !important;
+    border-color: var(--app-notification-border) !important;
 }
 
 html.dark .dashboard-pending-card--idle {

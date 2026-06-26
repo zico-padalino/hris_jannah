@@ -35,7 +35,7 @@
         @method('PUT')
 
         @if($isProtected)
-            <div class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            <div class="app-notice">
                 {{ __('pages.roles.super_admin_hint') }}
             </div>
         @endif

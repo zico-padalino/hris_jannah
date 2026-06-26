@@ -11,7 +11,7 @@
     @endphp
 
     @if(! $photoEnabled && ! $gpsEnabled)
-        <div class="rounded-xl border border-amber-200 bg-amber-50 p-6 text-sm leading-relaxed text-amber-900 dark:border-amber-800/60 dark:bg-amber-950/40 dark:text-amber-100">
+        <div class="app-notice">
             <p>
                 <strong>{{ __('attendance.web_disabled_lead') }}</strong>
                 {{ __('attendance.web_disabled_body') }}
@@ -25,7 +25,7 @@
             @endif
         </div>
     @else
-        <div id="insecure-context-warning" class="mb-6 hidden rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-900">
+        <div id="insecure-context-warning" class="app-notice app-notice--error mb-6 hidden">
             <strong>Kamera & GPS tidak tersedia via HTTP.</strong>
             Browser memblokir kamera saat akses <code>http://192.168.x.x</code>.
             <ol class="mt-2 list-decimal space-y-1 pl-5">
@@ -147,7 +147,7 @@
             </div>
         </div>
 
-        <div class="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+        <div class="app-notice mt-6">
             <strong>Tips:</strong>
             @if($photoEnabled)
                 Untuk absensi foto, daftarkan wajah pegawai di menu Pegawai → Daftarkan Wajah.

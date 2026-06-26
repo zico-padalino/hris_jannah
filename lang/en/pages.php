@@ -350,6 +350,8 @@ return [
         'signature_signed' => 'Signed',
         'signature_waiting' => 'Awaiting HR approval',
         'signature_unsigned' => 'Signature not requested yet',
+        'download' => 'Download PDF',
+        'pdf_not_ready' => 'Payslip PDF is not available yet. The slip must be signed first.',
     ],
     'profile' => [
         'edit_title' => 'My Profile',

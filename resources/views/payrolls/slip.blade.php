@@ -20,14 +20,14 @@
     @endif
 
     @if($signature_approved)
-        <button type="button" class="payroll-deduction-back payslip-toolbar__btn payslip-toolbar__btn--print" onclick="window.print()">
+        <a href="{{ route('payrolls.items.slip.download', [$period, $item]) }}" class="payroll-deduction-back payslip-toolbar__btn payslip-toolbar__btn--download">
             <span class="payroll-deduction-back__icon" aria-hidden="true">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.25">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 9v6.75M17.25 9v6.75M4.5 9.75h15a1.5 1.5 0 011.5 1.5v5.25a1.5 1.5 0 01-1.5 1.5H4.5a1.5 1.5 0 01-1.5-1.5v-5.25A1.5 1.5 0 014.5 9.75zM7.5 6.75h9V4.875A1.125 1.125 0 0015.375 3.75h-6.75A1.125 1.125 0 007.5 4.875V6.75z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M7.5 11.25L12 15.75m0 0l4.5-4.5M12 15.75V3.75" />
                 </svg>
             </span>
-            <span class="payslip-toolbar__btn-label">{{ __('pages.payroll_slip.print') }}</span>
-        </button>
+            <span class="payslip-toolbar__btn-label">{{ __('pages.payroll_slip.download') }}</span>
+        </a>
     @endif
 @endsection
 

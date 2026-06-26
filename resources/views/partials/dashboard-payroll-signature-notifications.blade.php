@@ -6,20 +6,20 @@
 
     <div @class([
         'panel mb-6 overflow-hidden',
-        'ring-2 ring-amber-300 leave-badge-pulse' => $totalPending > 0,
+        'app-notification-panel--active leave-badge-pulse' => $totalPending > 0,
     ])>
         <div class="dashboard-section-head flex flex-col gap-4 border-b-2 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
             <div class="flex items-start gap-3">
                 <span @class([
-                    'relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white shadow-md',
-                    'bg-amber-500 leave-badge-pulse' => $totalPending > 0,
-                    'bg-teal-700' => $totalPending === 0,
+                    'app-notification-icon',
+                    'leave-badge-pulse' => $totalPending > 0,
+                    'app-notification-icon--idle' => $totalPending === 0,
                 ])>
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                     </svg>
                     @if($totalPending > 0)
-                        <span class="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white ring-2 ring-white">
+                        <span class="app-notification-banner__count">
                             {{ $totalPending > 99 ? '99+' : $totalPending }}
                         </span>
                     @endif
@@ -35,7 +35,7 @@
                     </p>
                     @if($totalPending > 0)
                         <div class="mt-2 flex flex-wrap gap-2 text-xs font-bold">
-                            <span class="rounded-md bg-orange-100 px-2 py-1 text-orange-800">{{ __('pages.payroll_slip.request_signature') }} {{ $totalPending }}</span>
+                            <span class="app-status-pending">{{ __('pages.payroll_slip.request_signature') }} {{ $totalPending }}</span>
                         </div>
                     @endif
                 </div>
@@ -70,7 +70,7 @@
                                     <span class="rounded-md border-2 border-slate-300 bg-slate-50 px-2.5 py-1 text-xs font-bold text-slate-800">
                                         {{ __('pages.payroll_slip.title') }}
                                     </span>
-                                    <span class="rounded-md bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-900 ring-1 ring-amber-300">
+                                    <span class="app-status-pending">
                                         {{ __('pages.payroll_slip.signature_pending') }}
                                     </span>
                                 </div>

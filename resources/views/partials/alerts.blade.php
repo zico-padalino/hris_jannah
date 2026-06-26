@@ -11,7 +11,7 @@
 @endif
 
 @if(session('warning'))
-    <div class="alert border-2 border-amber-500 bg-amber-50 px-5 py-4 text-base font-semibold text-amber-900" role="alert">
+    <div class="alert alert--warning" role="alert">
         {{ session('warning') }}
     </div>
 @endif

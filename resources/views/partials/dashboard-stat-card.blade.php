@@ -12,9 +12,10 @@
         'teal' => ['bg' => 'bg-teal-50 dark:bg-teal-950/40', 'icon' => 'bg-teal-100 text-teal-800 dark:bg-teal-900/60 dark:text-teal-200', 'value' => 'text-teal-900 dark:text-teal-300'],
         'sky' => ['bg' => 'bg-sky-50 dark:bg-sky-950/40', 'icon' => 'bg-sky-100 text-sky-800 dark:bg-sky-900/60 dark:text-sky-200', 'value' => 'text-sky-900 dark:text-sky-300'],
         'emerald' => ['bg' => 'bg-emerald-50 dark:bg-emerald-950/40', 'icon' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200', 'value' => 'text-emerald-900 dark:text-emerald-300'],
+        'campfire' => ['bg' => 'dashboard-stat-card--campfire', 'icon' => 'dashboard-stat-card__icon--campfire', 'value' => 'dashboard-stat-card__value--campfire'],
         'orange' => ['bg' => 'bg-orange-50 dark:bg-orange-950/40', 'icon' => 'bg-orange-100 text-orange-800 dark:bg-orange-900/60 dark:text-orange-200', 'value' => 'text-orange-900 dark:text-orange-300'],
         'red' => ['bg' => 'bg-red-50 dark:bg-red-950/40', 'icon' => 'bg-red-100 text-red-800 dark:bg-red-900/60 dark:text-red-200', 'value' => 'text-red-900 dark:text-red-300'],
-        'amber' => ['bg' => 'bg-amber-50 dark:bg-amber-950/40', 'icon' => 'bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200', 'value' => 'text-amber-900 dark:text-amber-300'],
+        'amber' => ['bg' => 'dashboard-stat-card--campfire', 'icon' => 'dashboard-stat-card__icon--campfire', 'value' => 'dashboard-stat-card__value--campfire'],
         'violet' => ['bg' => 'bg-violet-50 dark:bg-violet-950/40', 'icon' => 'bg-violet-100 text-violet-800 dark:bg-violet-900/60 dark:text-violet-200', 'value' => 'text-violet-900 dark:text-violet-300'],
     ];
     $palette = $tones[$tone] ?? $tones['teal'];

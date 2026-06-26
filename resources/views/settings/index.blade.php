@@ -173,7 +173,7 @@
                     </span>
                 </label>
 
-                <label class="flex items-start gap-3 rounded-lg border border-amber-200 bg-amber-50/50 p-4 hover:bg-amber-50">
+                <label class="app-notice flex items-start gap-3 hover:opacity-95">
                     <input
                         type="checkbox"
                         name="attendance_method_gps"

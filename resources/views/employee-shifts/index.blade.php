@@ -16,9 +16,9 @@
         <p class="text-xs text-slate-600">Non Shift</p>
         <p class="text-lg font-bold text-slate-800">{{ $stats['non_shift'] }}</p>
     </div>
-    <div class="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 shadow-sm">
-        <p class="text-xs text-amber-800">Belum Dijadwalkan</p>
-        <p class="text-lg font-bold text-amber-800">{{ $stats['unassigned'] }}</p>
+    <div class="app-notice rounded-lg px-3 py-2 shadow-sm">
+        <p class="text-xs" style="color: var(--app-notification-text);">Belum Dijadwalkan</p>
+        <p class="text-lg font-bold" style="color: var(--app-notification-title);">{{ $stats['unassigned'] }}</p>
     </div>
 </div>
 
@@ -119,7 +119,7 @@
                                 <span class="block text-slate-400">{{ $employee->shift->workDaysLabel(true) }}</span>
                             </div>
                         @else
-                            <span class="rounded bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-800">Belum diatur</span>
+                            <span class="app-status-pending text-xs font-medium">Belum diatur</span>
                         @endif
                     </td>
                     <td class="px-4 py-3">

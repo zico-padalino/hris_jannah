@@ -349,6 +349,8 @@ return [
         'signature_signed' => 'Sudah TTD',
         'signature_waiting' => 'Menunggu persetujuan HRD',
         'signature_unsigned' => 'Belum diminta TTD',
+        'download' => 'Download PDF',
+        'pdf_not_ready' => 'PDF slip belum tersedia. Slip harus ditandatangani terlebih dahulu.',
     ],
     'profile' => [
         'edit_title' => 'Profil Saya',

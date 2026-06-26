@@ -14,6 +14,7 @@ class PayrollSlipSignature extends Model
         'requested_by',
         'approved_by',
         'approved_at',
+        'pdf_path',
     ];
 
     protected function casts(): array

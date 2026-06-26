@@ -6,7 +6,7 @@
 @section('content')
     <div class="panel mx-auto max-w-2xl p-6">
         @if($position->employees_count > 0)
-            <p class="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            <p class="mb-4 app-notice">
                 Jabatan ini digunakan oleh {{ $position->employees_count }} pegawai.
             </p>
         @endif

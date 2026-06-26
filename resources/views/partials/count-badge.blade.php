@@ -11,19 +11,19 @@
     @endphp
 
     @if($variant === 'dot')
-        <span class="relative inline-flex h-3 w-3 shrink-0" title="{{ $label ?? $display.' notifikasi' }}">
+        <span class="app-count-badge__dot-wrap" title="{{ $label ?? $display.' notifikasi' }}">
             @if($pulse)
-                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75"></span>
+                <span class="app-count-badge__ping"></span>
             @endif
-            <span class="relative inline-flex h-3 w-3 rounded-full bg-amber-500 ring-2 ring-white"></span>
+            <span class="app-count-badge app-count-badge--dot"></span>
         </span>
     @elseif($variant === 'sidebar')
         <span @class([
-            'inline-flex shrink-0 items-center gap-1 rounded-full bg-amber-500 px-2 py-0.5 text-[11px] font-bold leading-none text-white shadow-sm ring-2 ring-amber-300/50',
+            'app-count-badge app-count-badge--sidebar',
             'leave-badge-pulse' => $pulse,
         ])>
             @if($pulse)
-                <span class="h-1.5 w-1.5 rounded-full bg-white"></span>
+                <span class="h-1.5 w-1.5 rounded-full" style="background-color: var(--app-primary-text);"></span>
             @endif
             {{ $display }}
             @if($label)
@@ -32,13 +32,13 @@
         </span>
     @elseif($variant === 'pill')
         <span @class([
-            'inline-flex items-center gap-1.5 rounded-full bg-amber-500 px-3 py-1 text-xs font-bold text-white shadow-md',
+            'app-count-badge app-count-badge--pill',
             'leave-badge-pulse' => $pulse,
         ])>
             @if($pulse)
                 <span class="relative flex h-2 w-2">
-                    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75"></span>
-                    <span class="relative inline-flex h-2 w-2 rounded-full bg-white"></span>
+                    <span class="app-count-badge__ping"></span>
+                    <span class="relative inline-flex h-2 w-2 rounded-full" style="background-color: var(--app-primary-text);"></span>
                 </span>
             @endif
             {{ $display }}
@@ -48,7 +48,7 @@
         </span>
     @else
         <span @class([
-            'inline-flex min-w-6 items-center justify-center rounded-full bg-amber-500 px-2 py-0.5 text-xs font-bold leading-none text-white shadow-sm ring-2 ring-amber-200',
+            'app-count-badge app-count-badge--default',
             'leave-badge-pulse' => $pulse,
         ])>
             {{ $display }}

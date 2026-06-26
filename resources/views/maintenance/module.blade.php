@@ -53,7 +53,7 @@
             </div>
 
             @if($module?->showsAttendanceFingerprintNotice())
-                <div class="maintenance-attendance-notice mt-6 w-full rounded-xl border border-amber-200 bg-amber-50 p-5 text-left text-sm leading-relaxed text-amber-900 dark:border-amber-800/60 dark:bg-amber-950/40 dark:text-amber-100">
+                <div class="maintenance-attendance-notice app-notice mt-6 w-full text-left">
                     <p>
                         <strong>{{ __('attendance.fingerprint_notice_lead') }}</strong>
                         {{ __('attendance.fingerprint_notice_body') }}

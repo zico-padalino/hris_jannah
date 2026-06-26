@@ -16,14 +16,14 @@
 <div class="mb-6 grid gap-4 lg:grid-cols-3">
     <div @class([
         'panel p-4',
-        'ring-2 ring-amber-300 leave-badge-pulse' => $pendingCount > 0,
+        'app-notification-panel--active leave-badge-pulse' => $pendingCount > 0,
     ])>
         <p class="text-sm font-bold text-slate-700">{{ __('pages.leave.approval_title') }}</p>
-        <p @class(['mt-1 flex items-center gap-2 text-3xl font-extrabold', 'text-amber-600' => $pendingCount > 0, 'text-slate-400' => $pendingCount === 0])>
+        <p @class(['mt-1 text-3xl font-extrabold', 'app-pending-value' => $pendingCount > 0, 'text-slate-400' => $pendingCount === 0])>
             @if($pendingCount > 0)
-                <span class="relative flex h-2.5 w-2.5">
-                    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-500 opacity-75"></span>
-                    <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-amber-600"></span>
+                <span class="app-notification-dot">
+                    <span class="app-notification-dot__ping"></span>
+                    <span class="app-notification-dot__core"></span>
                 </span>
             @endif
             {{ $pendingCount }}

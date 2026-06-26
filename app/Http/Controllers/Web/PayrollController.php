@@ -11,12 +11,14 @@ use App\Models\PayrollPeriod;
 use App\Services\PayrollDeductionConfig;
 use App\Services\PayrollService;
 use App\Services\PayrollSlipConfig;
+use App\Services\PayrollSlipPdfService;
 use App\Services\PayrollSlipService;
 use App\Services\PayrollSlipSignatureService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PayrollController extends WebController
@@ -27,6 +29,7 @@ class PayrollController extends WebController
         private readonly PayrollSlipService $slipService,
         private readonly PayrollSlipConfig $slipConfig,
         private readonly PayrollSlipSignatureService $signatureService,
+        private readonly PayrollSlipPdfService $pdfService,
     ) {}
 
     public function index(Request $request): View
@@ -270,6 +273,42 @@ class PayrollController extends WebController
 
         $this->signatureService->approve($item, $request->user());
 
-        return back()->with('success', __('pages.payroll_slip.signature_approved'));
+        $item->load('payrollPeriod');
+        $pdfPath = $this->pdfService->generateAndStore($item, $payroll);
+        $this->signatureService->forItem($item)?->update(['pdf_path' => $pdfPath]);
+
+        return redirect()
+            ->route('payrolls.items.slip', [$payroll, $item])
+            ->with('success', __('pages.payroll_slip.signature_approved'));
+    }
+
+    public function downloadSlip(Request $request, PayrollPeriod $payroll, PayrollItem $item): BinaryFileResponse
+    {
+        abort_unless($item->payroll_period_id === $payroll->id, 404);
+
+        if ($payroll->branch_id) {
+            $this->authorizeBranchAccess($request, $payroll->branch_id);
+        }
+
+        $user = $request->user();
+
+        if ($user->hasPermission(Permission::PayrollManage)) {
+            // authorized
+        } elseif ($user->hasPermission(Permission::PayrollViewOwn)) {
+            abort_unless($user->employee?->id === $item->employee_id, 403);
+        } else {
+            abort(403);
+        }
+
+        abort_unless($this->signatureService->isApproved($item), 404);
+
+        $path = $this->pdfService->ensureStored($item, $payroll);
+        $slip = $this->slipService->build($item, $payroll);
+
+        return response()->download(
+            Storage::disk('local')->path($path),
+            $this->pdfService->downloadFilename($slip),
+            ['Content-Type' => 'application/pdf'],
+        );
     }
 }

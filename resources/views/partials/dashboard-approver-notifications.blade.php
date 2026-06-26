@@ -7,20 +7,20 @@
 
     <div @class([
         'panel mb-6 overflow-hidden',
-        'ring-2 ring-amber-300 leave-badge-pulse' => $totalPending > 0,
+        'app-notification-panel--active leave-badge-pulse' => $totalPending > 0,
     ])>
         <div class="dashboard-section-head flex flex-col gap-4 border-b-2 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
             <div class="flex items-start gap-3">
                 <span @class([
-                    'relative flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white shadow-md',
-                    'bg-amber-500 leave-badge-pulse' => $totalPending > 0,
-                    'bg-teal-700' => $totalPending === 0,
+                    'app-notification-icon',
+                    'leave-badge-pulse' => $totalPending > 0,
+                    'app-notification-icon--idle' => $totalPending === 0,
                 ])>
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
                     @if($totalPending > 0)
-                        <span class="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white ring-2 ring-white">
+                        <span class="app-notification-banner__count">
                             {{ $totalPending > 99 ? '99+' : $totalPending }}
                         </span>
                     @endif
@@ -70,7 +70,7 @@
                                     <span class="rounded-md border-2 border-slate-300 bg-slate-50 px-2.5 py-1 text-xs font-bold text-slate-800">
                                         {{ $leave->type->label() }}
                                     </span>
-                                    <span class="rounded-md bg-amber-100 px-2.5 py-1 text-xs font-bold text-amber-900 ring-1 ring-amber-300">
+                                    <span class="app-status-pending">
                                         {{ __('app.pending') }}
                                     </span>
                                 </div>

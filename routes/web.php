@@ -162,6 +162,7 @@ Route::middleware('guest')->group(function () {
         Route::get('/payrolls/{payroll}/items/{item}/deductions', [PayrollController::class, 'deductionDetails'])->name('payrolls.items.deductions');
         Route::get('/payrolls/{payroll}/items/{item}/slip', [PayrollController::class, 'slip'])->name('payrolls.items.slip');
         Route::post('/payrolls/{payroll}/items/{item}/request-signature', [PayrollController::class, 'requestSignature'])->name('payrolls.items.request-signature');
+        Route::get('/payrolls/{payroll}/items/{item}/slip/download', [PayrollController::class, 'downloadSlip'])->name('payrolls.items.slip.download');
         Route::get('/payroll-slip/signature', [PayrollController::class, 'signature'])->name('payroll-slip.signature');
     });
 

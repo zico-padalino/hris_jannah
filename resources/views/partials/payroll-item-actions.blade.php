@@ -42,6 +42,18 @@
         @endif
     @endperm
 
+    @if($signatureApproved)
+        <a
+            href="{{ route('payrolls.items.slip.download', [$payroll, $item]) }}"
+            class="payroll-item-actions__btn payroll-item-actions__btn--download"
+        >
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M7.5 11.25L12 15.75m0 0l4.5-4.5M12 15.75V3.75" />
+            </svg>
+            {{ __('pages.payroll_slip.download') }}
+        </a>
+    @endif
+
     @if($item->deductions > 0)
         <a
             href="{{ route('payrolls.items.deductions', [$payroll, $item]) }}"
