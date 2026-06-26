@@ -12,7 +12,7 @@ const chartPalette = {
 };
 
 const chartFont = {
-    family: "'Instrument Sans', ui-sans-serif, system-ui, sans-serif",
+    family: "'Sora', ui-sans-serif, system-ui, sans-serif",
     size: 12,
     weight: '600',
 };

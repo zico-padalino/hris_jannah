@@ -6,7 +6,7 @@
 @source '../js/**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'Sora', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
     --color-campfire-1: #EC6014;
     --color-campfire-2: #F88F23;
@@ -18,6 +18,9 @@
 
 html {
     font-size: 87.5%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 /* ============================================================
@@ -59,6 +62,12 @@ html {
     --app-density-radius: 0.4375rem;
     --app-density-radius-lg: 0.625rem;
     --app-density-icon-btn: 2.125rem;
+    --app-weight-body: 400;
+    --app-weight-label: 500;
+    --app-weight-medium: 500;
+    --app-weight-semibold: 600;
+    --app-weight-bold: 600;
+    --app-weight-display: 700;
     --app-alert-success-bg: #fffdf8;
     --app-alert-success-border: #bbf7d0;
     --app-alert-success-accent: #10b981;
@@ -284,6 +293,9 @@ html.dark .table-readable tbody td::before {
     background: var(--app-gradient-surface);
     background-attachment: fixed;
     color: var(--app-text);
+    font-family: var(--font-sans);
+    font-weight: var(--app-weight-body);
+    letter-spacing: 0.015em;
     transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -522,7 +534,7 @@ html.dark .app-header {
     color: var(--app-notification-count-text);
     display: inline-flex;
     font-size: 0.5625rem;
-    font-weight: 800;
+    font-weight: 600;
     height: 1rem;
     justify-content: center;
     line-height: 1;
@@ -577,7 +589,7 @@ html.dark .app-header {
 .header-notifications__panel-title {
     color: var(--app-notification-title);
     font-size: 0.875rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.2;
     margin: 0;
 }
@@ -599,7 +611,7 @@ html.dark .app-header {
     display: inline-flex;
     flex-shrink: 0;
     font-size: 0.75rem;
-    font-weight: 800;
+    font-weight: 600;
     height: 1.5rem;
     justify-content: center;
     min-width: 1.5rem;
@@ -705,7 +717,7 @@ html.dark .app-header {
     color: var(--app-primary-soft-text);
     display: inline-flex;
     font-size: 0.6875rem;
-    font-weight: 800;
+    font-weight: 600;
     height: 1.375rem;
     justify-content: center;
     min-width: 1.375rem;
@@ -788,7 +800,7 @@ html.dark .app-header {
     color: var(--app-primary-text);
     display: inline-flex;
     font-size: 0.75rem;
-    font-weight: 800;
+    font-weight: 600;
     justify-content: center;
     line-height: 1;
 }
@@ -1113,7 +1125,7 @@ html.dark .app-header {
     color: var(--app-primary-soft-text);
     flex-shrink: 0;
     font-size: 0.625rem;
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: 0.03em;
     line-height: 1;
     padding: 0.2rem 0.45rem;
@@ -1140,7 +1152,7 @@ html.dark .app-header {
     color: var(--app-primary-text);
     display: inline-flex;
     font-size: 0.8125rem;
-    font-weight: 800;
+    font-weight: 600;
     justify-content: center;
     line-height: 1;
 }
@@ -1176,7 +1188,7 @@ html.dark .app-header {
     color: var(--app-primary-text);
     display: inline-flex;
     font-size: 0.625rem;
-    font-weight: 800;
+    font-weight: 600;
     justify-content: center;
 }
 
@@ -1217,7 +1229,7 @@ html.dark .app-header {
     color: var(--app-primary-text);
     display: inline-flex;
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: 600;
     justify-content: center;
 }
 
@@ -1246,7 +1258,7 @@ html.dark .app-header {
 .profile-section-title {
     color: var(--app-text);
     font-size: 1rem;
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .profile-face-section {
@@ -1264,7 +1276,7 @@ html.dark .app-header {
 .profile-face-section__title {
     color: var(--app-text);
     font-size: 1rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.3;
 }
 
@@ -1526,7 +1538,7 @@ html.dark .app-header {
 .login-demo__title {
     color: #9a4210;
     font-size: 0.8125rem;
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
 }
@@ -1898,7 +1910,7 @@ html.dark .theme-toggle__moon {
     display: inline-flex;
     font-family: inherit;
     font-size: 0.6875rem;
-    font-weight: 800;
+    font-weight: 600;
     height: 2.5rem;
     justify-content: center;
     letter-spacing: 0.02em;
@@ -1970,13 +1982,14 @@ html.dark .theme-toggle__moon {
    ============================================================ */
 .easy-read {
     font-size: var(--app-density-base);
+    font-weight: var(--app-weight-body);
     line-height: var(--app-density-line);
     color: var(--app-text);
 }
 
 .easy-read :where(a:not(.btn-primary):not(.btn-secondary):not(.nav-link):not(.nav-link-mobile)) {
-    font-weight: 600;
-    text-decoration-thickness: 2px;
+    font-weight: var(--app-weight-medium);
+    text-decoration-thickness: 1.5px;
     text-underline-offset: 3px;
 }
 
@@ -1989,7 +2002,7 @@ html.dark .theme-toggle__moon {
     box-shadow: 0 3px 10px rgb(236 96 20 / 0.18);
     color: var(--app-primary-text);
     font-size: var(--app-density-control-font);
-    font-weight: 700;
+    font-weight: var(--app-weight-semibold);
     min-height: var(--app-density-control-h);
     padding: var(--app-density-btn-pad-y) var(--app-density-btn-pad-x);
     transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
@@ -2009,7 +2022,7 @@ html.dark .theme-toggle__moon {
     border-radius: var(--app-density-radius);
     color: var(--app-text);
     font-size: var(--app-density-control-font);
-    font-weight: 700;
+    font-weight: var(--app-weight-medium);
     min-height: var(--app-density-control-h);
     padding: var(--app-density-btn-pad-y) 0.75rem;
 }
@@ -2028,7 +2041,7 @@ html.dark .theme-toggle__moon {
     border-radius: var(--app-density-radius);
     color: var(--app-input-text);
     font-size: var(--app-density-control-font);
-    font-weight: 500;
+    font-weight: var(--app-weight-body);
     min-height: var(--app-density-control-h);
     padding: 0.4375rem 0.625rem;
 }
@@ -2186,7 +2199,7 @@ html.dark .theme-toggle__moon {
     color: var(--app-text);
     display: block;
     font-size: 0.8125rem;
-    font-weight: 700;
+    font-weight: var(--app-weight-medium);
     margin-bottom: 0.25rem;
 }
 
@@ -2202,7 +2215,7 @@ html.dark .theme-toggle__moon {
     border-radius: var(--app-density-radius);
     display: block;
     font-size: var(--app-density-control-font);
-    font-weight: 600;
+    font-weight: var(--app-weight-medium);
     min-height: var(--app-density-control-h);
     padding: 0.4375rem 0.75rem;
 }
@@ -2210,7 +2223,7 @@ html.dark .theme-toggle__moon {
 .easy-read .nav-link--active {
     background: var(--app-gradient-nav-active);
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14);
-    font-weight: 700;
+    font-weight: var(--app-weight-semibold);
 }
 
 .easy-read .nav-link:not(.nav-link--active):hover {
@@ -2220,8 +2233,8 @@ html.dark .theme-toggle__moon {
 .easy-read .nav-section {
     color: var(--app-sidebar-text-muted);
     font-size: 0.6875rem;
-    font-weight: 800;
-    letter-spacing: 0.06em;
+    font-weight: var(--app-weight-semibold);
+    letter-spacing: 0.08em;
     padding: 0.5rem 0.75rem 0.125rem;
     text-transform: uppercase;
 }
@@ -2241,10 +2254,10 @@ html.dark .theme-toggle__moon {
     display: flex;
     font-family: inherit;
     font-size: 0.6875rem;
-    font-weight: 800;
+    font-weight: var(--app-weight-semibold);
     gap: 0.375rem;
     justify-content: space-between;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     line-height: 1.3;
     margin: 0.125rem 0;
     min-height: 2rem;
@@ -2997,7 +3010,7 @@ html.dark .dashboard-pending-card__hint {
 .employee-detail-panel__title {
     color: var(--app-text);
     font-size: 1rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.3;
     margin-bottom: 0.75rem;
 }
@@ -3071,7 +3084,7 @@ html.dark .dashboard-pending-card__hint {
     color: var(--app-primary-text);
     display: inline-flex;
     font-size: 1.25rem;
-    font-weight: 800;
+    font-weight: 600;
     justify-content: center;
 }
 
@@ -3159,7 +3172,7 @@ html.dark .dashboard-pending-card__hint {
     border-color: var(--app-primary);
     box-shadow: 0 2px 8px rgb(236 96 20 / 0.15);
     color: var(--app-notification-title);
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .attendance-scan-grid {
@@ -3187,7 +3200,7 @@ html.dark .dashboard-pending-card__hint {
 .attendance-scan-panel__title {
     color: var(--app-text);
     font-size: 0.875rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.3;
     margin-bottom: 0.75rem;
 }
@@ -3595,7 +3608,7 @@ html.dark .dashboard-pending-card__hint {
 
 .attendance-scan-info strong {
     color: var(--app-notification-title);
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .attendance-scan-form {
@@ -3616,7 +3629,7 @@ html.dark .dashboard-pending-card__hint {
 
 .attendance-scan-branch-pill strong {
     color: var(--app-notification-title);
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .attendance-scan-coords {
@@ -3717,18 +3730,65 @@ html.dark .dashboard-pending-card__hint {
     line-height: 1.4;
 }
 
+/* Tipografi elegan — Sora + bobot lebih halus */
+.page-title,
+.dashboard-section-title,
+.dashboard-welcome h2,
+.login-brand__name {
+    font-weight: var(--app-weight-semibold);
+    letter-spacing: -0.025em;
+}
+
+.sidebar-brand__name {
+    font-weight: var(--app-weight-semibold);
+    letter-spacing: -0.015em;
+}
+
+.dashboard-stat-card__label,
+.dashboard-pending-card__label {
+    font-weight: var(--app-weight-medium);
+}
+
+.dashboard-stat-card__value,
+.dashboard-pending-card__value {
+    font-weight: var(--app-weight-display);
+    letter-spacing: -0.03em;
+}
+
+.dashboard-stat-card__hint,
+.dashboard-pending-card__hint,
+.page-subtitle {
+    font-weight: var(--app-weight-label);
+}
+
+.easy-read .font-extrabold {
+    font-weight: var(--app-weight-display) !important;
+}
+
+.easy-read .font-bold {
+    font-weight: var(--app-weight-semibold) !important;
+}
+
+.easy-read .font-semibold {
+    font-weight: var(--app-weight-medium) !important;
+}
+
+.easy-read .font-medium {
+    font-weight: var(--app-weight-medium) !important;
+}
+
 /* Header halaman */
 .easy-read .page-title {
     color: var(--app-text);
     font-size: 1.125rem;
-    font-weight: 800;
-    line-height: 1.25;
+    font-weight: var(--app-weight-semibold);
+    line-height: 1.3;
 }
 
 .easy-read .page-subtitle {
     color: var(--app-text-muted);
     font-size: 0.8125rem;
-    font-weight: 600;
+    font-weight: var(--app-weight-label);
     margin-top: 0.125rem;
 }
 
@@ -3929,7 +3989,7 @@ html.dark .table-actions {
     background: var(--app-gradient-table-head);
     color: var(--app-table-head-text);
     font-size: 0.6875rem;
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: 0.03em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -3946,7 +4006,7 @@ html.dark .table-actions {
 .table-readable .cell-primary {
     color: var(--app-text);
     font-size: 0.875rem;
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .table-readable .cell-secondary {
@@ -4049,7 +4109,7 @@ html.dark .table-actions {
     align-items: center;
     justify-content: center;
     font-size: 0.9375rem;
-    font-weight: 800;
+    font-weight: 600;
     min-width: 7.5rem;
     padding: 0.375rem 0.75rem;
     text-align: center;
@@ -4284,7 +4344,7 @@ html.dark .table-actions {
 .attendance-time-entry__label {
     color: #0f172a;
     font-size: 0.875rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.2;
 }
 
@@ -4300,7 +4360,7 @@ html.dark .table-actions {
     color: #0f172a;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-size: 1.0625rem;
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: 0.02em;
     line-height: 1;
 }
@@ -4430,14 +4490,14 @@ html.dark .table-actions {
 .attendance-status-entry__label {
     color: #0f172a;
     font-size: 0.875rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.2;
 }
 
 .attendance-status-entry__detail {
     color: #c2410c;
     font-size: 0.875rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1;
 }
 
@@ -4483,7 +4543,7 @@ body {
 .easy-read .nav-section-mobile {
     color: var(--app-sidebar-text-muted);
     font-size: 0.6875rem;
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: 0.06em;
     margin-top: 0.375rem;
     padding: 0.5rem 0.75rem 0.125rem;
@@ -4550,7 +4610,7 @@ body {
 .attendance-mobile-card__name {
     color: var(--app-text);
     font-size: 0.9375rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.25;
 }
 
@@ -4580,7 +4640,7 @@ body {
     color: var(--app-text);
     display: block;
     font-size: 0.8125rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.2;
     margin-top: 0.125rem;
 }
@@ -4821,7 +4881,7 @@ body {
         content: attr(data-label);
         display: block;
         font-size: 0.6875rem;
-        font-weight: 800;
+        font-weight: 600;
         letter-spacing: 0.05em;
         margin-bottom: 0.375rem;
         text-transform: uppercase;
@@ -5147,7 +5207,7 @@ html.dark .mobile-nav-overlay__backdrop {
 .dashboard-section-title {
     color: var(--app-text);
     font-size: 1rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.3;
 }
 
@@ -5230,7 +5290,7 @@ html.dark .mobile-nav-overlay__backdrop {
 .dashboard-notif-card__title {
     color: var(--app-text);
     font-size: 0.9375rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.25;
 }
 
@@ -5473,7 +5533,7 @@ html.dark .dashboard-chart-canvas {
 
 .dashboard-mini-stat__value {
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.2;
 }
 
@@ -5763,7 +5823,7 @@ html.dark .maintenance-badge {
 .leave-proof-modal__title {
     color: var(--app-text);
     font-size: 1.0625rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.3;
 }
 
@@ -5867,7 +5927,7 @@ html.dark .maintenance-badge {
     display: inline-flex;
     font-family: inherit;
     font-size: 0.8125rem;
-    font-weight: 800;
+    font-weight: 600;
     gap: 0.5rem;
     line-height: 1;
     min-height: 2.625rem;
@@ -5936,7 +5996,7 @@ html.dark .payroll-deduction-back:hover {
 .payroll-deduction-hero__name {
     color: var(--app-text);
     font-size: 0.9375rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.25;
     margin-top: 0.125rem;
 }
@@ -5952,7 +6012,7 @@ html.dark .payroll-deduction-back:hover {
 .payroll-deduction-hero__net-value {
     color: #047857;
     font-size: 0.875rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.2;
     margin-top: 0.125rem;
 }
@@ -6012,7 +6072,7 @@ html.dark .payroll-deduction-back:hover {
 
 .payroll-deduction-stat__value {
     font-size: 0.9375rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.15;
 }
 
@@ -6049,7 +6109,7 @@ html.dark .payroll-deduction-back:hover {
 
 .payroll-deduction-formula strong {
     color: #b91c1c;
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .payroll-deduction-shift {
@@ -6066,7 +6126,7 @@ html.dark .payroll-deduction-back:hover {
 .payroll-deduction-section-title {
     color: var(--app-text);
     font-size: 0.9375rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.3;
 }
 
@@ -6091,7 +6151,7 @@ html.dark .payroll-deduction-back:hover {
 .payroll-deduction-item__date {
     color: var(--app-text);
     font-size: 0.8125rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.25;
 }
 
@@ -6106,7 +6166,7 @@ html.dark .payroll-deduction-back:hover {
 .payroll-deduction-item__amount {
     color: #b91c1c;
     font-size: 0.8125rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.25;
     text-align: right;
 }
@@ -6248,7 +6308,7 @@ html.dark .payroll-deduction-back:hover {
     border-radius: 999px;
     display: inline-flex;
     font-size: 0.625rem;
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: 0.02em;
     min-height: 1.75rem;
     padding: 0.25rem 0.625rem;
@@ -6294,7 +6354,7 @@ html.dark .payroll-deduction-back:hover {
     border-bottom: 1px solid #fcd34d;
     color: #92400e;
     font-size: 0.625rem;
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: 0.1em;
     left: 0;
     padding: 0.25rem;
@@ -6334,7 +6394,7 @@ html.dark .payroll-deduction-back:hover {
 .payslip-header__org {
     color: var(--app-primary);
     font-size: 0.5625rem;
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
 }
@@ -6342,7 +6402,7 @@ html.dark .payroll-deduction-back:hover {
 .payslip-header__title {
     color: var(--app-text);
     font-size: 0.9375rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.2;
     margin-top: 0.0625rem;
 }
@@ -6377,7 +6437,7 @@ html.dark .payroll-deduction-back:hover {
 .payslip-header__meta strong {
     color: var(--app-text);
     font-size: 0.6875rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.35;
     overflow-wrap: anywhere;
     word-break: break-word;
@@ -6418,7 +6478,7 @@ html.dark .payroll-deduction-back:hover {
 .payslip-section__title {
     color: var(--app-text);
     font-size: 0.75rem;
-    font-weight: 800;
+    font-weight: 600;
     margin-bottom: 0.375rem;
 }
 
@@ -6460,7 +6520,7 @@ html.dark .payroll-deduction-back:hover {
 }
 
 .payslip-table__amount {
-    font-weight: 800;
+    font-weight: 600;
     text-align: right;
     white-space: nowrap;
 }
@@ -6471,7 +6531,7 @@ html.dark .payroll-deduction-back:hover {
 
 .payslip-table__subtotal td {
     background: var(--app-surface-muted);
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .payslip-table__empty {
@@ -6494,13 +6554,13 @@ html.dark .payroll-deduction-back:hover {
 .payslip-net span {
     color: #9a3412;
     font-size: 0.6875rem;
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .payslip-net strong {
     color: #c2410c;
     font-size: 0.8125rem;
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .payslip-notes {
@@ -6615,7 +6675,7 @@ html.dark .payroll-deduction-back:hover {
 .payslip-footer__sign-name {
     color: var(--app-text);
     font-size: 0.625rem;
-    font-weight: 800;
+    font-weight: 600;
     margin-top: 0.125rem;
 }
 
@@ -6647,7 +6707,7 @@ html.dark .payroll-deduction-back:hover {
     color: var(--app-primary);
     display: inline-block;
     font-size: 0.6875rem;
-    font-weight: 800;
+    font-weight: 600;
     letter-spacing: 0.04em;
     margin-bottom: 0.75rem;
     padding: 0.25rem 0.625rem;
@@ -6656,7 +6716,7 @@ html.dark .payroll-deduction-back:hover {
 
 .slip-verify-card__title {
     font-size: 1.25rem;
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.25;
 }
 
@@ -6920,7 +6980,7 @@ html.dark .payroll-deduction-back:hover {
     border-radius: 999px;
     display: inline-flex;
     font-size: 0.625rem;
-    font-weight: 800;
+    font-weight: 600;
     justify-content: center;
     min-height: 1.75rem;
     padding: 0.25rem 0.5rem;

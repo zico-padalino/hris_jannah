@@ -9,8 +9,8 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.js', 'resources/js/face-scanner.js', 'resources/js/dashboard-chart.js'],
             refresh: true,
             fonts: [
-                bunny('Instrument Sans', {
-                    weights: [400, 500, 600],
+                bunny('Sora', {
+                    weights: [300, 400, 500, 600, 700],
                 }),
             ],
         }),
