@@ -65,6 +65,24 @@ return [
         'create_title' => 'Ajukan Cuti, Izin atau Lembur',
         'approval_title' => 'Approval Cuti, Izin & Lembur',
         'approval_subtitle' => 'Kelola dan proses pengajuan cuti, izin, dan lembur pegawai',
+        'cuti' => [
+            'history_title' => 'Riwayat Pengajuan Cuti',
+            'history_subtitle' => 'Daftar riwayat pengajuan cuti Anda',
+            'create_title' => 'Pengajuan Cuti Baru',
+            'create_subtitle' => 'Ajukan cuti tahunan atau cuti sakit',
+        ],
+        'izin' => [
+            'history_title' => 'Riwayat Pengajuan Izin',
+            'history_subtitle' => 'Daftar riwayat pengajuan izin Anda',
+            'create_title' => 'Pengajuan Izin Baru',
+            'create_subtitle' => 'Ajukan izin tidak masuk kerja',
+        ],
+        'lembur' => [
+            'history_title' => 'Riwayat Pengajuan Lembur',
+            'history_subtitle' => 'Daftar riwayat pengajuan lembur Anda',
+            'create_title' => 'Pengajuan Lembur Baru',
+            'create_subtitle' => 'Ajukan lembur kerja',
+        ],
     ],
     'settings' => [
         'title' => 'Pengaturan Sistem',

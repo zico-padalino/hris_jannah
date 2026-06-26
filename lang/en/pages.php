@@ -66,6 +66,24 @@ return [
         'create_title' => 'Submit Leave, Permission or Overtime',
         'approval_title' => 'Approve Leave, Permission & Overtime',
         'approval_subtitle' => 'Manage and process employee leave, permission, and overtime requests',
+        'cuti' => [
+            'history_title' => 'Leave Request History',
+            'history_subtitle' => 'Your leave request history',
+            'create_title' => 'New Leave Request',
+            'create_subtitle' => 'Submit annual or sick leave',
+        ],
+        'izin' => [
+            'history_title' => 'Permission Request History',
+            'history_subtitle' => 'Your permission request history',
+            'create_title' => 'New Permission Request',
+            'create_subtitle' => 'Submit a permission to be absent',
+        ],
+        'lembur' => [
+            'history_title' => 'Overtime Request History',
+            'history_subtitle' => 'Your overtime request history',
+            'create_title' => 'New Overtime Request',
+            'create_subtitle' => 'Submit overtime work',
+        ],
     ],
     'settings' => [
         'title' => 'System Settings',

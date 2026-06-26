@@ -28,12 +28,6 @@
     ])
 >
     <span class="flex min-w-0 items-center gap-2">
-        @if($count > 0)
-            <span class="app-notification-dot">
-                <span class="app-notification-dot__ping"></span>
-                <span class="app-notification-dot__core"></span>
-            </span>
-        @endif
         <span @class(['truncate', 'font-semibold' => $count > 0])>{{ $label }}</span>
     </span>
     @if($count > 0)

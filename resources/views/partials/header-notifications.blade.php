@@ -2,7 +2,8 @@
     use App\Enums\Permission;
     use App\Enums\SidebarNavItem;
 
-    $canSeeLeave = $sidebar->visible(auth()->user(), SidebarNavItem::LeaveApproval);
+    $canSeeLeave = collect(SidebarNavItem::leaveApprovalItems())
+        ->contains(fn (SidebarNavItem $item) => $sidebar->visible(auth()->user(), $item));
     $canSeePayroll = $sidebar->visible(auth()->user(), SidebarNavItem::Payroll)
         && auth()->user()->hasPermission(Permission::PayrollManage);
     $leaveCount = $canSeeLeave ? (int) ($pendingLeaveApprovalCount ?? 0) : 0;

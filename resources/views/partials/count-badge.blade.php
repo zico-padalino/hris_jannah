@@ -22,9 +22,6 @@
             'app-count-badge app-count-badge--sidebar',
             'leave-badge-pulse' => $pulse,
         ])>
-            @if($pulse)
-                <span class="h-1.5 w-1.5 rounded-full" style="background-color: var(--app-primary-text);"></span>
-            @endif
             {{ $display }}
             @if($label)
                 <span class="font-semibold">{{ $label }}</span>

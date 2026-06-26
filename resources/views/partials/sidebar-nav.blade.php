@@ -6,13 +6,29 @@
     $user = auth()->user();
     $sidebar = $sidebar ?? app(\App\Services\SidebarService::class);
     $pendingTotal = $pendingLeaveApprovalCount ?? 0;
+    $pendingBreakdown = $pendingLeaveApprovalBreakdown ?? ['cuti' => 0, 'izin' => 0, 'lembur' => 0];
     $pendingPayrollTotal = $pendingPayrollSignatureCount ?? 0;
     $canApprove = $user->hasPermission(\App\Enums\Permission::LeaveApprove);
     $canApprovePayroll = $user->hasPermission(\App\Enums\Permission::PayrollManage);
 @endphp
 
 @foreach($sidebar->navigationGroups($user) as $group)
-    @if($group['collapsible'])
+    @if(($group['builtin'] ?? null) === 'section_pengajuan')
+        @include('partials.sidebar-nav-pengajuan-group', [
+            'group' => $group,
+            'mobile' => $mobile,
+            'linkClass' => $linkClass,
+            'activeClass' => $activeClass,
+            'inactiveClass' => $inactiveClass,
+            'user' => $user,
+            'sidebar' => $sidebar,
+            'pendingTotal' => $pendingTotal,
+            'pendingLeaveApprovalBreakdown' => $pendingBreakdown,
+            'pendingPayrollTotal' => $pendingPayrollTotal,
+            'canApprove' => $canApprove,
+            'canApprovePayroll' => $canApprovePayroll,
+        ])
+    @elseif($group['collapsible'])
         @include('partials.sidebar-nav-group', [
             'group' => $group,
             'mobile' => $mobile,
@@ -37,6 +53,7 @@
                 'user' => $user,
                 'sidebar' => $sidebar,
                 'pendingTotal' => $pendingTotal,
+                'pendingLeaveApprovalBreakdown' => $pendingBreakdown,
                 'pendingPayrollTotal' => $pendingPayrollTotal,
                 'canApprove' => $canApprove,
                 'canApprovePayroll' => $canApprovePayroll,

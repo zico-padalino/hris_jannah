@@ -809,7 +809,7 @@ class SidebarService
 
     private function userMeetsPermission(User $user, SidebarNavItem $item): bool
     {
-        if ($item === SidebarNavItem::LeaveHistory) {
+        if ($item->isLeaveHistory()) {
             return $user->employee !== null
                 && ($user->hasPermission(Permission::LeaveRequest)
                     || $user->hasPermission(Permission::LeaveViewOwn));

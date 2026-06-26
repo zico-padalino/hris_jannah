@@ -10,10 +10,19 @@ enum SidebarNavItem: string
     case AttendanceHistory = 'attendance_history';
     case AttendanceManage = 'attendance_manage';
     case FingerprintDevices = 'fingerprint_devices';
-    case SectionLeave = 'section_leave';
-    case LeaveHistory = 'leave_history';
-    case LeaveCreate = 'leave_create';
-    case LeaveApproval = 'leave_approval';
+    case SectionPengajuan = 'section_pengajuan';
+    case SectionLeaveCuti = 'section_leave_cuti';
+    case LeaveCutiCreate = 'leave_cuti_create';
+    case LeaveCutiHistory = 'leave_cuti_history';
+    case LeaveCutiApproval = 'leave_cuti_approval';
+    case SectionLeaveIzin = 'section_leave_izin';
+    case LeaveIzinCreate = 'leave_izin_create';
+    case LeaveIzinHistory = 'leave_izin_history';
+    case LeaveIzinApproval = 'leave_izin_approval';
+    case SectionLeaveLembur = 'section_leave_lembur';
+    case LeaveLemburCreate = 'leave_lembur_create';
+    case LeaveLemburHistory = 'leave_lembur_history';
+    case LeaveLemburApproval = 'leave_lembur_approval';
     case SectionPayroll = 'section_payroll';
     case Payroll = 'payroll';
     case SectionMaster = 'section_master';
@@ -37,11 +46,75 @@ enum SidebarNavItem: string
         return str_starts_with($this->value, 'section_');
     }
 
+    public function isLeaveSection(): bool
+    {
+        return $this === self::SectionPengajuan || $this->isLeaveSubSection();
+    }
+
+    public function isLeaveSubSection(): bool
+    {
+        return in_array($this, [
+            self::SectionLeaveCuti,
+            self::SectionLeaveIzin,
+            self::SectionLeaveLembur,
+        ], true);
+    }
+
+    public function leaveSubSection(): ?self
+    {
+        return match ($this) {
+            self::LeaveCutiCreate, self::LeaveCutiHistory, self::LeaveCutiApproval => self::SectionLeaveCuti,
+            self::LeaveIzinCreate, self::LeaveIzinHistory, self::LeaveIzinApproval => self::SectionLeaveIzin,
+            self::LeaveLemburCreate, self::LeaveLemburHistory, self::LeaveLemburApproval => self::SectionLeaveLembur,
+            default => null,
+        };
+    }
+
+    /** @return 'cuti'|'izin'|'lembur'|null */
+    public function leaveApprovalCategory(): ?string
+    {
+        return match ($this) {
+            self::LeaveCutiCreate, self::LeaveCutiHistory, self::LeaveCutiApproval => 'cuti',
+            self::LeaveIzinCreate, self::LeaveIzinHistory, self::LeaveIzinApproval => 'izin',
+            self::LeaveLemburCreate, self::LeaveLemburHistory, self::LeaveLemburApproval => 'lembur',
+            default => null,
+        };
+    }
+
+    public function isLeaveHistory(): bool
+    {
+        return in_array($this, [
+            self::LeaveCutiHistory,
+            self::LeaveIzinHistory,
+            self::LeaveLemburHistory,
+        ], true);
+    }
+
+    public function isLeaveCreate(): bool
+    {
+        return in_array($this, [
+            self::LeaveCutiCreate,
+            self::LeaveIzinCreate,
+            self::LeaveLemburCreate,
+        ], true);
+    }
+
+    public function isLeaveApproval(): bool
+    {
+        return in_array($this, [
+            self::LeaveCutiApproval,
+            self::LeaveIzinApproval,
+            self::LeaveLemburApproval,
+        ], true);
+    }
+
     public function navLabelKey(): string
     {
         $key = match ($this) {
             self::AttendanceScan => 'scan_attendance',
             self::AttendanceManage => 'manage_attendance',
+            self::LeaveCutiCreate, self::LeaveIzinCreate, self::LeaveLemburCreate => 'leave_pengajuan',
+            self::LeaveCutiHistory, self::LeaveIzinHistory, self::LeaveLemburHistory => 'leave_riwayat',
             default => $this->value,
         };
 
@@ -53,15 +126,15 @@ enum SidebarNavItem: string
     {
         return match ($this) {
             self::Dashboard => [Permission::DashboardView],
-            self::SectionAttendance, self::SectionLeave, self::SectionPayroll,
-            self::SectionMaster, self::SectionSystem => [],
+            self::SectionAttendance, self::SectionPengajuan, self::SectionLeaveCuti, self::SectionLeaveIzin, self::SectionLeaveLembur,
+            self::SectionPayroll, self::SectionMaster, self::SectionSystem => [],
             self::AttendanceScan => [Permission::AttendanceScan],
             self::AttendanceHistory => [Permission::AttendanceViewAll, Permission::AttendanceViewOwn],
             self::AttendanceManage => [Permission::AttendanceManage],
             self::FingerprintDevices => [Permission::FingerprintManage],
-            self::LeaveHistory => [Permission::LeaveRequest, Permission::LeaveViewOwn],
-            self::LeaveCreate => [Permission::LeaveRequest],
-            self::LeaveApproval => [Permission::LeaveApprove],
+            self::LeaveCutiHistory, self::LeaveIzinHistory, self::LeaveLemburHistory => [Permission::LeaveRequest, Permission::LeaveViewOwn],
+            self::LeaveCutiCreate, self::LeaveIzinCreate, self::LeaveLemburCreate => [Permission::LeaveRequest],
+            self::LeaveCutiApproval, self::LeaveIzinApproval, self::LeaveLemburApproval => [Permission::LeaveApprove],
             self::Payroll => [Permission::PayrollManage, Permission::PayrollViewOwn],
             self::Branches => [Permission::BranchesManage],
             self::Departments => [Permission::DepartmentsManage],
@@ -78,7 +151,7 @@ enum SidebarNavItem: string
         };
     }
 
-  /** @return list<self> */
+    /** @return list<self> */
     public function children(): array
     {
         return match ($this) {
@@ -88,10 +161,25 @@ enum SidebarNavItem: string
                 self::AttendanceManage,
                 self::FingerprintDevices,
             ],
-            self::SectionLeave => [
-                self::LeaveHistory,
-                self::LeaveCreate,
-                self::LeaveApproval,
+            self::SectionPengajuan => [
+                self::LeaveCutiCreate,
+                self::LeaveCutiHistory,
+                self::LeaveIzinCreate,
+                self::LeaveIzinHistory,
+                self::LeaveLemburCreate,
+                self::LeaveLemburHistory,
+            ],
+            self::SectionLeaveCuti => [
+                self::LeaveCutiCreate,
+                self::LeaveCutiHistory,
+            ],
+            self::SectionLeaveIzin => [
+                self::LeaveIzinCreate,
+                self::LeaveIzinHistory,
+            ],
+            self::SectionLeaveLembur => [
+                self::LeaveLemburCreate,
+                self::LeaveLemburHistory,
             ],
             self::SectionPayroll => [self::Payroll],
             self::SectionMaster => [
@@ -115,7 +203,7 @@ enum SidebarNavItem: string
         };
     }
 
-  /** @return list<self> */
+    /** @return list<self> */
     public static function linkItems(): array
     {
         return array_values(array_filter(
@@ -124,13 +212,23 @@ enum SidebarNavItem: string
         ));
     }
 
-  /** @return list<self> */
+    /** @return list<self> */
     public static function sections(): array
     {
         return array_values(array_filter(
             self::cases(),
-            fn (self $item) => $item->isSection()
+            fn (self $item) => $item->isSection() && ! $item->isLeaveSubSection()
         ));
+    }
+
+    /** @return list<self> */
+    public static function leaveApprovalItems(): array
+    {
+        return [
+            self::LeaveCutiApproval,
+            self::LeaveIzinApproval,
+            self::LeaveLemburApproval,
+        ];
     }
 
     public function parentSection(): ?self
@@ -138,7 +236,9 @@ enum SidebarNavItem: string
         return match ($this) {
             self::Dashboard => null,
             self::AttendanceScan, self::AttendanceHistory, self::AttendanceManage, self::FingerprintDevices => self::SectionAttendance,
-            self::LeaveHistory, self::LeaveCreate, self::LeaveApproval => self::SectionLeave,
+            self::LeaveCutiCreate, self::LeaveCutiHistory, self::LeaveCutiApproval,
+            self::LeaveIzinCreate, self::LeaveIzinHistory, self::LeaveIzinApproval,
+            self::LeaveLemburCreate, self::LeaveLemburHistory, self::LeaveLemburApproval => self::SectionPengajuan,
             self::Payroll => self::SectionPayroll,
             self::Branches, self::Departments, self::Positions, self::Employees, self::ShiftTemplates, self::EmployeeShifts, self::Holidays => self::SectionMaster,
             self::Reports, self::Users, self::Roles, self::Announcements, self::Settings, self::ActivityLogs => self::SectionSystem,
@@ -155,7 +255,7 @@ enum SidebarNavItem: string
         ], true);
     }
 
-  /** @return list<self> */
+    /** @return list<self> */
     public static function defaultNavOrder(): array
     {
         return [
@@ -164,7 +264,7 @@ enum SidebarNavItem: string
         ];
     }
 
-    public static function fromRouteName(?string $routeName): ?self
+    public static function fromRouteName(?string $routeName, ?string $category = null): ?self
     {
         if ($routeName === null || $routeName === '') {
             return null;
@@ -173,12 +273,13 @@ enum SidebarNavItem: string
         return match (true) {
             $routeName === 'dashboard' => self::Dashboard,
             str_starts_with($routeName, 'attendance.scan') => self::AttendanceScan,
-            in_array($routeName, ['attendances.index', 'employees.attendances'], true) => self::AttendanceHistory,
+            in_array($routeName, ['attendances.index', 'employees.attendances'], true) => self::leaveHistoryFromCategory($category),
             str_starts_with($routeName, 'attendances.') => self::AttendanceManage,
             str_starts_with($routeName, 'fingerprint-devices') => self::FingerprintDevices,
-            in_array($routeName, ['leaves.index', 'leaves.proof'], true) => self::LeaveHistory,
-            str_starts_with($routeName, 'leaves.') => self::LeaveCreate,
-            str_starts_with($routeName, 'leave-approvals.') => self::LeaveApproval,
+            in_array($routeName, ['leaves.index', 'leaves.proof'], true) => self::leaveHistoryFromCategory($category),
+            $routeName === 'leaves.create' => self::leaveCreateFromCategory($category),
+            str_starts_with($routeName, 'leaves.') => self::leaveCreateFromCategory($category),
+            str_starts_with($routeName, 'leave-approvals.') => self::leaveApprovalFromCategory($category),
             str_starts_with($routeName, 'payrolls.') => self::Payroll,
             str_starts_with($routeName, 'branches.'),
             str_starts_with($routeName, 'branch-locations.') => self::Branches,
@@ -205,15 +306,17 @@ enum SidebarNavItem: string
             return null;
         }
 
+        $category = $this->leaveApprovalCategory();
+
         return match ($this) {
             self::Dashboard => route('dashboard', [], false),
             self::AttendanceScan => route('attendance.scan', [], false),
             self::AttendanceHistory => route('attendances.index', [], false),
             self::AttendanceManage => route('attendances.manage', [], false),
             self::FingerprintDevices => route('fingerprint-devices.index', [], false),
-            self::LeaveHistory => route('leaves.index', [], false),
-            self::LeaveCreate => route('leaves.create', [], false),
-            self::LeaveApproval => route('leave-approvals.index', ['status' => 'pending'], false),
+            self::LeaveCutiHistory, self::LeaveIzinHistory, self::LeaveLemburHistory => route('leaves.index', ['category' => $category], false),
+            self::LeaveCutiCreate, self::LeaveIzinCreate, self::LeaveLemburCreate => route('leaves.create', ['category' => $category], false),
+            self::LeaveCutiApproval, self::LeaveIzinApproval, self::LeaveLemburApproval => route('leave-approvals.index', ['status' => 'pending', 'category' => $category], false),
             self::Payroll => route('payrolls.index', [], false),
             self::Branches => route('branches.index', [], false),
             self::Departments => route('departments.index', [], false),
@@ -229,6 +332,33 @@ enum SidebarNavItem: string
             self::ActivityLogs => route('activity-logs.index', [], false),
             self::Settings => route('settings.index', [], false),
             default => null,
+        };
+    }
+
+    private static function leaveHistoryFromCategory(?string $category): self
+    {
+        return match ($category) {
+            'izin' => self::LeaveIzinHistory,
+            'lembur' => self::LeaveLemburHistory,
+            default => self::LeaveCutiHistory,
+        };
+    }
+
+    private static function leaveCreateFromCategory(?string $category): self
+    {
+        return match ($category) {
+            'izin' => self::LeaveIzinCreate,
+            'lembur' => self::LeaveLemburCreate,
+            default => self::LeaveCutiCreate,
+        };
+    }
+
+    private static function leaveApprovalFromCategory(?string $category): self
+    {
+        return match ($category) {
+            'izin' => self::LeaveIzinApproval,
+            'lembur' => self::LeaveLemburApproval,
+            default => self::LeaveCutiApproval,
         };
     }
 }

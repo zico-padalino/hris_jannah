@@ -5,6 +5,7 @@
     $item = $entry['item'] ?? null;
     $nested = $nested ?? false;
     $nestedClass = $nested ? ' nav-link--nested' : '';
+    $pendingLeaveApprovalBreakdown = $pendingLeaveApprovalBreakdown ?? ['cuti' => 0, 'izin' => 0, 'lembur' => 0];
 @endphp
 
 @if($entry['type'] === 'custom_link')
@@ -44,19 +45,59 @@
             <a href="{{ route('fingerprint-devices.index') }}" class="{{ $linkClass }}{{ $nestedClass }} {{ request()->routeIs('fingerprint-devices.*') ? $activeClass : $inactiveClass }}">{{ __($item->navLabelKey()) }}</a>
             @break
 
-        @case(SidebarNavItem::LeaveHistory)
-            <a href="{{ route('leaves.index') }}" class="{{ $linkClass }}{{ $nestedClass }} {{ request()->routeIs('leaves.index') ? $activeClass : $inactiveClass }}">{{ __($item->navLabelKey()) }}</a>
+        @case(SidebarNavItem::LeaveCutiHistory)
+            <a href="{{ route('leaves.index', ['category' => 'cuti']) }}" class="{{ $linkClass }}{{ $nestedClass }} {{ request()->routeIs('leaves.index') && request('category', 'cuti') === 'cuti' ? $activeClass : $inactiveClass }}">{{ __($item->navLabelKey()) }}</a>
             @break
 
-        @case(SidebarNavItem::LeaveCreate)
-            <a href="{{ route('leaves.create') }}" class="{{ $linkClass }}{{ $nestedClass }} {{ request()->routeIs('leaves.create') ? $activeClass : $inactiveClass }}">{{ __($item->navLabelKey()) }}</a>
+        @case(SidebarNavItem::LeaveCutiCreate)
+            <a href="{{ route('leaves.create', ['category' => 'cuti']) }}" class="{{ $linkClass }}{{ $nestedClass }} {{ request()->routeIs('leaves.create') && request('category', 'cuti') === 'cuti' ? $activeClass : $inactiveClass }}">{{ __($item->navLabelKey()) }}</a>
             @break
 
-        @case(SidebarNavItem::LeaveApproval)
+        @case(SidebarNavItem::LeaveCutiApproval)
             @include('partials.leave-nav-link', [
-                'href' => route('leave-approvals.index', ['status' => 'pending']),
-                'count' => $pendingTotal,
-                'active' => request()->routeIs('leave-approvals.*'),
+                'href' => route('leave-approvals.index', ['status' => 'pending', 'category' => 'cuti']),
+                'count' => ($pendingLeaveApprovalBreakdown['cuti'] ?? 0),
+                'active' => request()->routeIs('leave-approvals.*') && request('category') === 'cuti',
+                'label' => __($item->navLabelKey()),
+                'pendingLabel' => __('app.new'),
+                'mobile' => $mobile,
+                'nested' => $nested,
+            ])
+            @break
+
+        @case(SidebarNavItem::LeaveIzinHistory)
+            <a href="{{ route('leaves.index', ['category' => 'izin']) }}" class="{{ $linkClass }}{{ $nestedClass }} {{ request()->routeIs('leaves.index') && request('category') === 'izin' ? $activeClass : $inactiveClass }}">{{ __($item->navLabelKey()) }}</a>
+            @break
+
+        @case(SidebarNavItem::LeaveIzinCreate)
+            <a href="{{ route('leaves.create', ['category' => 'izin']) }}" class="{{ $linkClass }}{{ $nestedClass }} {{ request()->routeIs('leaves.create') && request('category') === 'izin' ? $activeClass : $inactiveClass }}">{{ __($item->navLabelKey()) }}</a>
+            @break
+
+        @case(SidebarNavItem::LeaveIzinApproval)
+            @include('partials.leave-nav-link', [
+                'href' => route('leave-approvals.index', ['status' => 'pending', 'category' => 'izin']),
+                'count' => ($pendingLeaveApprovalBreakdown['izin'] ?? 0),
+                'active' => request()->routeIs('leave-approvals.*') && request('category') === 'izin',
+                'label' => __($item->navLabelKey()),
+                'pendingLabel' => __('app.new'),
+                'mobile' => $mobile,
+                'nested' => $nested,
+            ])
+            @break
+
+        @case(SidebarNavItem::LeaveLemburHistory)
+            <a href="{{ route('leaves.index', ['category' => 'lembur']) }}" class="{{ $linkClass }}{{ $nestedClass }} {{ request()->routeIs('leaves.index') && request('category') === 'lembur' ? $activeClass : $inactiveClass }}">{{ __($item->navLabelKey()) }}</a>
+            @break
+
+        @case(SidebarNavItem::LeaveLemburCreate)
+            <a href="{{ route('leaves.create', ['category' => 'lembur']) }}" class="{{ $linkClass }}{{ $nestedClass }} {{ request()->routeIs('leaves.create') && request('category') === 'lembur' ? $activeClass : $inactiveClass }}">{{ __($item->navLabelKey()) }}</a>
+            @break
+
+        @case(SidebarNavItem::LeaveLemburApproval)
+            @include('partials.leave-nav-link', [
+                'href' => route('leave-approvals.index', ['status' => 'pending', 'category' => 'lembur']),
+                'count' => ($pendingLeaveApprovalBreakdown['lembur'] ?? 0),
+                'active' => request()->routeIs('leave-approvals.*') && request('category') === 'lembur',
                 'label' => __($item->navLabelKey()),
                 'pendingLabel' => __('app.new'),
                 'mobile' => $mobile,
