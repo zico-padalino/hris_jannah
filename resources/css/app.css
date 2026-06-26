@@ -4266,30 +4266,302 @@ html.dark .table-actions {
     color: var(--app-alert-warning-text);
 }
 
-.activity-log-table .activity-log-table__desc {
+/* Log aktivitas */
+.activity-log-page {
+    min-width: 0;
+}
+
+.activity-log-filter__grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    .activity-log-filter__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .activity-log-filter__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .activity-log-filter__field--search {
+        grid-column: span 3;
+    }
+}
+
+.activity-log-filter__field {
+    display: block;
+    min-width: 0;
+}
+
+.activity-log-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.activity-log-item {
+    padding: 0.5rem 0.625rem;
+}
+
+.activity-log-item__head {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    justify-content: space-between;
+}
+
+.activity-log-item__time {
+    color: var(--app-text-muted);
+    font-size: 0.6875rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--app-weight-semibold);
+    white-space: nowrap;
+}
+
+.activity-log-item__id {
+    color: var(--app-text);
+    margin-right: 0.25rem;
+}
+
+.activity-log-item__user {
     color: var(--app-text);
     font-size: 0.8125rem;
+    font-weight: var(--app-weight-semibold);
+    line-height: 1.35;
+    margin-top: 0.25rem;
+}
+
+.activity-log-item__email {
+    color: var(--app-text-muted);
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: var(--app-weight-medium);
+}
+
+@media (min-width: 480px) {
+    .activity-log-item__email {
+        display: inline;
+    }
+
+    .activity-log-item__email::before {
+        content: '·';
+        margin: 0 0.25rem;
+    }
+}
+
+.activity-log-item__meta {
+    color: var(--app-text-muted);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.6875rem;
+    font-weight: var(--app-weight-medium);
+    gap: 0.125rem 0.375rem;
+    line-height: 1.35;
+    margin-top: 0.125rem;
+}
+
+.activity-log-item__meta span:not(:last-child)::after {
+    content: '·';
+    margin-left: 0.375rem;
+}
+
+.activity-log-item__subject {
+    color: var(--app-text);
+    font-size: 0.75rem;
+    font-weight: var(--app-weight-semibold);
+    line-height: 1.35;
+    margin-top: 0.25rem;
+}
+
+.activity-log-item__desc {
+    -webkit-box-orient: vertical;
+    color: var(--app-text-muted);
+    display: -webkit-box;
+    font-size: 0.75rem;
+    -webkit-line-clamp: 2;
     line-height: 1.4;
-    max-width: 18rem;
+    margin-top: 0.1875rem;
+    overflow: hidden;
+}
+
+.activity-log-item__ip {
+    color: var(--app-text-muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.625rem;
+    font-weight: var(--app-weight-semibold);
+    margin-top: 0.25rem;
+}
+
+.activity-log-empty {
+    padding: 1.5rem 1rem;
+    text-align: center;
+}
+
+.activity-log-empty__text {
+    color: var(--app-text-muted);
+    font-size: 0.875rem;
+    font-weight: var(--app-weight-semibold);
+}
+
+.activity-log-table .table-readable th,
+.activity-log-table .table-readable td {
+    padding: 0.375rem 0.5rem;
+}
+
+.activity-log-table .activity-log-table__id {
+    color: var(--app-text-muted);
+    font-size: 0.75rem;
+    font-weight: var(--app-weight-semibold);
+    white-space: nowrap;
+}
+
+.activity-log-table .activity-log-table__date {
+    color: var(--app-text);
+    display: block;
+    font-size: 0.75rem;
+    font-weight: var(--app-weight-semibold);
+}
+
+.activity-log-table .activity-log-table__name {
+    color: var(--app-text);
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: var(--app-weight-semibold);
+}
+
+.activity-log-table .activity-log-table__desc {
+    color: var(--app-text);
+    font-size: 0.75rem;
+    line-height: 1.35;
+    max-width: 14rem;
 }
 
 .activity-log-table .activity-log-table__meta {
     color: var(--app-text-muted);
-    font-size: 0.75rem;
-    font-weight: 600;
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: var(--app-weight-medium);
 }
 
 .activity-log-table .activity-log-table__ip {
     color: var(--app-text-muted);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.6875rem;
+    font-weight: var(--app-weight-semibold);
 }
 
 .activity-log-table .activity-log-table__module {
     color: var(--app-text-muted);
-    font-size: 0.8125rem;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: var(--app-weight-semibold);
+}
+
+.activity-log-table .activity-log-table__empty {
+    color: var(--app-text-muted);
+    font-weight: var(--app-weight-semibold);
+    padding: 2rem 1rem !important;
+    text-align: center;
+}
+
+/* Laporan absensi */
+.report-page {
+    min-width: 0;
+}
+
+.report-stat-card__period {
+    color: var(--app-text-muted);
+    font-size: 0.75rem;
+    font-weight: var(--app-weight-semibold);
+    margin-top: 0.25rem;
+}
+
+.report-filter {
+    align-items: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: space-between;
+}
+
+.report-filter__field {
+    display: block;
+    min-width: 0;
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    .report-filter__field {
+        width: auto;
+    }
+}
+
+.report-table .report-table__valid {
+    color: var(--app-alert-success-text);
+    font-weight: var(--app-weight-semibold);
+}
+
+.report-table .report-table__invalid {
+    color: var(--app-alert-error-text);
+    font-weight: var(--app-weight-semibold);
+}
+
+.report-table__rate {
+    border-radius: 9999px;
+    display: inline-flex;
+    font-size: 0.6875rem;
+    font-weight: var(--app-weight-bold);
+    padding: 0.125rem 0.4375rem;
+}
+
+.report-table__rate--good {
+    background-color: var(--app-alert-success-bg);
+    box-shadow: 0 0 0 1px var(--app-alert-success-border);
+    color: var(--app-alert-success-text);
+}
+
+.report-table__rate--mid {
+    background-color: var(--app-alert-warning-bg);
+    box-shadow: 0 0 0 1px var(--app-alert-warning-border);
+    color: var(--app-alert-warning-text);
+}
+
+.report-table__rate--low {
+    background-color: var(--app-alert-error-bg);
+    box-shadow: 0 0 0 1px var(--app-alert-error-border);
+    color: var(--app-alert-error-text);
+}
+
+.report-table .report-table__empty {
+    color: var(--app-text-muted);
+    font-weight: var(--app-weight-semibold);
+    padding: 2rem 1rem !important;
+    text-align: center;
+}
+
+html.dark .report-table .report-table__valid {
+    color: #6ee7b7;
+}
+
+html.dark .report-table .report-table__invalid {
+    color: #fca5a5;
+}
+
+@media (max-width: 1023px) {
+    .activity-log-filter .filter-bar__actions .btn-primary,
+    .activity-log-filter .filter-bar__actions .btn-secondary,
+    .report-filter .filter-bar__actions .btn-primary,
+    .report-filter .filter-bar__actions .btn-secondary {
+        flex: 1 1 calc(50% - 0.25rem);
+        justify-content: center;
+        text-align: center;
+    }
 }
 
 .table-readable .deduction-amount {

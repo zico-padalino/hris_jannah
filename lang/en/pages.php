@@ -478,4 +478,15 @@ return [
         'desc_update' => 'Updated: :target',
         'desc_delete' => 'Deleted: :target',
     ],
+    'reports' => [
+        'title' => 'Attendance Report',
+        'subtitle' => 'Summary of valid and invalid attendance per branch.',
+        'month' => 'Month',
+        'total_attendance' => 'Total Attendance',
+        'valid' => 'Valid',
+        'invalid' => 'Invalid',
+        'valid_rate' => 'Valid Rate',
+        'empty' => 'No attendance data for this period.',
+        'branch_fallback' => 'Branch #:id',
+    ],
 ];

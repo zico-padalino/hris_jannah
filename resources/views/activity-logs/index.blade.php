@@ -5,14 +5,15 @@
 @section('back_url', route('dashboard'))
 
 @section('content')
-    <form method="GET" class="filter-bar mb-6">
-        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <label class="block min-w-0 sm:col-span-2 lg:col-span-3">
+<div class="activity-log-page space-y-4">
+    <form method="GET" class="filter-bar activity-log-filter">
+        <div class="activity-log-filter__grid">
+            <label class="activity-log-filter__field activity-log-filter__field--search">
                 <span class="form-label">{{ __('pages.activity_logs.search') }}</span>
                 <input type="search" name="search" value="{{ $search }}" placeholder="{{ __('pages.activity_logs.search_placeholder') }}" class="w-full">
             </label>
 
-            <label class="block min-w-0">
+            <label class="activity-log-filter__field">
                 <span class="form-label">{{ __('pages.activity_logs.action') }}</span>
                 <select name="action" class="w-full">
                     <option value="">{{ __('pages.activity_logs.all_actions') }}</option>
@@ -22,7 +23,7 @@
                 </select>
             </label>
 
-            <label class="block min-w-0">
+            <label class="activity-log-filter__field">
                 <span class="form-label">{{ __('pages.activity_logs.user') }}</span>
                 <select name="user_id" class="w-full">
                     <option value="">{{ __('pages.activity_logs.all_users') }}</option>
@@ -32,7 +33,7 @@
                 </select>
             </label>
 
-            <label class="block min-w-0">
+            <label class="activity-log-filter__field">
                 <span class="form-label">{{ __('app.branch') }}</span>
                 <select name="branch_id" class="w-full">
                     <option value="">{{ __('app.all_branches') }}</option>
@@ -42,12 +43,12 @@
                 </select>
             </label>
 
-            <label class="block min-w-0">
+            <label class="activity-log-filter__field">
                 <span class="form-label">{{ __('pages.activity_logs.date_from') }}</span>
                 <input type="date" name="date_from" value="{{ $dateFrom }}" class="w-full">
             </label>
 
-            <label class="block min-w-0">
+            <label class="activity-log-filter__field">
                 <span class="form-label">{{ __('pages.activity_logs.date_to') }}</span>
                 <input type="date" name="date_to" value="{{ $dateTo }}" class="w-full">
             </label>
@@ -59,7 +60,19 @@
         </div>
     </form>
 
-    <div class="panel-table activity-log-table overflow-x-auto">
+    {{-- Mobile & tablet: kartu ringkas --}}
+    <div class="activity-log-list lg:hidden">
+        @forelse($logs as $log)
+            @include('activity-logs._item', ['log' => $log])
+        @empty
+            <div class="activity-log-empty panel">
+                <p class="activity-log-empty__text">{{ __('pages.activity_logs.empty') }}</p>
+            </div>
+        @endforelse
+    </div>
+
+    {{-- Desktop: tabel padat --}}
+    <div class="panel-table activity-log-table hidden overflow-x-auto lg:block">
         <table class="table-readable min-w-full">
             <thead>
                 <tr>
@@ -78,23 +91,21 @@
             <tbody>
                 @forelse($logs as $log)
                     <tr>
-                        <td class="whitespace-nowrap font-semibold">#{{ $log->id }}</td>
+                        <td class="activity-log-table__id">#{{ $log->id }}</td>
                         <td class="whitespace-nowrap">
-                            <p class="font-semibold">{{ $log->created_at?->format('d/m/Y') }}</p>
-                            <p class="activity-log-table__meta">{{ $log->created_at?->format('H:i:s') }}</p>
+                            <span class="activity-log-table__date">{{ $log->created_at?->format('d/m/Y') }}</span>
+                            <span class="activity-log-table__meta">{{ $log->created_at?->format('H:i:s') }}</span>
                         </td>
                         <td>
-                            <p class="font-semibold">{{ $log->user_name ?? __('pages.activity_logs.unknown_user') }}</p>
+                            <span class="activity-log-table__name">{{ $log->user_name ?? __('pages.activity_logs.unknown_user') }}</span>
                             @if($log->user_email)
-                                <p class="activity-log-table__meta">{{ $log->user_email }}</p>
+                                <span class="activity-log-table__meta">{{ $log->user_email }}</span>
                             @endif
                         </td>
                         <td>{{ $log->user_role ? __('enums.user_role.'.$log->user_role) : '—' }}</td>
                         <td>{{ $log->branch?->name ?? '—' }}</td>
                         <td>
-                            <span class="{{ $log->action->badgeClass() }}">
-                                {{ $log->action->label() }}
-                            </span>
+                            <span class="{{ $log->action->badgeClass() }}">{{ $log->action->label() }}</span>
                         </td>
                         <td class="activity-log-table__module">{{ $log->module ?? '—' }}</td>
                         <td>{{ $log->subjectDisplay() }}</td>
@@ -103,9 +114,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="10" class="py-10 text-center font-semibold app-muted-text">
-                            {{ __('pages.activity_logs.empty') }}
-                        </td>
+                        <td colspan="10" class="activity-log-table__empty">{{ __('pages.activity_logs.empty') }}</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -113,8 +122,7 @@
     </div>
 
     @if($logs->hasPages())
-        <div class="mt-4">
-            {{ $logs->links() }}
-        </div>
+        <div>{{ $logs->links() }}</div>
     @endif
+</div>
 @endsection

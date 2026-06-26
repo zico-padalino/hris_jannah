@@ -478,4 +478,15 @@ return [
         'desc_update' => 'Mengubah data: :target',
         'desc_delete' => 'Menghapus data: :target',
     ],
+    'reports' => [
+        'title' => 'Laporan Absensi',
+        'subtitle' => 'Ringkasan absensi valid dan tidak valid per cabang.',
+        'month' => 'Bulan',
+        'total_attendance' => 'Total Absensi',
+        'valid' => 'Valid',
+        'invalid' => 'Tidak Valid',
+        'valid_rate' => 'Tingkat Valid',
+        'empty' => 'Tidak ada data absensi untuk periode ini.',
+        'branch_fallback' => 'Cabang #:id',
+    ],
 ];
