@@ -18,13 +18,13 @@
 @endphp
 
 <div
-    class="sidebar-group sidebar-group--pengajuan {{ $mobile ? 'sidebar-group--mobile sidebar-group--collapsed' : '' }}"
+    class="sidebar-group sidebar-group--pengajuan sidebar-group--collapsed {{ $mobile ? 'sidebar-group--mobile' : '' }}"
     data-sidebar-group="{{ $group['id'] }}"
 >
     <button
         type="button"
         class="sidebar-group__toggle"
-        aria-expanded="{{ $mobile ? 'false' : 'true' }}"
+        aria-expanded="false"
         aria-controls="sidebar-group-items-{{ $group['id'] }}"
     >
         <span class="sidebar-group__label">{{ $group['label'] }}</span>
@@ -74,7 +74,7 @@
                 $showModuleBadge = $canApprove
                     && $categoryCount > 0
                     && $sidebar->visible($user, $approvalItem);
-                $subgroupCollapsed = $mobile && ! $showModuleBadge;
+                $subgroupCollapsed = ! $showModuleBadge;
             @endphp
 
             @if($subItems !== [])

@@ -39,8 +39,8 @@ function initReadableTables() {
     });
 }
 
-function collapseMobileSidebarGroups() {
-    document.querySelectorAll('.sidebar-group--mobile').forEach((group) => {
+function collapseAllSidebarGroups() {
+    document.querySelectorAll('[data-sidebar-group]').forEach((group) => {
         const toggle = group.querySelector('.sidebar-group__toggle');
 
         group.classList.add('sidebar-group--collapsed');
@@ -48,53 +48,28 @@ function collapseMobileSidebarGroups() {
     });
 }
 
+function collapseMobileSidebarGroups() {
+    collapseAllSidebarGroups();
+}
+
 function initSidebarGroups() {
-    const storageKey = 'sidebar_collapsed_groups';
-    let collapsed = {};
-
-    try {
-        collapsed = JSON.parse(localStorage.getItem(storageKey) || '{}');
-    } catch (e) {}
-
     document.querySelectorAll('[data-sidebar-group]').forEach((group) => {
-        const groupId = group.dataset.sidebarGroup;
         const toggle = group.querySelector('.sidebar-group__toggle');
         const items = group.querySelector('.sidebar-group__items');
-        const isMobileGroup = group.classList.contains('sidebar-group--mobile');
 
-        if (!toggle || !items || !groupId) {
+        if (!toggle || !items) {
             return;
         }
 
-        const hasActive = Boolean(items.querySelector('.nav-link--active, .nav-link-mobile--active'));
-
-        function setCollapsed(isCollapsed, persist = false) {
+        function setCollapsed(isCollapsed) {
             group.classList.toggle('sidebar-group--collapsed', isCollapsed);
             toggle.setAttribute('aria-expanded', String(!isCollapsed));
-
-            if (persist && !isMobileGroup) {
-                collapsed[groupId] = isCollapsed;
-
-                try {
-                    localStorage.setItem(storageKey, JSON.stringify(collapsed));
-                } catch (e) {}
-            }
         }
 
-        if (isMobileGroup) {
-            setCollapsed(true);
-
-            toggle.addEventListener('click', () => {
-                setCollapsed(!group.classList.contains('sidebar-group--collapsed'));
-            });
-
-            return;
-        }
-
-        setCollapsed(collapsed[groupId] === true && !hasActive);
+        setCollapsed(true);
 
         toggle.addEventListener('click', () => {
-            setCollapsed(!group.classList.contains('sidebar-group--collapsed'), true);
+            setCollapsed(!group.classList.contains('sidebar-group--collapsed'));
         });
     });
 }
@@ -506,6 +481,7 @@ function initScrollToTopOnLoad() {
 
     window.addEventListener('pageshow', () => {
         resetPageScroll();
+        collapseAllSidebarGroups();
     });
 
     window.addEventListener('load', () => {
