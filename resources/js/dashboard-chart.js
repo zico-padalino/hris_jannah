@@ -109,17 +109,17 @@ function getCanvasPointerPosition(chart, nativeEvent) {
     };
 }
 
-function showWeeklyTooltipAt(chart, nativeEvent) {
+function showPressHoldTooltipAt(chart, nativeEvent, mode = 'index', intersect = false) {
     const position = getCanvasPointerPosition(chart, nativeEvent);
     const elements = chart.getElementsAtEventForMode(
         { x: position.x, y: position.y, native: nativeEvent },
-        'index',
-        { intersect: false },
+        mode,
+        { intersect },
         false
     );
 
     if (elements.length === 0) {
-        hideWeeklyTooltip(chart);
+        hidePressHoldTooltip(chart);
 
         return;
     }
@@ -129,7 +129,7 @@ function showWeeklyTooltipAt(chart, nativeEvent) {
     chart.update('none');
 }
 
-function hideWeeklyTooltip(chart) {
+function hidePressHoldTooltip(chart) {
     chart.setActiveElements([]);
     chart.tooltip.setActiveElements([]);
     chart.update('none');
@@ -140,7 +140,7 @@ function detachPressHoldTooltip(canvas) {
     canvas._pressHoldAbort = null;
 }
 
-function attachPressHoldTooltip(chart, canvas) {
+function attachPressHoldTooltip(chart, canvas, { mode = 'index', intersect = false } = {}) {
     detachPressHoldTooltip(canvas);
 
     const abort = new AbortController();
@@ -150,11 +150,11 @@ function attachPressHoldTooltip(chart, canvas) {
 
     const onPress = (event) => {
         event.preventDefault();
-        showWeeklyTooltipAt(chart, event);
+        showPressHoldTooltipAt(chart, event, mode, intersect);
     };
 
     const onRelease = () => {
-        hideWeeklyTooltip(chart);
+        hidePressHoldTooltip(chart);
     };
 
     canvas.addEventListener('mousedown', onPress, { signal });
@@ -167,6 +167,7 @@ function attachPressHoldTooltip(chart, canvas) {
 
 function destroyDashboardCharts() {
     detachPressHoldTooltip(document.getElementById('attendance-weekly-chart'));
+    detachPressHoldTooltip(document.getElementById('attendance-today-chart'));
     weeklyChart?.destroy();
     todayChart?.destroy();
     weeklyChart = null;
@@ -388,7 +389,7 @@ function initDashboardCharts() {
             ],
         });
 
-        attachPressHoldTooltip(weeklyChart, weeklyCanvas);
+        attachPressHoldTooltip(weeklyChart, weeklyCanvas, { mode: 'index', intersect: false });
     }
 
     const todayCanvas = document.getElementById('attendance-today-chart');
@@ -419,6 +420,10 @@ function initDashboardCharts() {
             options: {
                 ...baseOptions(false, chartLabels),
                 cutout: '62%',
+                events: [],
+                hover: {
+                    enabled: false,
+                },
                 plugins: {
                     ...baseOptions(false, chartLabels).plugins,
                     legend: {
@@ -435,6 +440,8 @@ function initDashboardCharts() {
                 },
             ],
         });
+
+        attachPressHoldTooltip(todayChart, todayCanvas, { mode: 'nearest', intersect: true });
     }
 }
 
