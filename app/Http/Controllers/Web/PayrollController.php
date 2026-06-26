@@ -14,6 +14,7 @@ use App\Services\PayrollSlipConfig;
 use App\Services\PayrollSlipPdfService;
 use App\Services\PayrollSlipService;
 use App\Services\PayrollSlipSignatureService;
+use App\Services\PayslipQrCodeService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -30,6 +31,7 @@ class PayrollController extends WebController
         private readonly PayrollSlipConfig $slipConfig,
         private readonly PayrollSlipSignatureService $signatureService,
         private readonly PayrollSlipPdfService $pdfService,
+        private readonly PayslipQrCodeService $qrCodeService,
     ) {}
 
     public function index(Request $request): View
@@ -202,9 +204,13 @@ class PayrollController extends WebController
             ? route('payrolls.show', $payroll)
             : route('payrolls.index');
 
+        $qrSize = PayslipQrCodeService::DISPLAY_SIZE;
+
         return view('payrolls.slip', [
             ...$slip,
             'backUrl' => $backUrl,
+            'qrSize' => $qrSize,
+            'qrLogoSize' => $this->qrCodeService->webLogoSize($qrSize),
         ]);
     }
 

@@ -59,7 +59,7 @@
         }
         .footer-label { color: #64748b; font-size: 8px; font-weight: bold; letter-spacing: 0.04em; text-transform: uppercase; }
         .signature-img { height: 42px; margin: 4px auto; }
-        .qr { height: 72px; margin: 4px auto; width: 72px; }
+        .qr { display: block; height: 100px; margin: 4px auto; width: 100px; }
         .slip-code { color: #64748b; font-family: DejaVu Sans Mono, monospace; font-size: 7px; margin-top: 3px; word-break: break-all; }
         .sign-name { font-size: 9px; font-weight: bold; margin-top: 3px; }
         .sign-title { color: #64748b; font-size: 8px; margin-top: 1px; }
@@ -181,11 +181,10 @@
         @if($signature_src)
             <img src="{{ $signature_src }}" alt="{{ $hrd_name }}" class="signature-img">
         @endif
-        <img src="{{ $qr_src }}" alt="{{ __('pages.payroll_slip.barcode_label') }}" class="qr">
+        <img src="{{ $qr_src }}" alt="{{ __('pages.payroll_slip.barcode_label') }}" class="qr" width="100" height="100">
         <div class="slip-code">{{ $verification_code }}</div>
         <div class="sign-name">{{ $hrd_name }}</div>
         <div class="sign-title">{{ $hrd_title }}</div>
-        <div class="scan-hint">{{ __('pages.payroll_slip.scan_hint') }}</div>
     </div>
 </body>
 </html>

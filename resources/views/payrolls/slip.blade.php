@@ -173,7 +173,6 @@
                     <p class="payslip-barcode__code">{{ $verification_code }}</p>
                     <p class="payslip-footer__sign-name">{{ $hrd_name }}</p>
                     <p class="payslip-footer__sign-title">{{ $hrd_title }}</p>
-                    <p class="payslip-footer__scan-hint">{{ __('pages.payroll_slip.scan_hint') }}</p>
                 @elseif($signature_pending)
                     <p class="payslip-footer__pending">{{ __('pages.payroll_slip.signature_waiting') }}</p>
                     <p class="payslip-footer__sign-name">{{ $hrd_name }}</p>
@@ -201,21 +200,22 @@
 
                 const options = {
                     text: @json($scan_text),
-                    width: 88,
-                    height: 88,
+                    width: {{ $qrSize }},
+                    height: {{ $qrSize }},
                     colorDark: '#1e293b',
                     colorLight: '#ffffff',
                     correctLevel: QRCode.CorrectLevel.H,
-                    quietZone: 6,
+                    quietZone: 8,
                     quietZoneColor: '#ffffff',
                     dotScale: 0.85,
                 };
 
                 @if($appBranding->hasLogo())
                     options.logo = @json(url($appBranding->logoUrl()));
-                    options.logoWidth = 20;
-                    options.logoHeight = 20;
-                    options.logoBackgroundTransparent = true;
+                    options.logoWidth = {{ $qrLogoSize }};
+                    options.logoHeight = {{ $qrLogoSize }};
+                    options.logoBackgroundTransparent = false;
+                    options.logoBackgroundColor = '#ffffff';
                     options.crossOrigin = 'anonymous';
                 @endif
 

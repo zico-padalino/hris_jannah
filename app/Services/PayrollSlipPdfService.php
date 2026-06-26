@@ -8,7 +8,6 @@ use App\Models\PayrollSlipSignature;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PayrollSlipPdfService
 {
@@ -16,6 +15,7 @@ class PayrollSlipPdfService
         private readonly PayrollSlipService $slipService,
         private readonly PayrollSlipConfig $slipConfig,
         private readonly AppBrandingService $branding,
+        private readonly PayslipQrCodeService $qrCodeService,
     ) {}
 
     public function generateAndStore(PayrollItem $item, PayrollPeriod $period): string
@@ -38,19 +38,11 @@ class PayrollSlipPdfService
 
     public function ensureStored(PayrollItem $item, PayrollPeriod $period): string
     {
-        $signature = PayrollSlipSignature::query()
-            ->where('payroll_item_id', $item->id)
-            ->first();
-
-        if ($signature?->pdf_path && Storage::disk('local')->exists($signature->pdf_path)) {
-            return $signature->pdf_path;
-        }
-
         $path = $this->generateAndStore($item, $period);
 
-        if ($signature !== null) {
-            $signature->update(['pdf_path' => $path]);
-        }
+        PayrollSlipSignature::query()
+            ->where('payroll_item_id', $item->id)
+            ->update(['pdf_path' => $path]);
 
         return $path;
     }
@@ -67,19 +59,13 @@ class PayrollSlipPdfService
     /** @param array<string, mixed> $slip */
     private function render(array $slip): string
     {
-        $qrSvg = QrCode::format('svg')
-            ->size(120)
-            ->margin(1)
-            ->errorCorrection('H')
-            ->generate($slip['scan_text']);
-
         $logoSrc = $this->imageDataUri($this->branding->all()['logo_path'] ?? '');
         $signatureSrc = $this->imageDataUri($this->slipConfig->all()['signature_path'] ?? '');
 
         $html = view('payrolls.slip-pdf', [
             ...$slip,
             'app_name' => $this->branding->name(),
-            'qr_src' => 'data:image/svg+xml;base64,'.base64_encode($qrSvg),
+            'qr_src' => $this->qrCodeService->dataUri($slip['scan_text']),
             'logo_src' => $logoSrc,
             'signature_src' => $signatureSrc,
         ])->render();
