@@ -6,17 +6,17 @@
             class="app-mobile-menu"
             aria-label="{{ __('app.menu') }}"
         >
-            <div class="app-mobile-menu__head sidebar-brand flex items-center justify-between border-b-2 px-3 py-3">
-                <div class="flex min-w-0 items-center gap-2">
+            <div class="app-mobile-menu__head sidebar-brand flex items-start justify-between gap-2 border-b-2">
+                <div class="app-mobile-menu__brand flex min-w-0 flex-1 items-center gap-2.5">
                     @if($appBranding->hasLogo())
-                        <img src="{{ $appBranding->logoUrl() }}" alt="" class="sidebar-brand__logo h-8 w-auto max-w-[4rem] shrink-0 object-contain">
+                        <img src="{{ $appBranding->logoUrl() }}" alt="" class="app-mobile-menu__logo sidebar-brand__logo shrink-0 object-contain">
                     @endif
-                    <div class="min-w-0">
-                        <p class="sidebar-brand__name truncate text-sm font-bold">{{ $appBranding->name() }}</p>
-                        <p class="text-xs font-semibold" style="color: var(--app-text-muted)">{{ auth()->user()->role->label() }}</p>
+                    <div class="app-mobile-menu__brand-text min-w-0 flex-1">
+                        @include('partials.brand-name-stacked', ['class' => 'font-bold'])
+                        <p class="app-mobile-menu__role text-xs font-semibold" style="color: var(--app-text-muted)">{{ auth()->user()->role->label() }}</p>
                     </div>
                 </div>
-                <button type="button" id="mobile-nav-close" class="app-mobile-menu__close inline-flex min-h-9 min-w-9 items-center justify-center rounded-md" aria-label="{{ __('app.close_menu') }}">
+                <button type="button" id="mobile-nav-close" class="app-mobile-menu__close shrink-0" aria-label="{{ __('app.close_menu') }}">
                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>

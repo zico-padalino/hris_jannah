@@ -31,6 +31,19 @@ class AppBrandingService
         return $name !== '' ? $name : (string) __('app.name');
     }
 
+    /**
+     * @return array{first: string, second: string|null}
+     */
+    public function nameLines(): array
+    {
+        $parts = preg_split('/\s+/', $this->name(), 2, PREG_SPLIT_NO_EMPTY);
+
+        return [
+            'first' => $parts[0] ?? $this->name(),
+            'second' => isset($parts[1]) && $parts[1] !== '' ? $parts[1] : null,
+        ];
+    }
+
     public function hasLogo(): bool
     {
         $path = $this->all()['logo_path'];

@@ -28,7 +28,11 @@
         'w-full' => $align !== 'center' && $layout === 'col',
         'min-w-0 flex-1' => $layout === 'row',
     ])>
-        <p @class([$nameClass ?? 'text-xl font-bold'])>{{ $branding->name() }}</p>
+        @if($stackedName ?? false)
+            @include('partials.brand-name-stacked', ['class' => $nameClass ?? 'text-xl font-bold'])
+        @else
+            <p @class([$nameClass ?? 'text-xl font-bold'])>{{ $branding->name() }}</p>
+        @endif
         @if($showTagline)
             <p @class([$taglineClass ?? 'mt-1 text-base font-medium']) style="{{ $taglineStyle ?? '' }}">{{ __('app.tagline') }}</p>
         @endif

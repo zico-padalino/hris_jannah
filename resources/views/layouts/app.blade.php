@@ -35,6 +35,7 @@
                 <div class="sidebar-brand app-topbar shrink-0 border-b-2">
                     @include('partials.app-branding', [
                         'layout' => 'row',
+                        'stackedName' => true,
                         'nameClass' => 'sidebar-brand__name font-bold',
                         'logoClass' => 'sidebar-brand__logo shrink-0',
                     ])
