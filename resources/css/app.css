@@ -490,15 +490,16 @@ html.dark .app-header {
     align-items: center;
     background-color: var(--app-surface);
     border: 1px solid var(--app-border-strong);
-    border-radius: var(--app-density-radius-lg);
+    border-radius: 9999px;
     color: var(--app-text);
     cursor: pointer;
     display: inline-flex;
+    flex-shrink: 0;
     font-family: inherit;
-    height: var(--app-density-icon-btn);
+    height: 2.5rem;
     justify-content: center;
-    min-width: var(--app-density-icon-btn);
-    padding: 0.25rem;
+    min-width: 2.5rem;
+    padding: 0.3125rem;
     transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -625,6 +626,16 @@ html.dark .app-header {
     padding: 0.625rem;
 }
 
+.header-notifications__empty {
+    color: var(--app-text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.45;
+    margin: 0;
+    padding: 0.375rem 0.25rem 0.5rem;
+    text-align: center;
+}
+
 .header-notifications__item {
     align-items: center;
     background-color: var(--app-surface);
@@ -667,6 +678,40 @@ html.dark .app-header {
 .header-notifications__item-icon--face {
     background-color: var(--app-primary-soft);
     color: var(--app-primary-soft-text);
+}
+
+.header-notifications__item-icon--approved {
+    background-color: #d1fae5;
+    color: #047857;
+}
+
+.header-notifications__item-icon--rejected {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.header-notifications__item-status {
+    border-radius: 9999px;
+    font-size: 0.625rem;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0.3125rem 0.4375rem;
+    white-space: nowrap;
+}
+
+.header-notifications__item-status--approved {
+    background-color: #d1fae5;
+    color: #047857;
+}
+
+.header-notifications__item-status--rejected {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.header-notifications__item--more {
+    background-color: var(--app-surface-muted);
+    border-style: dashed;
 }
 
 .header-notifications__item-icon svg {
@@ -1837,13 +1882,6 @@ html.dark .app-mobile-menu__head .sidebar-brand {
         min-height: 2.5rem;
         min-width: 2.5rem;
         padding: 0.125rem;
-    }
-
-    .header-notifications__trigger {
-        border-radius: 9999px;
-        min-height: 2.5rem;
-        min-width: 2.5rem;
-        padding: 0.3125rem;
     }
 
     .header-notifications__panel {
@@ -5455,6 +5493,16 @@ html.dark .mobile-nav-overlay__backdrop {
 .dashboard-notif-chip--overtime {
     background-color: #f5f3ff;
     color: #5b21b6;
+}
+
+.dashboard-notif-chip--approved {
+    background-color: #d1fae5;
+    color: #047857;
+}
+
+.dashboard-notif-chip--rejected {
+    background-color: #fee2e2;
+    color: #b91c1c;
 }
 
 html.dark .dashboard-notif-chip--permission {

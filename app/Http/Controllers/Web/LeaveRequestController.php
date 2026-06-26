@@ -6,6 +6,7 @@ use App\Enums\LeaveStatus;
 use App\Enums\LeaveType;
 use App\Enums\Permission;
 use App\Models\LeaveRequest;
+use App\Services\LeaveBadgeService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -32,6 +33,19 @@ class LeaveRequestController extends WebController
         }
 
         $category = $this->resolveCategory($request);
+
+        if ($request->filled('ack')) {
+            $badgeService = app(LeaveBadgeService::class);
+
+            if ($request->string('ack')->toString() === 'all') {
+                $badgeService->markAllOwnStatusesRead($user);
+            } else {
+                $badgeService->markOwnStatusRead($user, $request->integer('ack'));
+            }
+
+            return redirect()->route('leaves.index', ['category' => $category]);
+        }
+
         $categoryTypes = LeaveType::forApprovalCategory($category);
 
         $leaves = LeaveRequest::query()

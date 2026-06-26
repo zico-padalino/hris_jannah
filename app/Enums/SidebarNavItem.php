@@ -231,6 +231,16 @@ enum SidebarNavItem: string
         ];
     }
 
+    /** @return list<self> */
+    public static function leaveHistoryItems(): array
+    {
+        return [
+            self::LeaveCutiHistory,
+            self::LeaveIzinHistory,
+            self::LeaveLemburHistory,
+        ];
+    }
+
     public function parentSection(): ?self
     {
         return match ($this) {

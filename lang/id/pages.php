@@ -40,6 +40,7 @@ return [
         'signature_approval_recent' => 'Menunggu acc TTD',
         'own_request_title' => 'Pengajuan cuti, izin, atau lembur Anda sedang diproses',
         'own_request_message' => 'Anda memiliki :count pengajuan yang masih menunggu persetujuan admin.',
+        'own_status_title' => 'Status Pengajuan Anda',
         'view_status' => 'Lihat Status',
         'open_approval' => 'Buka Halaman Approval',
         'leave_alert_title' => 'Ada pengajuan cuti/izin yang perlu diproses!',

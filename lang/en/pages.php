@@ -40,6 +40,7 @@ return [
         'signature_approval_recent' => 'Awaiting signature approval',
         'own_request_title' => 'Your leave, permission, or overtime request is being processed',
         'own_request_message' => 'You have :count request(s) awaiting admin approval.',
+        'own_status_title' => 'Your Request Status',
         'view_status' => 'View Status',
         'open_approval' => 'Open Approval Page',
         'leave_alert_title' => 'Leave requests need your attention!',

@@ -23,6 +23,7 @@ class LeaveRequest extends Model
         'status',
         'approved_by',
         'approved_at',
+        'employee_status_read_at',
         'admin_notes',
     ];
 
@@ -34,6 +35,7 @@ class LeaveRequest extends Model
             'end_date' => 'date',
             'status' => LeaveStatus::class,
             'approved_at' => 'datetime',
+            'employee_status_read_at' => 'datetime',
         ];
     }
 

@@ -71,6 +71,105 @@ class LeaveBadgeService
             ->count();
     }
 
+    public function unreadOwnStatusCount(User $user): int
+    {
+        return $this->unreadOwnStatusBreakdown($user)['total'];
+    }
+
+    /**
+     * @return array{approved: int, rejected: int, total: int}
+     */
+    public function unreadOwnStatusBreakdown(User $user): array
+    {
+        $empty = ['approved' => 0, 'rejected' => 0, 'total' => 0];
+
+        $employee = $user->employee;
+
+        if ($employee === null) {
+            return $empty;
+        }
+
+        if (! $user->hasPermission(Permission::LeaveRequest)
+            && ! $user->hasPermission(Permission::LeaveViewOwn)) {
+            return $empty;
+        }
+
+        $query = $this->unreadOwnStatusQuery($employee->id);
+
+        return [
+            'approved' => (clone $query)->where('status', LeaveStatus::Approved)->count(),
+            'rejected' => (clone $query)->where('status', LeaveStatus::Rejected)->count(),
+            'total' => (clone $query)->count(),
+        ];
+    }
+
+    /** @return Collection<int, LeaveRequest> */
+    public function recentUnreadOwnStatuses(User $user, int $limit = 5): Collection
+    {
+        $employee = $user->employee;
+
+        if ($employee === null) {
+            return collect();
+        }
+
+        if (! $user->hasPermission(Permission::LeaveRequest)
+            && ! $user->hasPermission(Permission::LeaveViewOwn)) {
+            return collect();
+        }
+
+        return $this->unreadOwnStatusQuery($employee->id)
+            ->with(['branch', 'approver'])
+            ->latest('approved_at')
+            ->limit($limit)
+            ->get();
+    }
+
+    public function markOwnStatusRead(User $user, int $leaveId): void
+    {
+        $employee = $user->employee;
+
+        if ($employee === null) {
+            return;
+        }
+
+        if (! $user->hasPermission(Permission::LeaveRequest)
+            && ! $user->hasPermission(Permission::LeaveViewOwn)) {
+            return;
+        }
+
+        LeaveRequest::query()
+            ->whereKey($leaveId)
+            ->where('employee_id', $employee->id)
+            ->whereIn('status', [LeaveStatus::Approved, LeaveStatus::Rejected])
+            ->whereNull('employee_status_read_at')
+            ->update(['employee_status_read_at' => now()]);
+    }
+
+    public function markAllOwnStatusesRead(User $user): void
+    {
+        $employee = $user->employee;
+
+        if ($employee === null) {
+            return;
+        }
+
+        if (! $user->hasPermission(Permission::LeaveRequest)
+            && ! $user->hasPermission(Permission::LeaveViewOwn)) {
+            return;
+        }
+
+        $this->unreadOwnStatusQuery($employee->id)
+            ->update(['employee_status_read_at' => now()]);
+    }
+
+    private function unreadOwnStatusQuery(int $employeeId): Builder
+    {
+        return LeaveRequest::query()
+            ->where('employee_id', $employeeId)
+            ->whereIn('status', [LeaveStatus::Approved, LeaveStatus::Rejected])
+            ->whereNull('employee_status_read_at');
+    }
+
     private function pendingApprovalQuery(User $user): Builder
     {
         return LeaveRequest::query()

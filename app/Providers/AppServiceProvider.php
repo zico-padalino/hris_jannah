@@ -81,6 +81,9 @@ class AppServiceProvider extends ServiceProvider
                 'pendingLeaveApprovalCount' => $badgeService->pendingApprovalCount($user),
                 'pendingLeaveApprovalBreakdown' => $badgeService->pendingApprovalBreakdown($user),
                 'pendingOwnLeaveCount' => $badgeService->pendingOwnCount($user),
+                'unreadOwnLeaveStatusCount' => $badgeService->unreadOwnStatusCount($user),
+                'unreadOwnLeaveStatusBreakdown' => $badgeService->unreadOwnStatusBreakdown($user),
+                'recentUnreadOwnLeaveStatuses' => $badgeService->recentUnreadOwnStatuses($user),
                 'pendingPayrollSignatureCount' => $payrollBadgeService->pendingApprovalCount($user),
                 'needsFaceEnrollment' => $profileFaceService->needsEnrollment($user),
             ]);
