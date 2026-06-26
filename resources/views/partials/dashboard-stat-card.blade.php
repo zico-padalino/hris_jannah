@@ -9,14 +9,14 @@
 
 @php
     $tones = [
-        'teal' => ['bg' => 'bg-teal-50 dark:bg-teal-950/40', 'icon' => 'bg-teal-100 text-teal-800 dark:bg-teal-900/60 dark:text-teal-200'],
-        'sky' => ['bg' => 'bg-sky-50 dark:bg-sky-950/40', 'icon' => 'bg-sky-100 text-sky-800 dark:bg-sky-900/60 dark:text-sky-200'],
-        'emerald' => ['bg' => 'bg-emerald-50 dark:bg-emerald-950/40', 'icon' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200'],
+        'teal' => ['bg' => 'dashboard-stat-card--teal', 'icon' => 'dashboard-stat-card__icon--teal'],
+        'sky' => ['bg' => 'dashboard-stat-card--sky', 'icon' => 'dashboard-stat-card__icon--sky'],
+        'emerald' => ['bg' => 'dashboard-stat-card--emerald', 'icon' => 'dashboard-stat-card__icon--emerald'],
         'campfire' => ['bg' => 'dashboard-stat-card--campfire', 'icon' => 'dashboard-stat-card__icon--campfire'],
-        'orange' => ['bg' => 'bg-orange-50 dark:bg-orange-950/40', 'icon' => 'bg-orange-100 text-orange-800 dark:bg-orange-900/60 dark:text-orange-200'],
-        'red' => ['bg' => 'bg-red-50 dark:bg-red-950/40', 'icon' => 'bg-red-100 text-red-800 dark:bg-red-900/60 dark:text-red-200'],
+        'orange' => ['bg' => 'dashboard-stat-card--orange', 'icon' => 'dashboard-stat-card__icon--orange'],
+        'red' => ['bg' => 'dashboard-stat-card--red', 'icon' => 'dashboard-stat-card__icon--red'],
         'amber' => ['bg' => 'dashboard-stat-card--campfire', 'icon' => 'dashboard-stat-card__icon--campfire'],
-        'violet' => ['bg' => 'bg-violet-50 dark:bg-violet-950/40', 'icon' => 'bg-violet-100 text-violet-800 dark:bg-violet-900/60 dark:text-violet-200'],
+        'violet' => ['bg' => 'dashboard-stat-card--violet', 'icon' => 'dashboard-stat-card__icon--violet'],
     ];
     $palette = $tones[$tone] ?? $tones['teal'];
 @endphp
@@ -26,7 +26,7 @@
 <{{ $tag }}
     @if($href) href="{{ $href }}" @endif
     @class([
-        'panel group relative block overflow-hidden p-5 transition',
+        'dashboard-stat-card panel group relative block overflow-hidden p-5 transition',
         'hover:border-teal-600 hover:shadow-md dark:hover:border-teal-400' => $href,
         $palette['bg'] => true,
     ])
@@ -39,7 +39,7 @@
                 <p class="dashboard-stat-card__hint mt-1.5 text-sm font-semibold">{{ $hint }}</p>
             @endif
         </div>
-        <div @class(['flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 border-current/20', $palette['icon']])>
+        <div @class(['dashboard-stat-card__icon flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 border-current/20', $palette['icon']])>
             {!! $icon !!}
         </div>
     </div>
