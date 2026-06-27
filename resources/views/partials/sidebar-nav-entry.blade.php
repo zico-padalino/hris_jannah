@@ -55,9 +55,9 @@
 
         @case(SidebarNavItem::LeaveCutiApproval)
             @include('partials.leave-nav-link', [
-                'href' => route('leave-approvals.index', ['status' => 'pending', 'category' => 'cuti']),
+                'href' => route('leave-approvals.cuti', ['status' => 'pending']),
                 'count' => ($pendingLeaveApprovalBreakdown['cuti'] ?? 0),
-                'active' => request()->routeIs('leave-approvals.*') && request('category') === 'cuti',
+                'active' => request()->routeIs('leave-approvals.cuti'),
                 'label' => __($item->navLabelKey()),
                 'pendingLabel' => __('app.new'),
                 'mobile' => $mobile,
@@ -75,9 +75,9 @@
 
         @case(SidebarNavItem::LeaveIzinApproval)
             @include('partials.leave-nav-link', [
-                'href' => route('leave-approvals.index', ['status' => 'pending', 'category' => 'izin']),
+                'href' => route('leave-approvals.izin', ['status' => 'pending']),
                 'count' => ($pendingLeaveApprovalBreakdown['izin'] ?? 0),
-                'active' => request()->routeIs('leave-approvals.*') && request('category') === 'izin',
+                'active' => request()->routeIs('leave-approvals.izin'),
                 'label' => __($item->navLabelKey()),
                 'pendingLabel' => __('app.new'),
                 'mobile' => $mobile,
@@ -95,9 +95,9 @@
 
         @case(SidebarNavItem::LeaveLemburApproval)
             @include('partials.leave-nav-link', [
-                'href' => route('leave-approvals.index', ['status' => 'pending', 'category' => 'lembur']),
+                'href' => route('leave-approvals.lembur', ['status' => 'pending']),
                 'count' => ($pendingLeaveApprovalBreakdown['lembur'] ?? 0),
-                'active' => request()->routeIs('leave-approvals.*') && request('category') === 'lembur',
+                'active' => request()->routeIs('leave-approvals.lembur'),
                 'label' => __($item->navLabelKey()),
                 'pendingLabel' => __('app.new'),
                 'mobile' => $mobile,

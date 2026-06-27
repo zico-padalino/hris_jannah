@@ -14,34 +14,32 @@ use Illuminate\View\View;
 
 class LeaveApprovalController extends WebController
 {
-    public function index(Request $request): View
+    public function index(Request $request): RedirectResponse
     {
-        $this->authorizePermission($request, Permission::LeaveApprove);
-        $branchIds = $this->manageableBranchIds($request);
-        $status = $request->string('status', 'pending')->toString();
-        $category = $request->string('category')->toString();
+        $category = $request->string('category', 'cuti')->toString();
 
-        $baseQuery = LeaveRequest::query()
-            ->with(['employee', 'branch', 'approver'])
-            ->when($branchIds !== null, fn ($q) => $q->whereIn('branch_id', $branchIds));
+        $route = match ($category) {
+            'izin' => 'leave-approvals.izin',
+            'lembur' => 'leave-approvals.lembur',
+            default => 'leave-approvals.cuti',
+        };
 
-        $pendingCount = (clone $baseQuery)->where('status', LeaveStatus::Pending)->count();
-        $pendingBreakdown = [
-            'cuti' => (clone $baseQuery)->where('status', LeaveStatus::Pending)->whereIn('type', [LeaveType::Annual, LeaveType::Sick])->count(),
-            'izin' => (clone $baseQuery)->where('status', LeaveStatus::Pending)->where('type', LeaveType::Permission)->count(),
-            'lembur' => (clone $baseQuery)->where('status', LeaveStatus::Pending)->where('type', LeaveType::Overtime)->count(),
-        ];
+        return redirect()->route($route, $request->only('status'));
+    }
 
-        $categoryTypes = $category !== '' ? LeaveType::forApprovalCategory($category) : [];
+    public function cuti(Request $request): View
+    {
+        return $this->categoryIndex($request, 'cuti');
+    }
 
-        $leaves = (clone $baseQuery)
-            ->when($status !== 'all', fn ($q) => $q->where('status', $status))
-            ->when($categoryTypes !== [], fn ($q) => $q->whereIn('type', $categoryTypes))
-            ->latest()
-            ->paginate(15)
-            ->withQueryString();
+    public function izin(Request $request): View
+    {
+        return $this->categoryIndex($request, 'izin');
+    }
 
-        return view('leave-approvals.index', compact('leaves', 'status', 'pendingCount', 'pendingBreakdown', 'category'));
+    public function lembur(Request $request): View
+    {
+        return $this->categoryIndex($request, 'lembur');
     }
 
     public function approve(Request $request, LeaveRequest $leave, LeaveAttendanceService $leaveAttendanceService): RedirectResponse
@@ -90,6 +88,49 @@ class LeaveApprovalController extends WebController
         ]);
 
         return back()->with('success', __('messages.leave_rejected'));
+    }
+
+    private function categoryIndex(Request $request, string $category): View
+    {
+        $this->authorizePermission($request, Permission::LeaveApprove);
+        $branchIds = $this->manageableBranchIds($request);
+        $status = $request->string('status', 'pending')->toString();
+        $categoryTypes = LeaveType::forApprovalCategory($category);
+
+        $baseQuery = LeaveRequest::query()
+            ->with(['employee', 'branch', 'approver'])
+            ->when($branchIds !== null, fn ($q) => $q->whereIn('branch_id', $branchIds));
+
+        $pendingBreakdown = [
+            'cuti' => (clone $baseQuery)->where('status', LeaveStatus::Pending)->whereIn('type', LeaveType::forApprovalCategory('cuti'))->count(),
+            'izin' => (clone $baseQuery)->where('status', LeaveStatus::Pending)->whereIn('type', LeaveType::forApprovalCategory('izin'))->count(),
+            'lembur' => (clone $baseQuery)->where('status', LeaveStatus::Pending)->whereIn('type', LeaveType::forApprovalCategory('lembur'))->count(),
+        ];
+
+        $categoryQuery = (clone $baseQuery)->whereIn('type', $categoryTypes);
+
+        $pendingCount = (clone $categoryQuery)->where('status', LeaveStatus::Pending)->count();
+
+        $stats = [
+            'pending' => $pendingCount,
+            'approved' => (clone $categoryQuery)->where('status', LeaveStatus::Approved)->count(),
+            'rejected' => (clone $categoryQuery)->where('status', LeaveStatus::Rejected)->count(),
+        ];
+
+        $leaves = (clone $categoryQuery)
+            ->when($status !== 'all', fn ($q) => $q->where('status', $status))
+            ->latest()
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('leave-approvals.show', compact(
+            'leaves',
+            'status',
+            'pendingCount',
+            'pendingBreakdown',
+            'category',
+            'stats',
+        ));
     }
 
     private function ensurePending(LeaveRequest $leave): void

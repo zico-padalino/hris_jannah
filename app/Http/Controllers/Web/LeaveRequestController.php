@@ -26,9 +26,8 @@ class LeaveRequestController extends WebController
 
         if ($employee === null) {
             if ($user->hasPermission(Permission::LeaveApprove)) {
-                return redirect()->route('leave-approvals.index', [
+                return redirect()->route('leave-approvals.'.$this->resolveCategory($request), [
                     'status' => 'all',
-                    'category' => $this->resolveCategory($request),
                 ]);
             }
 
@@ -70,7 +69,7 @@ class LeaveRequestController extends WebController
 
         if ($request->user()->employee === null) {
             if ($request->user()->hasPermission(Permission::LeaveApprove)) {
-                return redirect()->route('leave-approvals.index');
+                return redirect()->route('leave-approvals.cuti');
             }
 
             return redirect()->route('leaves.index')
@@ -90,7 +89,7 @@ class LeaveRequestController extends WebController
 
         if ($employee === null) {
             if ($request->user()->hasPermission(Permission::LeaveApprove)) {
-                return redirect()->route('leave-approvals.index');
+                return redirect()->route('leave-approvals.cuti');
             }
 
             return back()->with('error', 'Akun Anda belum terhubung dengan data pegawai. Hubungi admin.');

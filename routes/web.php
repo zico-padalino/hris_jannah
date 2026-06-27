@@ -158,6 +158,9 @@ Route::middleware('guest')->group(function () {
 
     Route::middleware('permission:leave.approve')->group(function () {
         Route::get('/leave-approvals', [LeaveApprovalController::class, 'index'])->name('leave-approvals.index');
+        Route::get('/leave-approvals/cuti', [LeaveApprovalController::class, 'cuti'])->name('leave-approvals.cuti');
+        Route::get('/leave-approvals/izin', [LeaveApprovalController::class, 'izin'])->name('leave-approvals.izin');
+        Route::get('/leave-approvals/lembur', [LeaveApprovalController::class, 'lembur'])->name('leave-approvals.lembur');
         Route::post('/leave-approvals/{leave}/approve', [LeaveApprovalController::class, 'approve'])->name('leave-approvals.approve');
         Route::post('/leave-approvals/{leave}/reject', [LeaveApprovalController::class, 'reject'])->name('leave-approvals.reject');
     });

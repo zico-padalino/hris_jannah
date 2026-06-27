@@ -135,7 +135,7 @@
 
                     @if($canSeeLeave && $approvalCount > 0)
                         <a
-                            href="{{ route('leave-approvals.index', ['status' => 'pending', 'category' => $category]) }}"
+                            href="{{ route('leave-approvals.'.$category, ['status' => 'pending']) }}"
                             class="header-notifications__item"
                             role="menuitem"
                         >

@@ -46,7 +46,7 @@
                     @endif
                 </div>
             </div>
-            <a href="{{ route('leave-approvals.index', ['status' => 'pending']) }}" class="btn-primary dashboard-notif-card__btn shrink-0">
+            <a href="{{ route('leave-approvals.cuti', ['status' => 'pending']) }}" class="btn-primary dashboard-notif-card__btn shrink-0">
                 {{ __('pages.dashboard.approval_process') }}
             </a>
         </div>
@@ -57,7 +57,7 @@
                 <ul class="dashboard-notif-card__recent-list">
                     @foreach($recent as $leave)
                         <li>
-                            <a href="{{ route('leave-approvals.index', ['status' => 'pending']) }}" class="dashboard-notif-recent-item">
+                            <a href="{{ route('leave-approvals.cuti', ['status' => 'pending']) }}" class="dashboard-notif-recent-item">
                                 <div class="min-w-0">
                                     <p class="dashboard-notif-recent-item__name">{{ $leave->employee->name }}</p>
                                     <p class="dashboard-notif-recent-item__meta">

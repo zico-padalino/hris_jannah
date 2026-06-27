@@ -95,7 +95,7 @@
 
         @perm('leave.approve')
             <a
-                href="{{ route('leave-approvals.index', ['status' => 'pending']) }}"
+                href="{{ route('leave-approvals.cuti', ['status' => 'pending']) }}"
                 @class([
                     'group relative overflow-hidden rounded-2xl border p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dashboard-pending-card',
                     'dashboard-pending-card--active leave-badge-pulse' => $pendingLeaveApprovalCount > 0,
