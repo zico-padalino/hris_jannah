@@ -50,22 +50,20 @@
                     $group['items'],
                     fn (array $entry) => ($entry['item'] ?? null) instanceof SidebarNavItem
                         && $entry['item']->leaveApprovalCategory() === $category
-                        && ($entry['item']->isLeaveHistory() || $entry['item']->isLeaveCreate())
+                        && ($entry['item']->isLeaveHistory()
+                            || $entry['item']->isLeaveCreate()
+                            || $entry['item']->isLeaveApproval())
                 ));
 
                 usort($subItems, function (array $a, array $b) {
-                    $itemA = $a['item'];
-                    $itemB = $b['item'];
+                    $priority = fn (SidebarNavItem $item) => match (true) {
+                        $item->isLeaveCreate() => 0,
+                        $item->isLeaveHistory() => 1,
+                        $item->isLeaveApproval() => 2,
+                        default => 3,
+                    };
 
-                    if ($itemA->isLeaveCreate() && $itemB->isLeaveHistory()) {
-                        return -1;
-                    }
-
-                    if ($itemA->isLeaveHistory() && $itemB->isLeaveCreate()) {
-                        return 1;
-                    }
-
-                    return 0;
+                    return $priority($a['item']) <=> $priority($b['item']);
                 });
 
                 $subId = $group['id'].'-'.$category;

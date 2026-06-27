@@ -26,7 +26,10 @@ class LeaveRequestController extends WebController
 
         if ($employee === null) {
             if ($user->hasPermission(Permission::LeaveApprove)) {
-                return redirect()->route('leave-approvals.index');
+                return redirect()->route('leave-approvals.index', [
+                    'status' => 'all',
+                    'category' => $this->resolveCategory($request),
+                ]);
             }
 
             abort(403, 'Akun Anda belum terhubung dengan data pegawai. Hubungi admin.');

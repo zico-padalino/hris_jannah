@@ -706,6 +706,10 @@ class SidebarService
                 : null;
         }
 
+        if ($builtin === 'section_leave') {
+            return __('enums.permission_group.leave');
+        }
+
         $section = SidebarNavItem::tryFrom($builtin);
 
         if ($section === null) {
@@ -716,7 +720,10 @@ class SidebarService
 
         return match ($section) {
             SidebarNavItem::SectionAttendance => __('enums.permission_group.attendance'),
-            SidebarNavItem::SectionLeave => __('enums.permission_group.leave'),
+            SidebarNavItem::SectionPengajuan,
+            SidebarNavItem::SectionLeaveCuti,
+            SidebarNavItem::SectionLeaveIzin,
+            SidebarNavItem::SectionLeaveLembur => __('enums.permission_group.leave'),
             SidebarNavItem::SectionPayroll => __('enums.permission_group.payroll'),
             SidebarNavItem::SectionMaster => __('enums.permission_group.master_data'),
             SidebarNavItem::SectionSystem => __('enums.permission_group.system'),
@@ -810,6 +817,10 @@ class SidebarService
     private function userMeetsPermission(User $user, SidebarNavItem $item): bool
     {
         if ($item->isLeaveHistory()) {
+            if ($user->hasPermission(Permission::LeaveApprove)) {
+                return true;
+            }
+
             return $user->employee !== null
                 && ($user->hasPermission(Permission::LeaveRequest)
                     || $user->hasPermission(Permission::LeaveViewOwn));

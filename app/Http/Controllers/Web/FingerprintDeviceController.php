@@ -66,13 +66,6 @@ class FingerprintDeviceController extends WebController
             ->orderBy('name')
             ->get();
 
-        $recentLogs = FingerprintLog::query()
-            ->with(['employee', 'attendance'])
-            ->where('fingerprint_device_id', $fingerprintDevice->id)
-            ->latest('punched_at')
-            ->limit(20)
-            ->get();
-
         $logSyncSnapshot = $this->deviceLogSyncSnapshot($fingerprintDevice);
 
         $branchShifts = $fingerprintDevice->branch_id
@@ -86,9 +79,34 @@ class FingerprintDeviceController extends WebController
                 ->get()
             : collect();
 
+        $fingerprintDevice->loadCount('logs');
+
         $fingerprintLogMode = config('attendance.fingerprint_log_mode', 'tcp');
 
-        return view('fingerprint-devices.edit', compact('fingerprintDevice', 'branches', 'recentLogs', 'logSyncSnapshot', 'branchShifts', 'fingerprintLogMode'));
+        return view('fingerprint-devices.edit', compact('fingerprintDevice', 'branches', 'logSyncSnapshot', 'branchShifts', 'fingerprintLogMode'));
+    }
+
+    public function logs(Request $request, FingerprintDevice $fingerprintDevice): View
+    {
+        $this->authorizePermission($request, Permission::FingerprintManage);
+
+        if ($fingerprintDevice->branch_id) {
+            $this->authorizeBranchAccess($request, $fingerprintDevice->branch_id);
+        }
+
+        $fingerprintDevice->load('branch');
+        $fingerprintDevice->loadCount('logs');
+
+        $logs = FingerprintLog::query()
+            ->with(['employee'])
+            ->where('fingerprint_device_id', $fingerprintDevice->id)
+            ->latest('punched_at')
+            ->paginate(15)
+            ->withQueryString();
+
+        $logSyncSnapshot = $this->deviceLogSyncSnapshot($fingerprintDevice);
+
+        return view('fingerprint-devices.logs', compact('fingerprintDevice', 'logs', 'logSyncSnapshot'));
     }
 
     public function update(Request $request, FingerprintDevice $fingerprintDevice): RedirectResponse

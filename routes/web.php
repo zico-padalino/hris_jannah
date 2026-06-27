@@ -74,6 +74,7 @@ Route::middleware('guest')->group(function () {
 
     Route::middleware('permission:fingerprint.manage')->group(function () {
         Route::get('/fingerprint-devices', [FingerprintDeviceController::class, 'index'])->name('fingerprint-devices.index');
+        Route::get('/fingerprint-devices/{fingerprintDevice}/logs', [FingerprintDeviceController::class, 'logs'])->name('fingerprint-devices.logs');
         Route::get('/fingerprint-devices/{fingerprintDevice}/edit', [FingerprintDeviceController::class, 'edit'])->name('fingerprint-devices.edit');
         Route::put('/fingerprint-devices/{fingerprintDevice}', [FingerprintDeviceController::class, 'update'])->name('fingerprint-devices.update');
         Route::post('/fingerprint-devices/{fingerprintDevice}/sync-employees', [FingerprintDeviceController::class, 'syncEmployees'])->name('fingerprint-devices.sync-employees');
