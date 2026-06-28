@@ -257,6 +257,16 @@ return [
     ],
 
     'users' => [
+        'title' => 'Pengguna',
+        'add' => 'Tambah Pengguna',
+        'col_name' => 'Nama',
+        'col_email' => 'Email',
+        'col_role' => 'Role',
+        'col_branch' => 'Cabang',
+        'col_status' => 'Status',
+        'col_actions' => 'Aksi',
+        'branch_hq' => 'Pusat',
+        'empty' => 'Belum ada pengguna.',
         'password_create_placeholder' => 'Kosongkan untuk password default (role Pegawai)',
         'password_edit_placeholder' => 'Password baru (opsional)',
         'password_hint' => 'Role Pegawai: kosongkan password untuk memakai pengaturan password default. Role lain wajib isi password.',
