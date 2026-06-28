@@ -13,23 +13,23 @@
     ];
 @endphp
 
-<div class="report-page space-y-4">
-    <div class="grid gap-3 sm:grid-cols-3">
-        <div class="dashboard-stat-card panel dashboard-stat-card--campfire p-4">
-            <p class="dashboard-stat-card__label text-sm font-semibold">{{ __('pages.reports.total_attendance') }}</p>
-            <p class="dashboard-stat-card__value mt-1 text-2xl font-extrabold">{{ number_format($totals['total']) }}</p>
+<div class="report-page">
+    <div class="report-stat-grid">
+        <div class="dashboard-stat-card panel dashboard-stat-card--campfire report-stat-card">
+            <p class="dashboard-stat-card__label report-stat-card__label">{{ __('pages.reports.total_attendance') }}</p>
+            <p class="dashboard-stat-card__value report-stat-card__value">{{ number_format($totals['total']) }}</p>
             <p class="report-stat-card__period">{{ $monthLabel }}</p>
         </div>
-        <div class="dashboard-stat-card panel dashboard-stat-card--emerald p-4">
-            <p class="dashboard-stat-card__label text-sm font-semibold">{{ __('pages.reports.valid') }}</p>
-            <p class="dashboard-stat-card__value mt-1 text-2xl font-extrabold">{{ number_format($totals['valid']) }}</p>
+        <div class="dashboard-stat-card panel dashboard-stat-card--emerald report-stat-card">
+            <p class="dashboard-stat-card__label report-stat-card__label">{{ __('pages.reports.valid') }}</p>
+            <p class="dashboard-stat-card__value report-stat-card__value">{{ number_format($totals['valid']) }}</p>
             @if($totals['total'] > 0)
                 <p class="report-stat-card__period">{{ round(($totals['valid'] / $totals['total']) * 100) }}%</p>
             @endif
         </div>
-        <div class="dashboard-stat-card panel dashboard-stat-card--red p-4">
-            <p class="dashboard-stat-card__label text-sm font-semibold">{{ __('pages.reports.invalid') }}</p>
-            <p class="dashboard-stat-card__value mt-1 text-2xl font-extrabold">{{ number_format($totals['invalid']) }}</p>
+        <div class="dashboard-stat-card panel dashboard-stat-card--red report-stat-card">
+            <p class="dashboard-stat-card__label report-stat-card__label">{{ __('pages.reports.invalid') }}</p>
+            <p class="dashboard-stat-card__value report-stat-card__value">{{ number_format($totals['invalid']) }}</p>
             @if($totals['total'] > 0)
                 <p class="report-stat-card__period">{{ round(($totals['invalid'] / $totals['total']) * 100) }}%</p>
             @endif
@@ -49,15 +49,15 @@
         </div>
     </form>
 
-    <div class="panel-table table-mobile-scroll report-table">
-        <table class="table-readable min-w-full">
+    <div class="panel-table table-mobile-scroll report-table report-table-wrap">
+        <table class="table-readable table-readable--scroll-only report-summary-table min-w-full">
             <thead>
                 <tr>
-                    <th>{{ __('app.branch') }}</th>
-                    <th>{{ __('pages.reports.total_attendance') }}</th>
-                    <th>{{ __('pages.reports.valid') }}</th>
-                    <th>{{ __('pages.reports.invalid') }}</th>
-                    <th class="hidden md:table-cell">{{ __('pages.reports.valid_rate') }}</th>
+                    <th class="cell-sticky cell-branch">{{ __('app.branch') }}</th>
+                    <th class="cell-total">{{ __('pages.reports.total_attendance') }}</th>
+                    <th class="cell-valid">{{ __('pages.reports.valid') }}</th>
+                    <th class="cell-invalid">{{ __('pages.reports.invalid') }}</th>
+                    <th class="cell-rate">{{ __('pages.reports.valid_rate') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,17 +66,17 @@
                         $validRate = $row->total > 0 ? round(($row->valid_count / $row->total) * 100) : 0;
                     @endphp
                     <tr>
-                        <td data-label="{{ __('app.branch') }}">
+                        <td class="cell-sticky cell-branch">
                             <span class="cell-primary">{{ $row->branch->name ?? __('pages.reports.branch_fallback', ['id' => $row->branch_id]) }}</span>
                         </td>
-                        <td data-label="{{ __('pages.reports.total_attendance') }}">{{ number_format($row->total) }}</td>
-                        <td data-label="{{ __('pages.reports.valid') }}">
+                        <td class="cell-total">{{ number_format($row->total) }}</td>
+                        <td class="cell-valid">
                             <span class="report-table__valid">{{ number_format($row->valid_count) }}</span>
                         </td>
-                        <td data-label="{{ __('pages.reports.invalid') }}">
+                        <td class="cell-invalid">
                             <span class="report-table__invalid">{{ number_format($row->invalid_count) }}</span>
                         </td>
-                        <td class="hidden md:table-cell" data-label="{{ __('pages.reports.valid_rate') }}">
+                        <td class="cell-rate">
                             <span class="report-table__rate report-table__rate--{{ $validRate >= 90 ? 'good' : ($validRate >= 70 ? 'mid' : 'low') }}">{{ $validRate }}%</span>
                         </td>
                     </tr>
