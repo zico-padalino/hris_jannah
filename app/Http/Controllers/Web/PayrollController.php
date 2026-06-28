@@ -80,7 +80,10 @@ class PayrollController extends WebController
 
         $period = PayrollPeriod::query()->create([
             'branch_id' => $data['branch_id'],
-            'name' => 'Payroll '.str_pad($data['month'], 2, '0', STR_PAD_LEFT).'/'.$data['year'],
+            'name' => __('pages.payroll.period_name', [
+                'month' => str_pad((string) $data['month'], 2, '0', STR_PAD_LEFT),
+                'year' => $data['year'],
+            ]),
             'month' => $data['month'],
             'year' => $data['year'],
             'status' => PayrollStatus::Draft,
@@ -88,7 +91,7 @@ class PayrollController extends WebController
 
         $this->payrollService->generate($period);
 
-        return redirect()->route('payrolls.show', $period)->with('success', 'Payroll berhasil dibuat.');
+        return redirect()->route('payrolls.show', $period)->with('success', __('pages.payroll.created'));
     }
 
     public function show(Request $request, PayrollPeriod $payroll): View
@@ -117,12 +120,12 @@ class PayrollController extends WebController
         $this->authorizePermission($request, Permission::PayrollManage);
 
         if ($payroll->status === PayrollStatus::Finalized) {
-            return back()->with('error', 'Payroll final tidak dapat di-generate ulang.');
+            return back()->with('error', __('pages.payroll.cannot_regenerate_final'));
         }
 
         $this->payrollService->generate($payroll);
 
-        return back()->with('success', 'Payroll berhasil di-generate ulang.');
+        return back()->with('success', __('pages.payroll.regenerated'));
     }
 
     public function finalize(Request $request, PayrollPeriod $payroll): RedirectResponse
@@ -135,7 +138,7 @@ class PayrollController extends WebController
 
         $this->payrollService->finalize($payroll);
 
-        return back()->with('success', 'Payroll difinalisasi.');
+        return back()->with('success', __('pages.payroll.finalized'));
     }
 
     public function deductionDetails(Request $request, PayrollPeriod $payroll, PayrollItem $item): View

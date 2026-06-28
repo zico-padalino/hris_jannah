@@ -9,7 +9,7 @@ return [
     ],
     'user_role_description' => [
         'super_admin' => 'Akses penuh ke seluruh sistem. Role ini tidak dapat diubah atau dihapus.',
-        'hr' => 'Mengelola pegawai, absensi, cuti, payroll, dan laporan di semua cabang.',
+        'hr' => 'Mengelola pegawai, absensi, cuti, gaji, dan laporan di semua cabang.',
         'branch_admin' => 'Mengelola operasional absensi dan data pegawai di cabang yang ditugaskan.',
         'employee' => 'Melakukan absensi, mengajukan cuti/izin, dan melihat data pribadi.',
     ],
@@ -44,8 +44,8 @@ return [
         'rejected' => 'Ditolak',
     ],
     'payroll_status' => [
-        'draft' => 'Draft',
-        'finalized' => 'Final',
+        'draft' => 'Belum final',
+        'finalized' => 'Sudah final',
     ],
     'payroll_slip_signature_status' => [
         'pending' => 'Menunggu persetujuan',
@@ -68,7 +68,7 @@ return [
         'leave_request' => 'Ajukan Cuti/Izin',
         'leave_view_own' => 'Lihat Cuti Sendiri',
         'leave_approve' => 'Approval Cuti/Izin',
-        'payroll_manage' => 'Kelola Payroll',
+        'payroll_manage' => 'Kelola Gaji',
         'payroll_view_own' => 'Lihat Gaji Sendiri',
         'reports_view' => 'Lihat Laporan',
         'settings_manage' => 'Pengaturan Sistem',
@@ -92,7 +92,7 @@ return [
         'master_data' => 'Master Data',
         'schedule' => 'Jadwal',
         'leave' => 'Cuti & Izin',
-        'payroll' => 'Payroll',
+        'payroll' => 'Penggajian',
         'reports' => 'Laporan',
         'system' => 'Sistem',
     ],

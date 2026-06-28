@@ -32,7 +32,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182" />
                         </svg>
                     </span>
-                    <span>Generate Ulang</span>
+                    <span>{{ __('pages.payroll.regenerate') }}</span>
                 </button>
             </form>
             <form method="POST" action="{{ route('payrolls.finalize', $payroll) }}" class="inline">
@@ -43,33 +43,33 @@
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </span>
-                    <span>Finalisasi</span>
+                    <span>{{ __('pages.payroll.finalize') }}</span>
                 </button>
             </form>
         @endif
     </div>
 
-    <div id="payroll-items-table" class="panel-table table-mobile-scroll">
-        <table class="table-readable min-w-full">
+    <div id="payroll-items-table" class="panel-table table-mobile-scroll payroll-items-table-wrap">
+        <table class="table-readable table-readable--scroll-only payroll-items-table min-w-full">
             <thead class="bg-slate-50 text-left text-slate-500">
                 <tr>
-                    <th class="px-4 py-3">Pegawai</th>
-                    <th class="px-4 py-3">Pokok</th>
-                    <th class="px-4 py-3">Potongan</th>
-                    <th class="px-4 py-3">Net</th>
-                    <th class="px-4 py-3">Catatan</th>
-                    <th class="px-4 py-3 text-center">{{ __('pages.payroll_slip.actions') }}</th>
+                    <th class="px-4 py-3 cell-sticky cell-employee">{{ __('pages.payroll.employee') }}</th>
+                    <th class="px-4 py-3 cell-money">{{ __('pages.payroll.base_salary') }}</th>
+                    <th class="px-4 py-3 cell-money">{{ __('pages.payroll.deductions') }}</th>
+                    <th class="px-4 py-3 cell-money">{{ __('pages.payroll.net_salary') }}</th>
+                    <th class="px-4 py-3 cell-notes">{{ __('pages.payroll.notes') }}</th>
+                    <th class="px-4 py-3 text-center cell-actions">{{ __('pages.payroll_slip.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($payroll->items as $item)
                     <tr class="border-t border-slate-100">
-                        <td class="px-4 py-3">{{ $item->employee->name }}</td>
-                        <td class="px-4 py-3">Rp {{ number_format($item->base_salary, 0, ',', '.') }}</td>
-                        <td class="px-4 py-3">Rp {{ number_format($item->deductions, 0, ',', '.') }}</td>
-                        <td class="px-4 py-3 font-semibold">Rp {{ number_format($item->net_salary, 0, ',', '.') }}</td>
-                        <td class="px-4 py-3 text-xs text-slate-600">{{ $item->notes ?? '-' }}</td>
-                        <td class="px-4 py-3 text-center" data-label="{{ __('pages.payroll_slip.actions') }}">
+                        <td class="px-4 py-3 cell-sticky cell-employee">{{ $item->employee->name }}</td>
+                        <td class="px-4 py-3 cell-money">Rp {{ number_format($item->base_salary, 0, ',', '.') }}</td>
+                        <td class="px-4 py-3 cell-money">Rp {{ number_format($item->deductions, 0, ',', '.') }}</td>
+                        <td class="px-4 py-3 cell-money cell-money--net">Rp {{ number_format($item->net_salary, 0, ',', '.') }}</td>
+                        <td class="px-4 py-3 cell-notes text-xs text-slate-600" @if($item->notes) title="{{ $item->notes }}" @endif>{{ $item->notes ? \Illuminate\Support\Str::limit($item->notes, 36) : '-' }}</td>
+                        <td class="px-4 py-3 text-center cell-actions">
                             @include('partials.payroll-item-actions', [
                                 'payroll' => $payroll,
                                 'item' => $item,

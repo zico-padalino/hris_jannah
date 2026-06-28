@@ -92,19 +92,24 @@ class PayrollDeductionConfig
         $notes = [];
 
         if ($attendanceDeductibleCount > 0) {
-            $notes[] = "Absensi {$attendanceDeductibleCount}x @ Rp ".number_format((float) $config['attendance_amount'], 0, ',', '.');
+            $notes[] = __('pages.payroll.note_attendance', [
+                'count' => $attendanceDeductibleCount,
+                'amount' => number_format((float) $config['attendance_amount'], 0, ',', '.'),
+            ]);
         }
 
         if ($pph21 > 0) {
-            $notes[] = 'PPh 21 '.rtrim(rtrim(number_format((float) $config['pph21_rate'], 2, ',', '.'), '0'), ',').'%';
+            $notes[] = __('pages.payroll.note_pph21', [
+                'rate' => rtrim(rtrim(number_format((float) $config['pph21_rate'], 2, ',', '.'), '0'), ','),
+            ]);
         }
 
         if ($bpjsKesEmployee > 0) {
-            $notes[] = 'BPJS Kes pegawai';
+            $notes[] = __('pages.payroll.note_bpjs_kes');
         }
 
         if ($bpjsTkEmployee > 0) {
-            $notes[] = 'BPJS TK pegawai';
+            $notes[] = __('pages.payroll.note_bpjs_tk');
         }
 
         return [

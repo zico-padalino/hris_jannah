@@ -5671,6 +5671,161 @@ html.dark .report-table .report-table__invalid {
     min-width: 9rem;
 }
 
+/* Riwayat absensi — layout ringkas di mobile */
+.attendance-history-page .attendance-history-filters {
+    margin-bottom: 0.75rem;
+}
+
+.attendance-history-summary strong {
+    color: var(--app-text);
+    font-weight: 700;
+}
+
+@media (max-width: 1023px) {
+    .attendance-history-table {
+        min-width: 54rem;
+    }
+
+    .attendance-history-table th,
+    .attendance-history-table td {
+        font-size: 0.75rem;
+        padding: 0.4375rem 0.5rem;
+    }
+
+    .attendance-history-table thead th {
+        font-size: 0.625rem;
+    }
+
+    .attendance-history-table .cell-primary {
+        font-size: 0.8125rem;
+    }
+
+    .attendance-history-table .cell-secondary {
+        font-size: 0.6875rem;
+    }
+
+    .attendance-history-table .cell-date {
+        left: 0;
+        max-width: 5.25rem;
+        min-width: 5.25rem;
+        position: sticky;
+        z-index: 2;
+    }
+
+    .attendance-history-table .cell-employee {
+        left: 5.25rem;
+        max-width: 7.5rem;
+        min-width: 7.5rem;
+        position: sticky;
+        z-index: 2;
+    }
+
+    .attendance-history-table thead .cell-sticky {
+        background: var(--app-gradient-table-head);
+        z-index: 3;
+    }
+
+    .attendance-history-table tbody .cell-sticky {
+        background-color: var(--app-surface);
+    }
+
+    .attendance-history-table tbody tr:nth-child(even) .cell-sticky {
+        background-color: var(--app-table-stripe);
+    }
+
+    .attendance-history-table tbody tr:hover .cell-sticky {
+        background-color: var(--app-table-hover);
+    }
+
+    .attendance-history-table .cell-date,
+    .attendance-history-table .cell-employee {
+        box-shadow: 2px 0 6px rgb(15 23 42 / 0.06);
+    }
+
+    .attendance-history-table .cell-employee {
+        box-shadow: 4px 0 8px rgb(15 23 42 / 0.06);
+    }
+
+    .attendance-history-table .attendance-time-list,
+    .attendance-history-table .attendance-verify-list,
+    .attendance-history-table .attendance-status-list {
+        gap: 0.25rem;
+        min-width: 0;
+    }
+
+    .attendance-history-table .cell-absensi-header,
+    .attendance-history-table .cell-absensi {
+        min-width: 9.5rem;
+    }
+
+    .attendance-history-table .cell-verify-header,
+    .attendance-history-table .cell-verify {
+        min-width: 7rem;
+    }
+
+    .attendance-history-table .cell-status-header,
+    .attendance-history-table .cell-status {
+        min-width: 9.5rem;
+    }
+
+    .attendance-history-table .cell-deduction-header,
+    .attendance-history-table .cell-deduction {
+        min-width: 7rem;
+    }
+
+    .attendance-history-table .attendance-time-entry__main,
+    .attendance-history-table .attendance-status-entry__main {
+        gap: 0.25rem;
+        padding: 0.25rem 0.375rem;
+    }
+
+    .attendance-history-table .attendance-time-entry__icon,
+    .attendance-history-table .attendance-status-entry__icon {
+        height: 1.25rem;
+        width: 1.25rem;
+    }
+
+    .attendance-history-table .attendance-time-entry__icon svg,
+    .attendance-history-table .attendance-status-entry__icon svg {
+        height: 0.75rem;
+        width: 0.75rem;
+    }
+
+    .attendance-history-table .attendance-time-entry__label,
+    .attendance-history-table .attendance-status-entry__label {
+        font-size: 0.6875rem;
+    }
+
+    .attendance-history-table .attendance-time-entry__time {
+        font-size: 0.75rem;
+    }
+
+    .attendance-history-table .attendance-time-entry__source,
+    .attendance-history-table .attendance-status-entry__hint {
+        font-size: 0.625rem;
+    }
+
+    .attendance-history-table .attendance-day-verification__meta {
+        font-size: 0.625rem;
+    }
+
+    .attendance-history-table .deduction-amount {
+        font-size: 0.75rem;
+    }
+}
+
+html.dark .attendance-history-table tbody .cell-sticky {
+    background-color: var(--app-surface);
+}
+
+html.dark .attendance-history-table tbody tr:nth-child(even) .cell-sticky {
+    background-color: var(--app-table-stripe);
+}
+
+html.dark .attendance-history-table tbody tr:hover .cell-sticky {
+    background-color: var(--app-table-hover);
+}
+
 .attendance-manage-table {
     min-width: 80rem;
 }
@@ -9566,6 +9721,256 @@ html.dark .payroll-deduction-back:hover {
     }
 }
 
+/* Tabel payroll — scroll horizontal di mobile (bukan kartu) */
+.payroll-items-table-wrap,
+.payroll-periods-table-wrap,
+.payroll-deduction-table-wrap {
+    min-width: 0;
+    width: 100%;
+}
+
+.payroll-items-table {
+    min-width: 44rem;
+}
+
+.payroll-periods-table {
+    min-width: 100%;
+}
+
+.payroll-deduction-table {
+    min-width: 52rem;
+}
+
+.payroll-items-table th,
+.payroll-items-table td,
+.payroll-periods-table th,
+.payroll-periods-table td,
+.payroll-deduction-table th,
+.payroll-deduction-table td {
+    vertical-align: middle;
+}
+
+.payroll-periods-table .cell-period {
+    font-weight: 600;
+    min-width: 7rem;
+}
+
+.payroll-periods-table .cell-branch {
+    min-width: 6.5rem;
+}
+
+.payroll-periods-table .cell-status {
+    min-width: 5.5rem;
+    white-space: nowrap;
+}
+
+.payroll-periods-table .cell-actions-col {
+    min-width: 5.5rem;
+}
+
+.payroll-periods-table__detail {
+    font-size: 0.75rem;
+    min-height: 2rem;
+    padding: 0.3125rem 0.625rem;
+}
+
+.payroll-deduction-table .cell-date {
+    font-weight: 600;
+    min-width: 5.5rem;
+    white-space: nowrap;
+}
+
+.payroll-deduction-table .cell-time {
+    min-width: 4.5rem;
+    white-space: nowrap;
+}
+
+.payroll-deduction-table .cell-type,
+.payroll-deduction-table .cell-schedule,
+.payroll-deduction-table .cell-late,
+.payroll-deduction-table .cell-source {
+    min-width: 5rem;
+    white-space: nowrap;
+}
+
+.payroll-deduction-table .cell-status {
+    min-width: 7rem;
+}
+
+.payroll-deduction-table .cell-deduction {
+    min-width: 6.5rem;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.payroll-deduction-table thead .cell-deduction {
+    text-align: right;
+}
+
+.payroll-items-table .cell-sticky,
+.payroll-periods-table .cell-sticky,
+.payroll-deduction-table .cell-sticky {
+    max-width: 9.5rem;
+    min-width: 7.5rem;
+}
+
+.payroll-items-table .cell-employee,
+.payroll-items-table .cell-period {
+    font-weight: 600;
+}
+
+.payroll-items-table .cell-money {
+    min-width: 6.25rem;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.payroll-items-table thead .cell-money {
+    text-align: right;
+}
+
+.payroll-items-table .cell-money--net {
+    font-weight: 700;
+}
+
+.payroll-items-table .cell-notes {
+    max-width: 10rem;
+    min-width: 7rem;
+}
+
+.payroll-items-table .cell-actions {
+    min-width: 8.5rem;
+}
+
+.payroll-items-table .payroll-item-actions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.payroll-items-table .payroll-item-actions__btn,
+.payroll-items-table .payroll-item-actions__badge {
+    font-size: 0.625rem;
+    min-height: 1.75rem;
+    padding: 0.25rem 0.4375rem;
+    width: 100%;
+}
+
+.payroll-items-table .payroll-item-actions__btn svg {
+    height: 0.8125rem;
+    width: 0.8125rem;
+}
+
+@media (max-width: 767px) {
+    .payroll-items-table-wrap,
+    .payroll-periods-table-wrap,
+    .payroll-deduction-table-wrap {
+        -webkit-overflow-scrolling: touch;
+        overflow-x: auto;
+    }
+
+    .payroll-items-table .cell-sticky,
+    .payroll-periods-table .cell-sticky,
+    .payroll-deduction-table .cell-sticky {
+        box-shadow: 2px 0 6px rgb(15 23 42 / 0.06);
+        left: 0;
+        position: sticky;
+        z-index: 2;
+    }
+
+    .payroll-items-table thead .cell-sticky,
+    .payroll-periods-table thead .cell-sticky,
+    .payroll-deduction-table thead .cell-sticky {
+        background: var(--app-gradient-table-head);
+        z-index: 3;
+    }
+
+    .payroll-items-table tbody .cell-sticky,
+    .payroll-periods-table tbody .cell-sticky,
+    .payroll-deduction-table tbody .cell-sticky {
+        background-color: var(--app-surface);
+    }
+
+    .payroll-items-table tbody tr:nth-child(even) .cell-sticky,
+    .payroll-periods-table tbody tr:nth-child(even) .cell-sticky,
+    .payroll-deduction-table tbody tr:nth-child(even) .cell-sticky {
+        background-color: var(--app-table-stripe);
+    }
+
+    .payroll-items-table tbody tr:hover .cell-sticky,
+    .payroll-periods-table tbody tr:hover .cell-sticky,
+    .payroll-deduction-table tbody tr:hover .cell-sticky {
+        background-color: var(--app-table-hover);
+    }
+
+    .payroll-items-table th,
+    .payroll-items-table td,
+    .payroll-periods-table th,
+    .payroll-periods-table td,
+    .payroll-deduction-table th,
+    .payroll-deduction-table td {
+        font-size: 0.75rem;
+        padding: 0.5rem 0.625rem;
+    }
+
+    .payroll-items-table thead th,
+    .payroll-periods-table thead th,
+    .payroll-deduction-table thead th {
+        font-size: 0.625rem;
+    }
+
+    .payroll-periods-table__detail {
+        font-size: 0.6875rem;
+        min-height: 1.875rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .payroll-periods-table__detail .payroll-deduction-back__icon {
+        height: 1.375rem;
+        width: 1.375rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .payroll-items-table .payroll-item-actions {
+        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .payroll-items-table .payroll-item-actions__btn,
+    .payroll-items-table .payroll-item-actions__badge {
+        font-size: 0.75rem;
+        min-height: 2.125rem;
+        padding: 0.375rem 0.75rem;
+        width: auto;
+    }
+
+    .payroll-items-table .payroll-item-actions__btn svg {
+        height: 0.9375rem;
+        width: 0.9375rem;
+    }
+}
+
+html.dark .payroll-items-table tbody .cell-sticky,
+html.dark .payroll-periods-table tbody .cell-sticky,
+html.dark .payroll-deduction-table tbody .cell-sticky {
+    background-color: var(--app-surface);
+}
+
+html.dark .payroll-items-table tbody tr:nth-child(even) .cell-sticky,
+html.dark .payroll-periods-table tbody tr:nth-child(even) .cell-sticky,
+html.dark .payroll-deduction-table tbody tr:nth-child(even) .cell-sticky {
+    background-color: var(--app-table-stripe);
+}
+
+html.dark .payroll-items-table tbody tr:hover .cell-sticky,
+html.dark .payroll-periods-table tbody tr:hover .cell-sticky,
+html.dark .payroll-deduction-table tbody tr:hover .cell-sticky {
+    background-color: var(--app-table-hover);
+}
+
 /* Tombol aksi payroll — slip & detail potongan */
 .payroll-item-actions {
     align-items: center;
@@ -9679,12 +10084,12 @@ html.dark .payroll-deduction-back:hover {
 }
 
 @media (max-width: 1023px) {
-    .table-readable tbody td[data-label] .payroll-item-actions {
+    .table-readable:not(.payroll-items-table) tbody td[data-label] .payroll-item-actions {
         align-items: stretch;
         width: 100%;
     }
 
-    .table-readable tbody td[data-label] .payroll-item-actions__btn {
+    .table-readable:not(.payroll-items-table) tbody td[data-label] .payroll-item-actions__btn {
         justify-content: center;
         width: 100%;
     }
