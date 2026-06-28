@@ -258,7 +258,15 @@ return [
 
     'users' => [
         'title' => 'Pengguna',
+        'create_title' => 'Tambah Pengguna',
+        'edit_title' => 'Edit Pengguna',
+        'edit' => 'Edit',
         'add' => 'Tambah Pengguna',
+        'save' => 'Simpan',
+        'cancel' => 'Batal',
+        'field_active' => 'Aktif',
+        'store_success' => 'Pengguna dan data pegawai berhasil ditambahkan.',
+        'update_success' => 'Pengguna dan data pegawai berhasil diperbarui.',
         'col_name' => 'Nama',
         'col_email' => 'Email',
         'col_role' => 'Role',

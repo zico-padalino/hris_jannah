@@ -437,6 +437,174 @@ function initLeaveProofModal() {
     });
 }
 
+function initUserCreateModal() {
+    const modal = document.getElementById('user-create-modal');
+
+    if (!modal) {
+        return;
+    }
+
+    const form = modal.querySelector('form');
+    const firstField = modal.querySelector('input[name="name"]');
+
+    function resetForm() {
+        if (!form) {
+            return;
+        }
+
+        form.reset();
+
+        const roleField = form.querySelector('[name="role"]');
+        const activeField = form.querySelector('[name="is_active"]');
+        const passwordField = form.querySelector('[name="password"]');
+
+        if (roleField) {
+            roleField.value = '';
+        }
+
+        if (activeField) {
+            activeField.checked = false;
+        }
+
+        if (passwordField) {
+            passwordField.value = '';
+        }
+    }
+
+    function open({ reset = false } = {}) {
+        if (reset) {
+            resetForm();
+        }
+
+        modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('overflow-hidden');
+
+        if (firstField) {
+            firstField.focus();
+        }
+    }
+
+    function close() {
+        modal.classList.add('hidden');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    document.addEventListener('click', (event) => {
+        if (event.target.closest('[data-user-create-open]')) {
+            event.preventDefault();
+            open({ reset: true });
+
+            return;
+        }
+
+        if (event.target.closest('[data-user-create-close]')) {
+            event.preventDefault();
+            close();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+            close();
+        }
+    });
+
+    if (modal.dataset.autoOpen === '1') {
+        open();
+    }
+}
+
+function initUserEditModal() {
+    const modal = document.getElementById('user-edit-modal');
+
+    if (!modal) {
+        return;
+    }
+
+    const form = document.getElementById('user-edit-form');
+
+    function setFieldValue(name, value) {
+        if (!form) {
+            return;
+        }
+
+        const field = form.querySelector(`[name="${name}"]`);
+
+        if (!field) {
+            return;
+        }
+
+        if (field.type === 'checkbox') {
+            field.checked = value === '1' || value === true;
+
+            return;
+        }
+
+        field.value = value ?? '';
+    }
+
+    function open(trigger) {
+        if (!form) {
+            return;
+        }
+
+        if (trigger) {
+            form.action = trigger.dataset.userUpdateUrl || '#';
+            setFieldValue('_user_id', trigger.dataset.userId);
+            setFieldValue('name', trigger.dataset.userName);
+            setFieldValue('email', trigger.dataset.userEmail);
+            setFieldValue('role', trigger.dataset.userRole);
+            setFieldValue('branch_id', trigger.dataset.userBranchId);
+            setFieldValue('is_active', trigger.dataset.userActive);
+            setFieldValue('password', '');
+        }
+
+        modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('overflow-hidden');
+
+        const firstField = form.querySelector('input[name="name"]');
+
+        if (firstField) {
+            firstField.focus();
+        }
+    }
+
+    function close() {
+        modal.classList.add('hidden');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    document.addEventListener('click', (event) => {
+        const trigger = event.target.closest('[data-user-edit-open]');
+
+        if (trigger) {
+            event.preventDefault();
+            open(trigger);
+
+            return;
+        }
+
+        if (event.target.closest('[data-user-edit-close]')) {
+            event.preventDefault();
+            close();
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+            close();
+        }
+    });
+
+    if (modal.dataset.autoOpen === '1') {
+        open();
+    }
+}
+
 function initAttendancePhotoModal() {
     const modal = document.getElementById('attendance-photo-modal');
 
@@ -588,5 +756,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNav();
     initLeaveProofModal();
     initAttendancePhotoModal();
+    initUserCreateModal();
+    initUserEditModal();
     initPasswordFields();
 });

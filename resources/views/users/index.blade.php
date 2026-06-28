@@ -6,7 +6,7 @@
     <div class="users-page">
         <div class="users-page__toolbar">
             @moduleAction('users', 'create')
-                <a href="{{ route('users.create') }}" class="btn-primary w-full sm:w-auto">+ {{ __('pages.users.add') }}</a>
+                <button type="button" class="btn-primary w-full sm:w-auto" data-user-create-open>+ {{ __('pages.users.add') }}</button>
             @endmoduleAction
         </div>
 
@@ -33,10 +33,29 @@
                                 @include('partials.active-status-badge', ['active' => $user->is_active])
                             </td>
                             <td class="cell-actions cell-actions-col">
-                                @include('partials.table-actions', [
-                                    'module' => 'users',
-                                    'edit' => route('users.edit', $user),
-                                ])
+                                <div class="table-actions" role="group" aria-label="{{ __('pages.users.col_actions') }}">
+                                    @moduleAction('users', 'edit')
+                                        <button
+                                            type="button"
+                                            class="table-action-btn table-action-btn--edit"
+                                            title="{{ __('pages.users.edit') }}"
+                                            aria-label="{{ __('pages.users.edit') }}"
+                                            data-user-edit-open
+                                            data-user-id="{{ $user->id }}"
+                                            data-user-name="{{ $user->name }}"
+                                            data-user-email="{{ $user->email }}"
+                                            data-user-role="{{ $user->role->value }}"
+                                            data-user-branch-id="{{ $user->branch_id ?? '' }}"
+                                            data-user-active="{{ $user->is_active ? '1' : '0' }}"
+                                            data-user-update-url="{{ route('users.update', $user) }}"
+                                        >
+                                            <svg class="table-action-btn__icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                            </svg>
+                                            <span class="sr-only">{{ __('pages.users.edit') }}</span>
+                                        </button>
+                                    @endmoduleAction
+                                </div>
                             </td>
                         </tr>
                     @empty
@@ -52,4 +71,16 @@
             <div class="users-page__pagination">{{ $users->links() }}</div>
         @endif
     </div>
+
+    @moduleAction('users', 'create')
+        @push('modals')
+            @include('users._create-modal')
+        @endpush
+    @endmoduleAction
+
+    @moduleAction('users', 'edit')
+        @push('modals')
+            @include('users._edit-modal')
+        @endpush
+    @endmoduleAction
 @endsection
