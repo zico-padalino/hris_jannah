@@ -5,7 +5,7 @@
 @section('back_url', route('dashboard'))
 
 @section('content')
-<div class="activity-log-page space-y-4">
+<div class="activity-log-page">
     <form method="GET" class="filter-bar activity-log-filter">
         <div class="activity-log-filter__grid">
             <label class="activity-log-filter__field activity-log-filter__field--search">
@@ -60,57 +60,45 @@
         </div>
     </form>
 
-    {{-- Mobile & tablet: kartu ringkas --}}
-    <div class="activity-log-list lg:hidden">
-        @forelse($logs as $log)
-            @include('activity-logs._item', ['log' => $log])
-        @empty
-            <div class="activity-log-empty panel">
-                <p class="activity-log-empty__text">{{ __('pages.activity_logs.empty') }}</p>
-            </div>
-        @endforelse
-    </div>
-
-    {{-- Desktop: tabel padat --}}
-    <div class="panel-table activity-log-table hidden overflow-x-auto lg:block">
-        <table class="table-readable min-w-full">
+    <div class="panel-table table-mobile-scroll activity-log-table-wrap">
+        <table class="table-readable table-readable--scroll-only activity-log-scroll-table min-w-full">
             <thead>
                 <tr>
-                    <th>{{ __('pages.activity_logs.col_id') }}</th>
-                    <th>{{ __('pages.activity_logs.col_time') }}</th>
-                    <th>{{ __('pages.activity_logs.col_user') }}</th>
-                    <th>{{ __('pages.activity_logs.col_role') }}</th>
-                    <th>{{ __('app.branch') }}</th>
-                    <th>{{ __('pages.activity_logs.col_action') }}</th>
-                    <th>{{ __('pages.activity_logs.col_module') }}</th>
-                    <th>{{ __('pages.activity_logs.col_subject') }}</th>
-                    <th>{{ __('pages.activity_logs.col_description') }}</th>
-                    <th>{{ __('pages.activity_logs.col_ip') }}</th>
+                    <th class="cell-id">{{ __('pages.activity_logs.col_id') }}</th>
+                    <th class="cell-sticky cell-time">{{ __('pages.activity_logs.col_time') }}</th>
+                    <th class="cell-sticky cell-user">{{ __('pages.activity_logs.col_user') }}</th>
+                    <th class="cell-role">{{ __('pages.activity_logs.col_role') }}</th>
+                    <th class="cell-branch">{{ __('app.branch') }}</th>
+                    <th class="cell-action">{{ __('pages.activity_logs.col_action') }}</th>
+                    <th class="cell-module">{{ __('pages.activity_logs.col_module') }}</th>
+                    <th class="cell-subject">{{ __('pages.activity_logs.col_subject') }}</th>
+                    <th class="cell-desc">{{ __('pages.activity_logs.col_description') }}</th>
+                    <th class="cell-ip">{{ __('pages.activity_logs.col_ip') }}</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($logs as $log)
                     <tr>
-                        <td class="activity-log-table__id">#{{ $log->id }}</td>
-                        <td class="whitespace-nowrap">
+                        <td class="cell-id activity-log-table__id">#{{ $log->id }}</td>
+                        <td class="cell-sticky cell-time whitespace-nowrap">
                             <span class="activity-log-table__date">{{ $log->created_at?->format('d/m/Y') }}</span>
                             <span class="activity-log-table__meta">{{ $log->created_at?->format('H:i:s') }}</span>
                         </td>
-                        <td>
+                        <td class="cell-sticky cell-user">
                             <span class="activity-log-table__name">{{ $log->user_name ?? __('pages.activity_logs.unknown_user') }}</span>
                             @if($log->user_email)
                                 <span class="activity-log-table__meta">{{ $log->user_email }}</span>
                             @endif
                         </td>
-                        <td>{{ $log->user_role ? __('enums.user_role.'.$log->user_role) : '—' }}</td>
-                        <td>{{ $log->branch?->name ?? '—' }}</td>
-                        <td>
+                        <td class="cell-role">{{ $log->user_role ? __('enums.user_role.'.$log->user_role) : '—' }}</td>
+                        <td class="cell-branch">{{ $log->branch?->name ?? '—' }}</td>
+                        <td class="cell-action">
                             <span class="{{ $log->action->badgeClass() }}">{{ $log->action->label() }}</span>
                         </td>
-                        <td class="activity-log-table__module">{{ $log->module ?? '—' }}</td>
-                        <td>{{ $log->subjectDisplay() }}</td>
-                        <td class="activity-log-table__desc">{{ $log->description ?? '—' }}</td>
-                        <td class="activity-log-table__ip whitespace-nowrap">{{ $log->ip_address ?? '—' }}</td>
+                        <td class="cell-module activity-log-table__module">{{ $log->module ?? '—' }}</td>
+                        <td class="cell-subject">{{ $log->subjectDisplay() }}</td>
+                        <td class="cell-desc activity-log-table__desc" @if($log->description) title="{{ $log->description }}" @endif>{{ $log->description ? \Illuminate\Support\Str::limit($log->description, 48) : '—' }}</td>
+                        <td class="cell-ip activity-log-table__ip whitespace-nowrap">{{ $log->ip_address ?? '—' }}</td>
                     </tr>
                 @empty
                     <tr>
@@ -122,7 +110,7 @@
     </div>
 
     @if($logs->hasPages())
-        <div>{{ $logs->links() }}</div>
+        <div class="activity-log-pagination">{{ $logs->links() }}</div>
     @endif
 </div>
 @endsection
